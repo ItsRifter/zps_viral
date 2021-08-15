@@ -1,0 +1,33 @@
+﻿vitals {
+
+	transition: all 0.5s ease-out;
+	position: absolute;
+	font-family: Poppins;
+	font-size: 64px; 
+	font-weight: 500;
+	color: rgb(255, 255, 255);
+	opacity: .2;
+	width: 100%;
+	height: 100%;
+
+	.health {
+		position: absolute;
+		top: 85%;
+		left: 5%;
+	}
+
+	.team {
+		position: absolute;
+		top: 2%;
+		left: 4%;
+		font-size: 128px;
+	}
+
+	&.undead {
+		.team {
+			opacity: 1;
+			color: rgb(0, 200, 0);
+		}
+	}
+
+}
