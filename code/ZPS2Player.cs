@@ -1,15 +1,19 @@
 ﻿using Sandbox;
 using System;
+using System.Collections.Generic;
 using System.Linq;
+using ZPS2.Entities;
 
 namespace ZPS2
 {
 	public partial class ZPS2Player : Player
 	{
+
 		public enum TeamType
 		{
 			Unassigned,
 			Survivor,
+			Infected,
 			Undead,
 			Spectator
 		}
@@ -23,7 +27,13 @@ namespace ZPS2
 		private TimeSince timeSinceDropped;
 		private TimeSince timeSinceJumpReleased;
 
+		private static float InfectionTime = 25f;
+
 		private DamageInfo lastDamage;
+
+		private bool isInfected = false;
+		private bool phaseInfection1 = false;
+		private bool phaseInfection2 = false;
 
 		[Net]
 		public TeamType CurTeam { get; set; }
@@ -43,7 +53,7 @@ namespace ZPS2
 		{
 			SetModel( "models/citizen/citizen.vmdl" );
 
-			Controller = new WalkController();
+			Controller = new SurvivorWalkController();
 			Animator = new StandardPlayerAnimator();
 			Camera = new FirstPersonCamera();
 
@@ -55,6 +65,8 @@ namespace ZPS2
 			EnableShadowInFirstPerson = true;
 
 			base.Respawn();
+			flashlight = new Flashlight();
+			AllowFlashlight = true;
 
 			SwapTeam( TeamType.Unassigned );
 		}
@@ -70,10 +82,14 @@ namespace ZPS2
 		{
 			SetModel( "models/citizen/citizen.vmdl" );
 
-			Controller = new WalkController();
+			if(this.CurTeam == TeamType.Survivor)
+				Controller = new SurvivorWalkController();
+
+			else if(this.CurTeam == TeamType.Undead)
+				//Controller = new ZombieWalkController -TODO
+
 			Animator = new StandardPlayerAnimator();
 			
-
 			Dress();
 			ClearAmmo();
 
@@ -91,15 +107,76 @@ namespace ZPS2
 			{
 				Camera = new FirstPersonCamera();
 			}
-				
+			
 			GiveWeapons();
+
+			if( this.CurZombieType == ZombieType.Carrier )
+			{
+				this.RenderColor = new Color32( 255, 140, 140 );
+			}
+
+			//TODO: Make zombie points
+			List<Vector3> vectorSpawns = new List<Vector3>();
+			foreach(var ZombiePoints in Entity.All.OfType<SurvivorPoint>())
+			{
+				vectorSpawns.Add( ZombiePoints.Position );
+			}
+
+			this.Position = vectorSpawns[Rand.Int(0, vectorSpawns.Count - 1)];	
 		}
 
 		public override void Simulate( Client cl )
 		{
 			base.Simulate( cl );
 			SimulateActiveChild( cl, ActiveChild );
+
+			bool toggle = Input.Pressed( InputButton.Flashlight );
+
+			if ( flashlight.IsValid() )
+			{
+				if ( flashlight.timeSinceLightToggled > 0.1f && toggle )
+				{
+					flashlight.LightEnabled = !flashlight.LightEnabled;
+
+					EnableFlashlight( flashlight.LightEnabled );
+
+					flashlight.timeSinceLightToggled = 0;
+				}
+			}
 		}
+
+		[Event("server.tick")]
+		public void InfectionThink()
+		{
+			if ( this.CurTeam == TeamType.Infected || isInfected )
+			{
+				if ( InfectionTime > 0f )
+				{
+					InfectionTime -= 0.01f;
+				}
+
+			}
+
+			if ( this.CurTeam == TeamType.Survivor && InfectionTime < 13f && phaseInfection1 == false )
+			{
+				PlaySound( "infected" );
+				phaseInfection1 = true;
+				SwapTeam( TeamType.Infected );
+			}
+
+			if ( this.CurTeam == TeamType.Infected && InfectionTime < 4.5f && phaseInfection2 == false )
+			{
+				PlaySound( "turning" );
+				phaseInfection2 = true;
+			}
+
+			if ( this.CurTeam == TeamType.Infected && InfectionTime <= 0f )
+			{
+				this.SwapTeam( TeamType.Undead );
+				GiveWeapons();
+			}
+		}
+
 
 		public void SwapTeam( TeamType targetTeam )
 		{
@@ -107,7 +184,7 @@ namespace ZPS2
 
 			if ( targetTeam == TeamType.Undead )
 			{
-				this.RenderColor = new Color32( 86, 227, 54 );
+				this.RenderColor = new Color32( 125, 75, 75 ); 
 			}
 			else
 			{
@@ -128,12 +205,6 @@ namespace ZPS2
 			this.CurTeam = targetTeam;
 		}
 
-		[ClientRpc]
-		public void PlaySoundClient( String soundPath)
-		{
-			Sound.FromScreen( soundPath );
-		}
-
 		public override void TakeDamage( DamageInfo info )
 		{
 			var attacker = info.Attacker as ZPS2Player;
@@ -144,8 +215,23 @@ namespace ZPS2
 			if ( attacker.IsValid() && attacker.CurTeam == this.CurTeam )
 				return;
 
+			if( attacker.IsValid() && (attacker.CurTeam == TeamType.Undead && attacker.CurZombieType == ZombieType.Carrier) )
+			{
+				if ( Rand.Int( 0, 100 ) <= ZPS2Game.InfectionChance )
+					InfectPlayer();
+			}
+
 			base.TakeDamage( info );
 
+		}
+
+		[Event( "InfectHuman")]
+		public void InfectPlayer()
+		{
+			if ( this.CurTeam != TeamType.Survivor )
+				return;
+
+			this.isInfected = true;
 		}
 
 		public override void OnKilled()
@@ -171,7 +257,6 @@ namespace ZPS2
 			ZPS2Game.CheckRoundStatus();
 			Camera = new SpectateRagdollCamera();
 			EnableDrawing = false;
-
 		}
 	}
 }

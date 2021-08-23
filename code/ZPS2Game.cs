@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using ZPS2.Entities;
 
 namespace ZPS2
 {
@@ -20,6 +21,8 @@ namespace ZPS2
 		private int NextThink;
 
 		private static bool DebugMode = false;
+
+		public static float InfectionChance = 80f;
 
 		[Net]
 		public static int ZombieLives { get; set; } = 4; 
@@ -43,13 +46,46 @@ namespace ZPS2
 			if ( IsServer )
 			{
 				new ZPS2Hud();
+
+				List<Vector3> cameraVector = new List<Vector3>();
+				List<Rotation> cameraRotation = new List<Rotation>();
+
+				foreach ( var point in Entity.All.OfType<SurvivorPoint>() )
+				{
+					Log.Info( "Hi" );
+					cameraVector.Add( point.Position );
+					cameraRotation.Add( point.Rotation );
+				}
+
+				Log.Info( cameraVector.Count );
+				Log.Info( cameraRotation.Count );
 			}
 		}
+		[Event("StartGame")]
 		public void BeginGame()
 		{
-			RespawnAllHumans();
+			foreach(var p in Entity.All.OfType<ZPS2Player>())
+			{
+				if ( p.CurTeam == ZPS2Player.TeamType.Unassigned )
+					break;
+
+				p.Camera = null;
+				p.Camera = new FreezeCamera();
+			}
+
+			PlaySound( "round_begin" );
+
 			CurState = RoundState.Start;
 			TimeCurLeft = 10f;
+		}
+
+		public void StartActiveGame()
+		{
+			foreach( var p in Entity.All.OfType<ZPS2Player>() )
+			{
+				p.Camera = null;
+				p.Camera = new FirstPersonCamera();
+			}
 		}
 
 		public void StopGame()
@@ -59,9 +95,8 @@ namespace ZPS2
 
 		public void RestartGame()
 		{
-			TimeCurLeft = 10f;
-			RespawnAllHumans();
-			CurState = RoundState.Start;
+			ResetAllPlayers();
+			CurState = RoundState.Idle;
 		}
 
 		[Event.Tick]
@@ -81,30 +116,44 @@ namespace ZPS2
 			if ( TimeCurLeft <= 0f && CurState == RoundState.Start )
 			{
 				TransformRandomHuman();
+				CurState = RoundState.Active;
+				StartActiveGame();
 				return;
 			}
+
 		}
 
 		//Turn a human player into a carrier zombie
 		public static void TransformRandomHuman()
 		{
-			var randHuman = GetSurvivors();
-			int randomInt = Rand.Int( 0, randHuman.Count - 1 );
-
-			while ( randHuman[randomInt] == null )
+			var infCheck = GetInfected();
+			
+			if(infCheck.Count < 1)
 			{
-				randomInt = Rand.Int( 0, randHuman.Count - 1 );
+				var randHuman = GetSurvivors();
+				int randomInt = Rand.Int( 0, randHuman.Count - 1 );
+
+				while ( randHuman[randomInt] == null )
+				{
+					randomInt = Rand.Int( 0, randHuman.Count - 1 );
+				}
+
+				randHuman[randomInt].SwapTeam( ZPS2Player.TeamType.Undead );
+				randHuman[randomInt].CurZombieType = ZPS2Player.ZombieType.Carrier;
+				randHuman[randomInt].Respawn();
+			} else
+			{
+				infCheck[Rand.Int(0, infCheck.Count - 1)].CurZombieType = ZPS2Player.ZombieType.Carrier;
+				foreach ( var zombie in infCheck )
+				{
+					zombie.Respawn();
+				}
 			}
-
-			randHuman[randomInt].SwapTeam( ZPS2Player.TeamType.Undead );
-			randHuman[randomInt].CurZombieType = ZPS2Player.ZombieType.Carrier;
-			randHuman[randomInt].Respawn();
-
+	
 			CurState = RoundState.Active;
-
 		}
 
-		public void RespawnAllHumans()
+		public void ResetAllPlayers()
 		{
 			foreach ( var player in Client.All )
 			{
@@ -113,8 +162,8 @@ namespace ZPS2
 					if ( ply.CurTeam == ZPS2Player.TeamType.Unassigned )
 						break;
 
-					ply.SwapTeam( ZPS2Player.TeamType.Survivor );
-					ply.Respawn();
+					ply.SwapTeam( ZPS2Player.TeamType.Unassigned );
+					ply.InitialSpawn();
 				}
 			}
 		}
@@ -130,6 +179,19 @@ namespace ZPS2
 			}
 
 			return curHumans;
+		}
+
+		public static List<ZPS2Player> GetInfected()
+		{
+			var curInfected = new List<ZPS2Player>();
+
+			foreach ( var p in Entity.All.OfType<ZPS2Player>() )
+			{
+				if ( p.CurTeam == ZPS2Player.TeamType.Infected )
+					curInfected.Add( p );
+			}
+
+			return curInfected;
 		}
 
 		public static List<ZPS2Player> GetZombies()
@@ -148,13 +210,22 @@ namespace ZPS2
 		public static void CheckRoundStatus()
 		{
 			var humans = GetSurvivors();
+			var infected = GetInfected();
 			var zombies = GetZombies();
 
-			if ( humans.Count > 0 || zombies.Count > 0 )
+			//Start round checks
+			//if ( humans.Count >= 2 || humans.Count >= 1 && infected.Count >= 1 )
+			//TEMPORARY
+			if ( humans.Count >= 1 )
+				Event.Run( "StartGame" );
+
+
+			//End win checks
+			if ( (humans.Count > 0 || zombies.Count > 0 || infected.Count > 0) && (CurState == RoundState.Idle || CurState == RoundState.Start) )
 				return;
-			else if (humans.Count <= 0)
+			else if (humans.Count <= 0 && CurState == RoundState.Active)
 				Event.Run( "evnt_endgame", false );
-			else if (zombies.Count <= 0 && ZombieLives <= 0)
+			else if (zombies.Count <= 0 && ZombieLives <= 0 && CurState == RoundState.Active )
 				Event.Run( "evnt_endgame", true );
 		}
 
@@ -163,10 +234,17 @@ namespace ZPS2
 		{
 			CurState = RoundState.Post;
 
-			if( isHumanWin )
-				Sound.FromScreen( "round_end_human.sound" );
+			String filePath;
+
+			if ( isHumanWin )
+				filePath = "round_end_human";
 			else
-				Sound.FromScreen( "round_end_zombie.sound" );
+				filePath = "round_end_zombie";
+
+			foreach ( var p in Entity.All.OfType<ZPS2Player>() )
+			{
+				p.PlaySound( filePath );
+			}
 
 			Log.Info( isHumanWin );
 
@@ -178,26 +256,25 @@ namespace ZPS2
 		{
 			String filePath;
 			if ( isHumanWin )
-				filePath = "round_end_human.sound";
+				filePath = "round_end_human";
 			else
-				filePath = "round_end_human.sound";
+				filePath = "round_end_zombie";
 
 			foreach(var p in Entity.All.OfType<ZPS2Player>())
 			{
 				using ( Prediction.Off() )
 				{
-					p.PlaySoundClient( filePath );
+					p.PlaySound( filePath );
 				}
 			}
-	
-			Log.Info( isHumanWin );
 		}
 
 		[ServerCmd( "zps2debug" )]
 		public static void SwitchDebugMode( bool turnOn )
 		{
-			DebugMode = true;
+			DebugMode = turnOn;
 		}
+
 		public override void ClientJoined( Client client )
 		{
 			base.ClientJoined( client );
@@ -206,24 +283,20 @@ namespace ZPS2
 			client.Pawn = player;
 
 			player.InitialSpawn();
-
-			if ( Client.All.Count > 1 && CurState == RoundState.Idle )
-			{
-				Log.Info( "Beginning game" );
-				BeginGame();
-			}
 		}
 		public override void ClientDisconnect( Client cl, NetworkDisconnectionReason reason )
 		{
 			base.ClientDisconnect( cl, reason );
 
-			if ( Client.All.Count > 1 && CurState == RoundState.Idle )
-			{
-				Log.Info( "Stopping game" );
-				StopGame();
-			}
-
 			CheckRoundStatus();
+		}
+
+		//DEBUG: Infects player, Will remove later
+		[ServerCmd( "infect" )]
+		public static void StartInfect()
+		{
+			var Human = ConsoleSystem.Caller as ZPS2Player;
+			Event.Run( "InfectHuman" );
 		}
 
 		public override void DoPlayerNoclip( Client player )

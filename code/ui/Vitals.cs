@@ -9,11 +9,13 @@ namespace ZPS2
 	{
 		public Label Health;
 		public Label Team;
+		public Image Overlay;
 
 		public Vitals()
 		{
 			StyleSheet.Load( "/ui/Vitals.scss" );
 			Health = Add.Label( "100", "health" );
+			Team = Add.Label( "", "team" );
 		}
 
 		[Event( "client.tick" )]
@@ -25,23 +27,42 @@ namespace ZPS2
 			Health.Text = $"{player.Health.CeilToInt()}";
 			Health.SetClass( "danger", player.Health < 40.0f );
 
-			/* TODO: Refactor this for both teams
-			 * 
-			if ( player is PlayerBase ply ) {
+			if ( player is ZPS2Player ply ) {
+
 				var k = ply.CurTeam.ToString();
-				if ( k.Equals( "Undead" ) ) {
-					if (!HasClass( "undead" )) {
-						AddClass( "undead" );
+
+				if( k.Equals( "Survivor"))
+				{
+					if ( !HasClass( "survivor" ) )
+					{
+						AddClass( "survivor" );
 					}
-					Team.Text = k.ToString() + "🤢";
 				}
 
-				if ( k.Equals( "Survivor" ) ) {
-					RemoveClass( "undead" );
-					Team.Text = k.ToString();
+				
+				if(k.Equals("Infected"))
+				{
+					if(!HasClass("infected"))
+					{
+						RemoveClass( "survivor" );
+						AddClass( "infected" );
+						Overlay = Add.Image( "", "overlay" );
+					}
+				}
+
+				if(k.Equals("Undead"))
+				{
+					if ( !HasClass( "undead" ) )
+					{
+						RemoveClass( "survivor" );
+
+						if(HasClass("infected"))
+							RemoveClass( "infected" );
+
+						AddClass( "undead" );
+					}
 				}
 			}
-			*/
 		}
 	}
 }

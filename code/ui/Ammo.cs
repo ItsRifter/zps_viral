@@ -26,6 +26,9 @@ namespace ZPS2
 
 			if ( weapon == null ) return;
 
+			if ( weapon.ToString() == "zps2_claws" )
+				return;
+
 			Weapon.Text = $"{weapon.AmmoClip}";
 
 			var inv = weapon.AvailableAmmo();

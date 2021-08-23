@@ -1,33 +1,66 @@
 ﻿vitals {
-
 	transition: all 0.5s ease-out;
 	position: absolute;
 	font-family: Poppins;
-	font-size: 64px; 
+	font-size: 64px;
 	font-weight: 500;
 	color: rgb(255, 255, 255);
-	opacity: .2;
+	opacity: 1;
 	width: 100%;
 	height: 100%;
 
 	.health {
 		position: absolute;
 		top: 85%;
-		left: 5%;
+		left: 6.5%;
 	}
 
-	.team {
-		position: absolute;
-		top: 2%;
-		left: 4%;
-		font-size: 128px;
+	&.survivor {
+		.team {
+			background-image: url("materials/ui/health.png");
+			background-size: cover;
+			top: 85%;
+			left: 1.5%;
+			width: 78px;
+			height: 82px;
+		}
+	}
+
+	&.infected {
+		.team {
+			background-image: url("materials/ui/infected.png");
+			background-size: cover;
+			top: 85%;
+			left: 1.5%;
+			width: 88px;
+			height: 92px;
+		}
+
+		@keyframes fadeIn {
+			0% {
+				opacity: 0;
+			}
+
+			100% {
+				opacity: 1;
+			}
+		}
+
+		.overlay {
+			//Opacity is 0 until the image itself is fixed
+			opacity: 0;
+			background-image: url("materials/ui/infectedoverlay.png");
+			background-size: cover;
+			right: 5%;
+			width: 100%;
+			height: 100%;
+		}
 	}
 
 	&.undead {
 		.team {
 			opacity: 1;
-			color: rgb(0, 200, 0);
+			color: rgb(120, 0, 0);
 		}
 	}
-
 }

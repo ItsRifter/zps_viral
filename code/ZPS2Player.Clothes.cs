@@ -1,6 +1,5 @@
 ﻿using Sandbox;
 
-
 namespace ZPS2
 {
 	public class ClothingEntity : ModelEntity
