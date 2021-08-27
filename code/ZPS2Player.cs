@@ -76,6 +76,14 @@ namespace ZPS2
 			this.Inventory.DeleteContents();
 			if ( this.CurTeam == TeamType.Undead )
 				Inventory.Add( new Claws(), true );
+			else
+			{
+				switch(Rand.Int(1, 1))
+				{
+					case 1: Inventory.Add( new USP(), true );
+						break;
+				}
+			}
 		}
 
 		public override void Respawn()
@@ -125,6 +133,18 @@ namespace ZPS2
 			this.Position = vectorSpawns[Rand.Int(0, vectorSpawns.Count - 1)];	
 		}
 
+		public void SwitchToBestWeapon()
+	{
+		var best = Children.Select( x => x as WeaponBase )
+			.Where( x => x.IsValid() && x.IsUsable() )
+			.OrderByDescending( x => x.BucketWeight )
+			.FirstOrDefault();
+
+		if ( best == null ) return;
+
+		ActiveChild = best;
+	}
+
 		public override void Simulate( Client cl )
 		{
 			base.Simulate( cl );
@@ -143,28 +163,58 @@ namespace ZPS2
 					flashlight.timeSinceLightToggled = 0;
 				}
 			}
+
+			if ( Input.Pressed( InputButton.Drop ) )
+			{
+				var weapon = this.Inventory.GetSlot( this.Inventory.GetActiveSlot() ) as WeaponBase;
+				
+				if ( weapon.IsDroppable == false )
+					return;
+
+				var dropped = Inventory.DropActive();
+				if ( dropped != null )
+				{
+					dropped.PhysicsGroup.ApplyImpulse( Velocity + EyeRot.Forward * 500.0f + Vector3.Up * 100.0f, true );
+					dropped.PhysicsGroup.ApplyAngularImpulse( Vector3.Random * 100.0f, true );
+
+					timeSinceDropped = 0;
+					SwitchToBestWeapon();
+				}
+			}
+
+			if ( Input.ActiveChild != null )
+			{
+				ActiveChild = Input.ActiveChild;
+			}
 		}
 
 		[Event("server.tick")]
 		public void InfectionThink()
 		{
-			if ( this.CurTeam == TeamType.Infected || isInfected )
+
+			if(ZPS2Game.CurState != ZPS2Game.RoundState.Active)
 			{
-				if ( InfectionTime > 0f )
+				InfectionTime = 25f;
+				return;
+			}
+
+			if ( this.CurTeam == TeamType.Infected || this.isInfected )
+			{
+				if (InfectionTime > 0f )
 				{
-					InfectionTime -= 0.01f;
+						InfectionTime -= 0.01f;
 				}
 
 			}
 
-			if ( this.CurTeam == TeamType.Survivor && InfectionTime < 13f && phaseInfection1 == false )
+			if ( this.CurTeam == TeamType.Survivor && InfectionTime < 13f && this.phaseInfection1 == false )
 			{
 				PlaySound( "infected" );
 				phaseInfection1 = true;
 				SwapTeam( TeamType.Infected );
 			}
 
-			if ( this.CurTeam == TeamType.Infected && InfectionTime < 4.5f && phaseInfection2 == false )
+			if ( this.CurTeam == TeamType.Infected && InfectionTime < 4.5f && this.phaseInfection2 == false )
 			{
 				PlaySound( "turning" );
 				phaseInfection2 = true;
@@ -174,8 +224,11 @@ namespace ZPS2
 			{
 				this.SwapTeam( TeamType.Undead );
 				GiveWeapons();
+				phaseInfection1 = false;
+				phaseInfection2 = false;
 			}
 		}
+
 
 
 		public void SwapTeam( TeamType targetTeam )
@@ -237,8 +290,8 @@ namespace ZPS2
 		public override void OnKilled()
 		{
 			base.OnKilled();
-
-			Inventory.DeleteContents();
+			
+			//foreach ( var weapon in Inventory. )
 
 			BecomeRagdollOnClient( Velocity, lastDamage.Flags, lastDamage.Position, lastDamage.Force, GetHitboxBone( lastDamage.HitboxIndex ) );
 
@@ -246,6 +299,7 @@ namespace ZPS2
 			{
 				SwapTeam( TeamType.Undead );
 				ZPS2Game.ZombieLives++;
+
 			} else if (this.CurTeam == TeamType.Undead)
 			{
 				if ( ZPS2Game.ZombieLives > 0 )
@@ -254,6 +308,7 @@ namespace ZPS2
 					SwapTeam( TeamType.Spectator );
 			}
 
+			Inventory.DeleteContents();
 			ZPS2Game.CheckRoundStatus();
 			Camera = new SpectateRagdollCamera();
 			EnableDrawing = false;

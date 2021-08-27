@@ -10,6 +10,7 @@ namespace ZPS2
 		public override float ReloadTime => 0.0f;
 		public override int ClipSize => 99;
 
+		public override bool IsDroppable => false;
 		public override int Bucket => 1;
 
 		public override void Spawn()

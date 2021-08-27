@@ -11,16 +11,16 @@
 
 	.health {
 		position: absolute;
-		top: 85%;
-		left: 6.5%;
+		top: 5%;
+		right: 6.5%;
 	}
 
 	&.survivor {
 		.team {
 			background-image: url("materials/ui/health.png");
 			background-size: cover;
-			top: 85%;
-			left: 1.5%;
+			top: 5%;
+			left: 94%;
 			width: 78px;
 			height: 82px;
 		}
@@ -30,20 +30,10 @@
 		.team {
 			background-image: url("materials/ui/infected.png");
 			background-size: cover;
-			top: 85%;
-			left: 1.5%;
+			top: 5%;
+			left: 94%;
 			width: 88px;
 			height: 92px;
-		}
-
-		@keyframes fadeIn {
-			0% {
-				opacity: 0;
-			}
-
-			100% {
-				opacity: 1;
-			}
 		}
 
 		.overlay {

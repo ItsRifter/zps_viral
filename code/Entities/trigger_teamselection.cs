@@ -74,6 +74,12 @@ namespace ZPS2.Entities
 				{
 					var player = other as ZPS2Player;
 					player.SwapTeam( SelectedTeam );
+
+					if ( ZPS2Game.CurState == ZPS2Game.RoundState.Idle || ZPS2Game.CurState == ZPS2Game.RoundState.Start )
+					{
+						player.Camera = null;
+						player.Camera = new FreezeCamera();
+					}
 				}
 			}
 		}

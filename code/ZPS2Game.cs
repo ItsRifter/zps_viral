@@ -46,19 +46,6 @@ namespace ZPS2
 			if ( IsServer )
 			{
 				new ZPS2Hud();
-
-				List<Vector3> cameraVector = new List<Vector3>();
-				List<Rotation> cameraRotation = new List<Rotation>();
-
-				foreach ( var point in Entity.All.OfType<SurvivorPoint>() )
-				{
-					Log.Info( "Hi" );
-					cameraVector.Add( point.Position );
-					cameraRotation.Add( point.Rotation );
-				}
-
-				Log.Info( cameraVector.Count );
-				Log.Info( cameraRotation.Count );
 			}
 		}
 		[Event("StartGame")]
@@ -74,6 +61,14 @@ namespace ZPS2
 			}
 
 			PlaySound( "round_begin" );
+
+			if(DebugMode)
+			{
+				CurState = RoundState.Active;
+				StartActiveGame();
+				GiveRandomSurvivorWeapons();
+				return;
+			}
 
 			CurState = RoundState.Start;
 			TimeCurLeft = 10f;
@@ -96,6 +91,7 @@ namespace ZPS2
 		public void RestartGame()
 		{
 			ResetAllPlayers();
+			ZombieLives = 4;
 			CurState = RoundState.Idle;
 		}
 
@@ -121,14 +117,18 @@ namespace ZPS2
 				return;
 			}
 
+			if ( TimeCurLeft <= 0f && CurState == RoundState.Post )
+			{
+				RestartGame();
+			}
 		}
 
 		//Turn a human player into a carrier zombie
 		public static void TransformRandomHuman()
 		{
-			var infCheck = GetInfected();
+			var zombCheck = GetZombies();
 			
-			if(infCheck.Count < 1)
+			if( zombCheck.Count < 1)
 			{
 				var randHuman = GetSurvivors();
 				int randomInt = Rand.Int( 0, randHuman.Count - 1 );
@@ -143,14 +143,25 @@ namespace ZPS2
 				randHuman[randomInt].Respawn();
 			} else
 			{
-				infCheck[Rand.Int(0, infCheck.Count - 1)].CurZombieType = ZPS2Player.ZombieType.Carrier;
-				foreach ( var zombie in infCheck )
+				zombCheck[Rand.Int(0, zombCheck.Count - 1)].CurZombieType = ZPS2Player.ZombieType.Carrier;
+				foreach ( var zombie in zombCheck )
 				{
 					zombie.Respawn();
 				}
 			}
-	
+
+			GiveRandomSurvivorWeapons();
 			CurState = RoundState.Active;
+		}
+
+		public static void GiveRandomSurvivorWeapons()
+		{
+			var survivors = GetSurvivors();
+
+			foreach(var human in survivors)
+			{
+				human.GiveWeapons();
+			}
 		}
 
 		public void ResetAllPlayers()
@@ -163,6 +174,7 @@ namespace ZPS2
 						break;
 
 					ply.SwapTeam( ZPS2Player.TeamType.Unassigned );
+					ply.Inventory.DeleteContents();
 					ply.InitialSpawn();
 				}
 			}
@@ -213,17 +225,21 @@ namespace ZPS2
 			var infected = GetInfected();
 			var zombies = GetZombies();
 
+			if(DebugMode)
+			{
+				if ( humans.Count >= 1 || humans.Count >= 1 && zombies.Count >= 1 )
+					Event.Run( "StartGame" );
+			}
+
 			//Start round checks
-			//if ( humans.Count >= 2 || humans.Count >= 1 && infected.Count >= 1 )
-			//TEMPORARY
-			if ( humans.Count >= 1 )
+			if ( humans.Count >= 2 || humans.Count >= 1 && zombies.Count >= 1 )
 				Event.Run( "StartGame" );
 
 
 			//End win checks
-			if ( (humans.Count > 0 || zombies.Count > 0 || infected.Count > 0) && (CurState == RoundState.Idle || CurState == RoundState.Start) )
+			if ( (humans.Count > 0 && infected.Count > 0) || zombies.Count > 0 && (CurState == RoundState.Idle || CurState == RoundState.Start) )
 				return;
-			else if (humans.Count <= 0 && CurState == RoundState.Active)
+			else if ( (humans.Count <= 0 && infected.Count <= 0) && CurState == RoundState.Active)
 				Event.Run( "evnt_endgame", false );
 			else if (zombies.Count <= 0 && ZombieLives <= 0 && CurState == RoundState.Active )
 				Event.Run( "evnt_endgame", true );
@@ -241,12 +257,7 @@ namespace ZPS2
 			else
 				filePath = "round_end_zombie";
 
-			foreach ( var p in Entity.All.OfType<ZPS2Player>() )
-			{
-				p.PlaySound( filePath );
-			}
-
-			Log.Info( isHumanWin );
+			PlaySound( filePath );
 
 			TimeCurLeft = 10f;
 		}

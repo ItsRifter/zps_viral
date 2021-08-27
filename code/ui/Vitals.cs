@@ -62,6 +62,14 @@ namespace ZPS2
 						AddClass( "undead" );
 					}
 				}
+				if ( k.Equals( "Unassigned" ) )
+				{
+					if(HasClass("survivor"))
+						RemoveClass( "survivor" );
+
+					if ( HasClass( "infected" ) )
+						RemoveClass( "infected" );
+				}
 			}
 		}
 	}

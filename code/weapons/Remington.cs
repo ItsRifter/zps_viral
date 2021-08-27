@@ -3,7 +3,8 @@
 namespace ZPS2
 {
 	[Library( "zps2_remington", Title = "Remington" )]
-	partial class Shotgun : WeaponBase
+	[Hammer.EditorModel( "weapons/rust_pumpshotgun/v_rust_pumpshotgun.vmdl" )]
+	partial class Remington : WeaponBase
 	{
 		public override string ViewModelPath => "weapons/rust_pumpshotgun/v_rust_pumpshotgun.vmdl";
 		public override float PrimaryRate => 1;

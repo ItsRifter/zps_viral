@@ -71,21 +71,9 @@ metadata
 ]
 
 // 
-// ZPS2.Pistol : ZPS2.WeaponBase 
+// ZPS2.Remington : ZPS2.WeaponBase 
 // 
-@PointClass = zps2_usp : ""
-[
-	targetname(target_source) : "Name" : : "The name that other entities refer to this entity by."
-	parentname(target_destination) [ group="Hierarchy" ] : "Parent" : : "The name of this entity's parent in the movement hierarchy. Entities with parents move with their parent."
-	enable_shadows(boolean) [ group="Render Properties" ] : "Shadow Casting" : 1 : "Whether this entity should cast shadows or not"
-
-	input SetColor(string) : "Sets the color of this entity. Format is '255 255 255 255'."
-]
-
-// 
-// ZPS2.Shotgun : ZPS2.WeaponBase 
-// 
-@PointClass = zps2_remington : ""
+@PointClass editormodel( "weapons/rust_pumpshotgun/v_rust_pumpshotgun.vmdl" ) = zps2_remington : ""
 [
 	targetname(target_source) : "Name" : : "The name that other entities refer to this entity by."
 	parentname(target_destination) [ group="Hierarchy" ] : "Parent" : : "The name of this entity's parent in the movement hierarchy. Entities with parents move with their parent."
@@ -98,6 +86,18 @@ metadata
 // ZPS2.SMG : ZPS2.WeaponBase 
 // 
 @PointClass = zps2_mp5 : ""
+[
+	targetname(target_source) : "Name" : : "The name that other entities refer to this entity by."
+	parentname(target_destination) [ group="Hierarchy" ] : "Parent" : : "The name of this entity's parent in the movement hierarchy. Entities with parents move with their parent."
+	enable_shadows(boolean) [ group="Render Properties" ] : "Shadow Casting" : 1 : "Whether this entity should cast shadows or not"
+
+	input SetColor(string) : "Sets the color of this entity. Format is '255 255 255 255'."
+]
+
+// 
+// ZPS2.USP : ZPS2.WeaponBase 
+// 
+@PointClass = zps2_usp : ""
 [
 	targetname(target_source) : "Name" : : "The name that other entities refer to this entity by."
 	parentname(target_destination) [ group="Hierarchy" ] : "Parent" : : "The name of this entity's parent in the movement hierarchy. Entities with parents move with their parent."

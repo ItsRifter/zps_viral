@@ -1,0 +1,17 @@
+﻿zombielives {
+	transition: all 0.5s ease-out;
+	position: absolute;
+	font-family: Poppins;
+	font-size: 64px;
+	font-weight: 500;
+	color: rgb(255, 255, 255);
+	opacity: 1;
+	width: 100%;
+	height: 100%;
+
+	.lives {
+		position: absolute;
+		top: 5%;
+		left: 2.5%;
+	}
+}

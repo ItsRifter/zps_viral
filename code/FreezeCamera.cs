@@ -21,6 +21,9 @@ namespace ZPS2
 				cameraSpots.Add( point );
 			}
 
+			if ( cameraSpots.Count <= 0 )
+				return;
+
 			Pos = cameraSpots[Rand.Int( 0, cameraSpots.Count - 1 )].Position;
 			Rot = cameraSpots[Rand.Int( 0, cameraSpots.Count - 1 )].Rotation;
 

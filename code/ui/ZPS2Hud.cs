@@ -24,10 +24,13 @@ namespace ZPS2
 			RootPanel.AddChild<DamageIndicator>();
 			RootPanel.AddChild<HitIndicator>();
 
+			RootPanel.AddChild<InventoryBar>();
+
 			RootPanel.AddChild<ChatBox>();
 			RootPanel.AddChild<KillFeed>();
 			RootPanel.AddChild<Scoreboard>();
 			RootPanel.AddChild<VoiceList>();
+			RootPanel.AddChild<Lives>();
 		}
 
 		[ClientRpc]

@@ -1,12 +1,12 @@
 ﻿using Sandbox;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace ZPS2
 {
-	partial class Inventory : BaseInventory
+	partial class Inventory : ZPS2BaseInventory
 	{
-
 		public Inventory( Player player ) : base( player )
 		{
 

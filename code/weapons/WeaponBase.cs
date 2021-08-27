@@ -17,6 +17,10 @@ namespace ZPS2
 		public virtual int Bucket => 0;
 		public virtual int BucketWeight => 100;
 
+		public virtual bool IsDroppable => true;
+
+		public virtual int BulletsRemaining => 0;
+
 		[Net, Predicted]
 		public int AmmoClip { get; set; }
 
@@ -30,7 +34,8 @@ namespace ZPS2
 		public TimeSince TimeSinceDeployed { get; set; }
 
 
-		public PickupTrigger PickupTrigger { get; protected set; }
+		//Not required
+		//public PickupTrigger PickupTrigger { get; protected set; }
 
 
 		public int AvailableAmmo()
@@ -236,6 +241,7 @@ namespace ZPS2
 			return AvailableAmmo() > 0;
 		}
 
+		/*
 		public override void OnCarryStart( Entity carrier )
 		{
 			base.OnCarryStart( carrier );
@@ -255,6 +261,7 @@ namespace ZPS2
 				PickupTrigger.EnableTouch = true;
 			}
 		}
+		*/
 
 		public virtual void OnHolster()
 		{

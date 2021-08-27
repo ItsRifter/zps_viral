@@ -3,7 +3,7 @@
 namespace ZPS2
 {
 	[Library( "zps2_usp", Title = "USP" )]
-	partial class Pistol : WeaponBase
+	partial class USP : WeaponBase
 	{
 		public override string ViewModelPath => "weapons/rust_pistol/v_rust_pistol.vmdl";
 
@@ -12,6 +12,8 @@ namespace ZPS2
 		public override float ReloadTime => 3.0f;
 		public override int ClipSize => 16;
 
+		public override int BulletsRemaining => ClipSize;
+
 		public override int Bucket => 1;
 
 		public override void Spawn()
@@ -19,7 +21,7 @@ namespace ZPS2
 			base.Spawn();
 
 			SetModel( "weapons/rust_pistol/rust_pistol.vmdl" );
-			AmmoClip = 16;
+			AmmoClip = BulletsRemaining;
 		}
 
 		public override bool CanPrimaryAttack()
