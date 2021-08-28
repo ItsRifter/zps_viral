@@ -3,6 +3,7 @@
 namespace ZPS_Viral
 {
 	[Library( "zpsviral_usp", Title = "USP" )]
+	[Hammer.EditorModel( "models/rust_pistol/v_rust_pistol.vmdl" )]
 	partial class USP : WeaponBase
 	{
 		public override string ViewModelPath => "weapons/rust_pistol/v_rust_pistol.vmdl";

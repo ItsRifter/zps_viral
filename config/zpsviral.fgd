@@ -1,17 +1,7 @@
 // 
-// ZPS2.ZPS2Game : Sandbox.Game 
+// ZPS_Viral.Flashlight : ZPS_Viral.ItemBase 
 // 
-@PointClass = ZPS2 : ""
-[
-	targetname(target_source) : "Name" : : "The name that other entities refer to this entity by."
-	parentname(target_destination) [ group="Hierarchy" ] : "Parent" : : "The name of this entity's parent in the movement hierarchy. Entities with parents move with their parent."
-	enable_shadows(boolean) [ group="Render Properties" ] : "Shadow Casting" : 1 : "Whether this entity should cast shadows or not"
-]
-
-// 
-// ZPS2.Flashlight : ZPS2.ItemBase 
-// 
-@PointClass = zps2_flashlight : ""
+@PointClass = zpsviral_flashlight : ""
 [
 	targetname(target_source) : "Name" : : "The name that other entities refer to this entity by."
 	parentname(target_destination) [ group="Hierarchy" ] : "Parent" : : "The name of this entity's parent in the movement hierarchy. Entities with parents move with their parent."
@@ -21,7 +11,7 @@
 ]
 
 // 
-// ZPS2.PistolAmmo : ZPS2.ItemBase 
+// ZPS_Viral.PistolAmmo : ZPS_Viral.ItemBase 
 // 
 @PointClass editormodel( "models/pistol_ammobox.vmdl" ) 
 metadata
@@ -30,7 +20,7 @@ metadata
 	entity_tool_group = "Ammo"
 	entity_tool_tip = "Small 9mm ammo box"
 }
-= zps2_ammo_9mm : ""
+= zpsviral_ammo_9mm : ""
 [
 	targetname(target_source) : "Name" : : "The name that other entities refer to this entity by."
 	parentname(target_destination) [ group="Hierarchy" ] : "Parent" : : "The name of this entity's parent in the movement hierarchy. Entities with parents move with their parent."
@@ -40,7 +30,7 @@ metadata
 ]
 
 // 
-// ZPS2.SmallMedkit : ZPS2.ItemBase 
+// ZPS_Viral.SmallMedkit : ZPS_Viral.ItemBase 
 // 
 @PointClass editormodel( "models/medkit.vmdl" ) 
 metadata
@@ -49,7 +39,7 @@ metadata
 	entity_tool_group = "Health"
 	entity_tool_tip = "Pills to recover small amounts of health"
 }
-= zps2_painkillers : ""
+= zpsviral_painkillers : ""
 [
 	targetname(target_source) : "Name" : : "The name that other entities refer to this entity by."
 	parentname(target_destination) [ group="Hierarchy" ] : "Parent" : : "The name of this entity's parent in the movement hierarchy. Entities with parents move with their parent."
@@ -59,9 +49,9 @@ metadata
 ]
 
 // 
-// ZPS2.Claws : ZPS2.WeaponBase 
+// ZPS_Viral.Claws : ZPS_Viral.WeaponBase 
 // 
-@PointClass = zps2_claws : ""
+@PointClass = zpsviral_claws : ""
 [
 	targetname(target_source) : "Name" : : "The name that other entities refer to this entity by."
 	parentname(target_destination) [ group="Hierarchy" ] : "Parent" : : "The name of this entity's parent in the movement hierarchy. Entities with parents move with their parent."
@@ -71,9 +61,9 @@ metadata
 ]
 
 // 
-// ZPS2.Remington : ZPS2.WeaponBase 
+// ZPS_Viral.Remington : ZPS_Viral.WeaponBase 
 // 
-@PointClass editormodel( "models/weapons/remington.vmdl" ) = zps2_remington : ""
+@PointClass editormodel( "models/weapons/remington.vmdl" ) = zpsviral_remington : ""
 [
 	targetname(target_source) : "Name" : : "The name that other entities refer to this entity by."
 	parentname(target_destination) [ group="Hierarchy" ] : "Parent" : : "The name of this entity's parent in the movement hierarchy. Entities with parents move with their parent."
@@ -83,9 +73,9 @@ metadata
 ]
 
 // 
-// ZPS2.SMG : ZPS2.WeaponBase 
+// ZPS_Viral.SMG : ZPS_Viral.WeaponBase 
 // 
-@PointClass = zps2_mp5 : ""
+@PointClass = zpsviral_mp5 : ""
 [
 	targetname(target_source) : "Name" : : "The name that other entities refer to this entity by."
 	parentname(target_destination) [ group="Hierarchy" ] : "Parent" : : "The name of this entity's parent in the movement hierarchy. Entities with parents move with their parent."
@@ -95,9 +85,9 @@ metadata
 ]
 
 // 
-// ZPS2.USP : ZPS2.WeaponBase 
+// ZPS_Viral.USP : ZPS_Viral.WeaponBase 
 // 
-@PointClass = zps2_usp : ""
+@PointClass editormodel( "weapons/rust_pistol/rust_pistol.vmdl" ) = zpsviral_usp : ""
 [
 	targetname(target_source) : "Name" : : "The name that other entities refer to this entity by."
 	parentname(target_destination) [ group="Hierarchy" ] : "Parent" : : "The name of this entity's parent in the movement hierarchy. Entities with parents move with their parent."
@@ -107,7 +97,7 @@ metadata
 ]
 
 // 
-// ZPS2.Entities.SurvivorPoint : Sandbox.Entity 
+// ZPS_Viral.Entities.SurvivorPoint : Sandbox.Entity 
 // 
 @PointClass editormodel( "models/editor/playerstart.vmdl" ) 
 metadata
@@ -124,7 +114,7 @@ metadata
 ]
 
 // 
-// ZPS2.Entities.TriggerTeams : Sandbox.BaseTrigger 
+// ZPS_Viral.Entities.TriggerTeams : Sandbox.BaseTrigger 
 // 
 @SolidClass 
 metadata
