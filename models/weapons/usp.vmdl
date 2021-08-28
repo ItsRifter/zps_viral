@@ -28,6 +28,29 @@
 				]
 			},
 			{
+				_class = "Skeleton"
+				children = 
+				[
+					{
+						_class = "Bone"
+						name = "ROOT"
+						children = 
+						[
+							{
+								_class = "Bone"
+								name = "hold_R"
+								origin = [ 1.658938, 0.0, 7.241688 ]
+								angles = [ 0.0, 0.0, 0.0 ]
+								do_not_discard = true
+							},
+						]
+						origin = [ -6.570771, 0.0, -6.573441 ]
+						angles = [ 0.0, 0.0, 0.0 ]
+						do_not_discard = true
+					},
+				]
+			},
+			{
 				_class = "MaterialGroupList"
 				children = 
 				[
@@ -74,41 +97,18 @@
 					{
 						_class = "RenderMeshFile"
 						filename = "models/weapons/USP.fbx"
-						import_translation = [ 5.0, 0.0, 0.0 ]
+						import_translation = [ 0.0, 0.0, 0.0 ]
 						import_rotation = [ 0.0, 0.0, 0.0 ]
-						import_scale = 0.75
+						import_scale = 0.45
 						align_origin_x_type = "None"
 						align_origin_y_type = "None"
 						align_origin_z_type = "None"
-						parent_bone = "hold_R"
+						parent_bone = ""
 						import_filter = 
 						{
 							exclude_by_default = false
 							exception_list = [  ]
 						}
-					},
-				]
-			},
-			{
-				_class = "Skeleton"
-				children = 
-				[
-					{
-						_class = "Bone"
-						name = "ROOT"
-						children = 
-						[
-							{
-								_class = "Bone"
-								name = "hold_R"
-								origin = [ 0.0, 0.0, 0.0 ]
-								angles = [ 0.0, 0.0, 0.0 ]
-								do_not_discard = true
-							},
-						]
-						origin = [ 0.0, 0.0, 0.0 ]
-						angles = [ 0.0, 0.0, 0.0 ]
-						do_not_discard = true
 					},
 				]
 			},
