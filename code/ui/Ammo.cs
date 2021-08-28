@@ -3,7 +3,7 @@ using Sandbox.UI;
 using Sandbox.UI.Construct;
 
 
-namespace ZPS2
+namespace ZPS_Viral
 {
 	public class Ammo : Panel
 	{
@@ -24,10 +24,18 @@ namespace ZPS2
 			var weapon = player.ActiveChild as WeaponBase;
 			SetClass( "active", weapon != null );
 
-			if ( weapon == null ) return;
+			if ( weapon == null )
+			{
+				Weapon.Text = "";
+				return;
+			}
 
 			if ( weapon.ToString() == "zps2_claws" )
+			{
+				Weapon.Text = "";
 				return;
+			}
+
 
 			Weapon.Text = $"{weapon.AmmoClip}";
 

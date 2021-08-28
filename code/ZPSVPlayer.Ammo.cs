@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Sandbox;
 
-namespace ZPS2
+namespace ZPS_Viral
 {
 	partial class ZPS2Player
 	{

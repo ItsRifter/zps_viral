@@ -2,7 +2,7 @@
 using System;
 
 
-namespace ZPS2
+namespace ZPS_Viral
 {
 	partial class ZPS2Player
 	{

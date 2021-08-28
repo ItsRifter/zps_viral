@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using ZPS2.Entities;
 
-namespace ZPS2
+namespace ZPS_Viral
 {
 	public partial class ZPS2Player : Player
 	{
@@ -192,7 +192,7 @@ namespace ZPS2
 		public void InfectionThink()
 		{
 
-			if(ZPS2Game.CurState != ZPS2Game.RoundState.Active)
+			if(ZPSVGame.CurState != ZPSVGame.RoundState.Active)
 			{
 				InfectionTime = 25f;
 				return;
@@ -249,7 +249,7 @@ namespace ZPS2
 				SetTeamOnClient( To.Single( this ), targetTeam );
 			}
 
-			ZPS2Game.CheckRoundStatus();
+			ZPSVGame.CheckRoundStatus();
 		}
 
 		[ClientRpc]
@@ -262,7 +262,7 @@ namespace ZPS2
 		{
 			var attacker = info.Attacker as ZPS2Player;
 
-			if ( ZPS2Game.CurState != ZPS2Game.RoundState.Active )
+			if ( ZPSVGame.CurState != ZPSVGame.RoundState.Active )
 				return;
 
 			if ( attacker.IsValid() && attacker.CurTeam == this.CurTeam )
@@ -270,7 +270,7 @@ namespace ZPS2
 
 			if( attacker.IsValid() && (attacker.CurTeam == TeamType.Undead && attacker.CurZombieType == ZombieType.Carrier) )
 			{
-				if ( Rand.Int( 0, 100 ) <= ZPS2Game.InfectionChance )
+				if ( Rand.Int( 0, 100 ) <= ZPSVGame.InfectionChance )
 					this.InfectPlayer();
 			}
 
@@ -298,18 +298,18 @@ namespace ZPS2
 			if ( this.CurTeam != TeamType.Undead )
 			{
 				SwapTeam( TeamType.Undead );
-				ZPS2Game.ZombieLives++;
+				ZPSVGame.ZombieLives++;
 
 			} else if (this.CurTeam == TeamType.Undead)
 			{
-				if ( ZPS2Game.ZombieLives > 0 )
-					ZPS2Game.ZombieLives--;
+				if ( ZPSVGame.ZombieLives > 0 )
+					ZPSVGame.ZombieLives--;
 				else
 					SwapTeam( TeamType.Spectator );
 			}
 
 			Inventory.DeleteContents();
-			ZPS2Game.CheckRoundStatus();
+			ZPSVGame.CheckRoundStatus();
 			Camera = new SpectateRagdollCamera();
 			EnableDrawing = false;
 		}

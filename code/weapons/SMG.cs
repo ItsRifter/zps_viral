@@ -1,6 +1,7 @@
 ﻿using Sandbox;
 using System;
-namespace ZPS2
+
+namespace ZPS_Viral
 {
 	[Library( "zps2_mp5", Title = "MP5" )]
 	partial class SMG : WeaponBase

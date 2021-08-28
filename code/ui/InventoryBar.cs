@@ -7,7 +7,7 @@ using System.Linq;
 /// The main inventory panel, top left of the screen.
 /// </summary>
 
-namespace ZPS2
+namespace ZPS_Viral
 {
 	public class InventoryBar : Panel
 	{

@@ -3,9 +3,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace ZPS2
+namespace ZPS_Viral
 {
-	partial class Inventory : ZPS2BaseInventory
+	partial class Inventory : ZPSVBaseInventory
 	{
 		public Inventory( Player player ) : base( player )
 		{

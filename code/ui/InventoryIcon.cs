@@ -3,7 +3,8 @@ using Sandbox;
 using Sandbox.UI;
 using Sandbox.UI.Construct;
 using System;
-namespace ZPS2
+
+namespace ZPS_Viral
 {
 	class InventoryIcon : Panel
 	{

@@ -8,12 +8,12 @@ using Sandbox;
 using Sandbox.UI;
 using Sandbox.UI.Construct;
 
-namespace ZPS2
+namespace ZPS_Viral
 {
 	class Lives : Panel
 	{
 		public Label LiveText;
-		private ZPS2Game LiveChecker;
+		private ZPSVGame LiveChecker;
 
 
 		public Lives()

@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using Sandbox;
 using static ZPS2.ZPS2Player;
 
-namespace ZPS2.Entities
+namespace ZPS_Viral.Entities
 {
 	/// <summary>
 	/// A simple trigger volume that teleports entities that touch it.
@@ -75,7 +75,7 @@ namespace ZPS2.Entities
 					var player = other as ZPS2Player;
 					player.SwapTeam( SelectedTeam );
 
-					if ( ZPS2Game.CurState == ZPS2Game.RoundState.Idle || ZPS2Game.CurState == ZPS2Game.RoundState.Start )
+					if ( ZPSVGame.CurState == ZPSVGame.RoundState.Idle || ZPSVGame.CurState == ZPSVGame.RoundState.Start )
 					{
 						player.Camera = null;
 						player.Camera = new FreezeCamera();

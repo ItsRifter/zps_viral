@@ -1,5 +1,5 @@
 ﻿using Sandbox;
-namespace ZPS2
+namespace ZPS_Viral
 {
 	[Library( "zps2_ammo_9mm", Title = "9mm Ammo Box" )]
 

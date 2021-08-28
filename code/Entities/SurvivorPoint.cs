@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using System.Collections.Generic;
 using Sandbox;
 
-namespace ZPS2.Entities
+namespace ZPS_Viral.Entities
 {
 	/// <summary>
 	/// This entity defines the sppawn point of the player in first person shooter gamemodes.

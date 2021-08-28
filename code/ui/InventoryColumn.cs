@@ -5,7 +5,8 @@ using Sandbox.UI.Construct;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-namespace ZPS2
+
+namespace ZPS_Viral
 {
 	public class InventoryColumn : Panel
 	{

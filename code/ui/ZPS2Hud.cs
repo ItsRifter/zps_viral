@@ -6,7 +6,7 @@ using System;
 using System.Threading.Tasks;
 
 
-namespace ZPS2
+namespace ZPS_Viral
 {
 	[Library]
 	public partial class ZPS2Hud : HudEntity<RootPanel>

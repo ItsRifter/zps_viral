@@ -3,7 +3,7 @@ using Sandbox;
 using Sandbox.UI;
 using Sandbox.UI.Construct;
 
-namespace ZPS2
+namespace ZPS_Viral
 {
 	public class Vitals : Panel
 	{

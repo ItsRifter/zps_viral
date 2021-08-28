@@ -7,10 +7,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using ZPS2.Entities;
 
-namespace ZPS2
+namespace ZPS_Viral
 {
-	[Library( "ZPS2" )]
-	public partial class ZPS2Game : Sandbox.Game
+	[Library( "Zombie Panic Viral" )]
+	public partial class ZPSVGame : Sandbox.Game
 	{
 		[Net]
 		private static float TimeCurLeft { get; set; }
@@ -41,7 +41,7 @@ namespace ZPS2
 			Post
 		}
 
-		public ZPS2Game()
+		public ZPSVGame()
 		{
 			if ( IsServer )
 			{

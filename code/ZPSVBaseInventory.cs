@@ -5,14 +5,14 @@ using System.Text;
 using System.Threading.Tasks;
 using Sandbox;
 
-namespace ZPS2
+namespace ZPS_Viral
 {
-	public class ZPS2BaseInventory : IBaseInventory
+	public class ZPSVBaseInventory : IBaseInventory
 	{
 		public Entity Owner { get; init; }
 		public List<Entity> List = new List<Entity>();
 
-		public ZPS2BaseInventory( Entity owner )
+		public ZPSVBaseInventory( Entity owner )
 		{
 			Owner = owner;
 		}

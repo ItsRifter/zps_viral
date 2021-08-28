@@ -7,7 +7,7 @@ using System.Linq;
 using System.Numerics;
 using System.Threading.Tasks;
 
-namespace ZPS2
+namespace ZPS_Viral
 {
 	partial class WeaponBase : BaseWeapon
 	{

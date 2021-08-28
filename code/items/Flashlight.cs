@@ -1,6 +1,6 @@
 ﻿using Sandbox;
 
-namespace ZPS2
+namespace ZPS_Viral
 {
 	[Library( "zps2_flashlight", Title = "Flashlight" )]
 	partial class Flashlight : ItemBase

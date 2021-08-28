@@ -1,6 +1,6 @@
 ﻿using Sandbox;
 
-namespace ZPS2
+namespace ZPS_Viral
 {
 	public class ClothingEntity : ModelEntity
 	{

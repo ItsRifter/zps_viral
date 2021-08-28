@@ -9,7 +9,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Sandbox;
 
-namespace ZPS2
+namespace ZPS_Viral
 {
 	[Library]
 	public class SurvivorWalkController : BasePlayerController

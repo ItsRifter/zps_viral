@@ -4,7 +4,7 @@ using Sandbox.UI;
 using Sandbox.UI.Construct;
 using System;
 
-namespace ZPS2
+namespace ZPS_Viral
 {
 	public class Crosshair : Panel
 	{

@@ -1,7 +1,7 @@
 ﻿using Sandbox;
 using System;
 
-namespace ZPS2
+namespace ZPS_Viral
 {
 	partial class ItemBase : BaseCarriable, IRespawnableEntity
 	{

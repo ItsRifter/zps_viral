@@ -1,6 +1,6 @@
 ﻿using Sandbox;
 
-namespace ZPS2
+namespace ZPS_Viral
 {
 	[Library( "zps2_remington", Title = "Remington" )]
 	[Hammer.EditorModel( "models/weapons/remington.vmdl" )]
