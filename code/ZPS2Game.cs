@@ -60,7 +60,7 @@ namespace ZPS2
 				p.Camera = new FreezeCamera();
 			}
 
-			PlaySound( "round_begin" );
+			Sound.FromScreen( "round_begin" );
 
 			if(DebugMode)
 			{
@@ -232,7 +232,7 @@ namespace ZPS2
 			}
 
 			//Start round checks
-			if ( humans.Count >= 2 || humans.Count >= 1 && zombies.Count >= 1 )
+			if ( (humans.Count >= 2 || humans.Count >= 1 && zombies.Count >= 1) && CurState == RoundState.Idle )
 				Event.Run( "StartGame" );
 
 
@@ -257,7 +257,7 @@ namespace ZPS2
 			else
 				filePath = "round_end_zombie";
 
-			PlaySound( filePath );
+			Sound.FromScreen( filePath );
 
 			TimeCurLeft = 10f;
 		}
@@ -273,10 +273,7 @@ namespace ZPS2
 
 			foreach(var p in Entity.All.OfType<ZPS2Player>())
 			{
-				using ( Prediction.Off() )
-				{
-					p.PlaySound( filePath );
-				}
+				Sound.FromScreen( filePath );
 			}
 		}
 

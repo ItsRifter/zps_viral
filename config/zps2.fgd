@@ -73,7 +73,7 @@ metadata
 // 
 // ZPS2.Remington : ZPS2.WeaponBase 
 // 
-@PointClass editormodel( "weapons/rust_pumpshotgun/v_rust_pumpshotgun.vmdl" ) = zps2_remington : ""
+@PointClass editormodel( "models/weapons/remington.vmdl" ) = zps2_remington : ""
 [
 	targetname(target_source) : "Name" : : "The name that other entities refer to this entity by."
 	parentname(target_destination) [ group="Hierarchy" ] : "Parent" : : "The name of this entity's parent in the movement hierarchy. Entities with parents move with their parent."

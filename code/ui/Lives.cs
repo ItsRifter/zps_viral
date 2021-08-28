@@ -18,7 +18,7 @@ namespace ZPS2
 
 		public Lives()
 		{
-			StyleSheet.Load( "/ui/ZombieLives.scss" );
+			StyleSheet.Load( "/ui/Lives.scss" );
 			LiveText = Add.Label( "0", "lives" );
 		}
 

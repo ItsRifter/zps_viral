@@ -13,13 +13,14 @@ namespace ZPS2
 		public override int ClipSize => 30;
 		public override float ReloadTime => 4.0f;
 		public override int Bucket => 2;
+		public override int BulletsRemaining => ClipSize;
 
 		public override void Spawn()
 		{
 			base.Spawn();
 
 			SetModel( "weapons/rust_smg/rust_smg.vmdl" );
-			AmmoClip = 30;
+			AmmoClip = BulletsRemaining;
 		}
 
 		public override void AttackPrimary()

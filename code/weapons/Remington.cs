@@ -3,24 +3,25 @@
 namespace ZPS2
 {
 	[Library( "zps2_remington", Title = "Remington" )]
-	[Hammer.EditorModel( "weapons/rust_pumpshotgun/v_rust_pumpshotgun.vmdl" )]
+	[Hammer.EditorModel( "models/weapons/remington.vmdl" )]
 	partial class Remington : WeaponBase
 	{
-		public override string ViewModelPath => "weapons/rust_pumpshotgun/v_rust_pumpshotgun.vmdl";
+		public override string ViewModelPath => "models/weapons/v_remington.vmdl";
 		public override float PrimaryRate => 1;
-		public override float SecondaryRate => 1;
 		public override AmmoType AmmoType => AmmoType.Buckshot;
 		public override int ClipSize => 7;
 		public override float ReloadTime => 0.5f;
 		public override int Bucket => 2;
 
+		public override int BulletsRemaining => ClipSize;
+
 		public override void Spawn()
 		{
 			base.Spawn();
 
-			SetModel( "weapons/rust_pumpshotgun/rust_pumpshotgun.vmdl" );
+			SetModel( "models/weapons/remington.vmdl" );
 
-			AmmoClip = 7;
+			AmmoClip = BulletsRemaining;
 		}
 
 		public override bool CanPrimaryAttack()
@@ -45,7 +46,7 @@ namespace ZPS2
 			// Tell the clients to play the shoot effects
 			//
 			ShootEffects();
-			PlaySound( "rust_pumpshotgun.shoot" );
+			PlaySound( "remington_fire" );
 
 			//
 			// Shoot the bullets

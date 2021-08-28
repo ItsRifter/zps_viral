@@ -209,14 +209,14 @@ namespace ZPS2
 
 			if ( this.CurTeam == TeamType.Survivor && InfectionTime < 13f && this.phaseInfection1 == false )
 			{
-				PlaySound( "infected" );
+				Sound.FromScreen( "infected" );
 				phaseInfection1 = true;
 				SwapTeam( TeamType.Infected );
 			}
 
 			if ( this.CurTeam == TeamType.Infected && InfectionTime < 4.5f && this.phaseInfection2 == false )
 			{
-				PlaySound( "turning" );
+				Sound.FromScreen( "turning" );
 				phaseInfection2 = true;
 			}
 
@@ -271,7 +271,7 @@ namespace ZPS2
 			if( attacker.IsValid() && (attacker.CurTeam == TeamType.Undead && attacker.CurZombieType == ZombieType.Carrier) )
 			{
 				if ( Rand.Int( 0, 100 ) <= ZPS2Game.InfectionChance )
-					InfectPlayer();
+					this.InfectPlayer();
 			}
 
 			base.TakeDamage( info );
