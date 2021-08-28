@@ -2,7 +2,7 @@
 
 namespace ZPS_Viral
 {
-	[Library( "zps2_painkillers", Title = "Painkillers" )]
+	[Library( "zpsviral_painkillers", Title = "Painkillers" )]
 	[Hammer.EntityTool( "Painkillers", "Health", "Pills to recover small amounts of health" )]
 	[Hammer.EditorModel( "models/medkit.vmdl" )]
 	partial class SmallMedkit : ItemBase

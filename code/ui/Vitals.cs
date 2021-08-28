@@ -24,12 +24,15 @@ namespace ZPS_Viral
 			var player = Local.Pawn;
 			if ( player == null ) return;
 
-			Health.Text = $"{player.Health.CeilToInt()}";
-			Health.SetClass( "danger", player.Health < 40.0f );
-
 			if ( player is ZPSVPlayer ply ) {
 
 				var k = ply.CurTeam.ToString();
+
+				if ( k.Equals( "Unassigned" ) )
+				{
+					Health.Text = "";
+					return;
+				}
 
 				if( k.Equals( "Survivor"))
 				{
@@ -71,6 +74,9 @@ namespace ZPS_Viral
 						RemoveClass( "infected" );
 				}
 			}
+
+			Health.Text = $"{player.Health.CeilToInt()}";
+			Health.SetClass( "danger", player.Health < 40.0f );
 		}
 	}
 }

@@ -20,6 +20,11 @@ namespace ZPS_Viral
 			AmmoClip = 99;
 		}
 
+		public override bool CanCarry( Entity carrier )
+		{
+			return true;
+		}
+
 		public override void SimulateAnimator( PawnAnimator anim )
 		{
 			anim.SetParam( "holdtype", 0 );

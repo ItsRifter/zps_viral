@@ -22,26 +22,29 @@ namespace ZPS_Viral
 			if ( player == null ) return;
 
 			var weapon = player.ActiveChild as WeaponBase;
-			SetClass( "active", weapon != null );
+			
 
+			SetClass( "active", weapon != null );
+		
 			if ( weapon == null )
 			{
 				Weapon.Text = "";
+				Inventory.Text = "";
 				return;
 			}
-
-			if ( weapon.ToString() == "zps2_claws" )
-			{
-				Weapon.Text = "";
-				return;
-			}
-
-
-			Weapon.Text = $"{weapon.AmmoClip}";
 
 			var inv = weapon.AvailableAmmo();
-			Inventory.Text = $" / {inv}";
 			Inventory.SetClass( "active", inv >= 0 );
+
+			if ( weapon.ToString() == "zpsviral_claws" )
+			{
+				Weapon.Text = "";
+				Inventory.Text = "";
+				return;
+			}
+
+			Weapon.Text = $"{weapon.AmmoClip}";
+			Inventory.Text = $" / {inv}";	
 		}
 	}
 }

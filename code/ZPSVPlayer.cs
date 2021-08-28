@@ -43,9 +43,12 @@ namespace ZPS_Viral
 
 		public ICamera LastCamera { get; set; }
 
+		public List<Entity> InventoryWeapons;
+
 		public ZPSVPlayer()
 		{
 			Inventory = new Inventory( this );
+			InventoryWeapons = new List<Entity>();
 		}
 
 
@@ -78,12 +81,22 @@ namespace ZPS_Viral
 				Inventory.Add( new Claws(), true );
 			else
 			{
-				switch(Rand.Int(1, 1))
+				int RandFirearm = Rand.Int( 1, 1 );
+				if ( RandFirearm == 1 )
 				{
-					case 1: Inventory.Add( new USP(), true );
-						break;
+					Inventory.Add( new USP(), true );
 				}
 			}
+		}
+
+		public List<Entity> GetWeapons()
+		{
+			return InventoryWeapons;
+		}
+
+		public void AddWeaponToList(Entity weapon)
+		{
+			InventoryWeapons.Add( weapon );
 		}
 
 		public override void Respawn()
@@ -111,6 +124,9 @@ namespace ZPS_Viral
 			if(this.CurTeam == TeamType.Spectator)
 			{
 				Camera = new SpectateRagdollCamera();
+				EnableAllCollisions = false;
+				RenderAlpha = 0;
+				Event.Run( "ForceNoclip", Local.Client );
 			} else
 			{
 				Camera = new FirstPersonCamera();
@@ -168,8 +184,10 @@ namespace ZPS_Viral
 			{
 				var weapon = this.Inventory.GetSlot( this.Inventory.GetActiveSlot() ) as WeaponBase;
 				
-				if ( weapon.IsDroppable == false )
+				if ( weapon == null || weapon.IsDroppable == false )
 					return;
+
+				InventoryWeapons.Remove( weapon );
 
 				var dropped = Inventory.DropActive();
 				if ( dropped != null )
@@ -195,6 +213,7 @@ namespace ZPS_Viral
 			if(ZPSVGame.CurState != ZPSVGame.RoundState.Active)
 			{
 				InfectionTime = 25f;
+				this.isInfected = false;
 				return;
 			}
 
@@ -268,11 +287,18 @@ namespace ZPS_Viral
 			if ( attacker.IsValid() && attacker.CurTeam == this.CurTeam )
 				return;
 
-			if( attacker.IsValid() && (attacker.CurTeam == TeamType.Undead && attacker.CurZombieType == ZombieType.Carrier) )
+			if( this.CurTeam == TeamType.Survivor && attacker.IsValid() && (attacker.CurTeam == TeamType.Undead && attacker.CurZombieType == ZombieType.Carrier) )
 			{
-				if ( Rand.Int( 0, 100 ) <= ZPSVGame.InfectionChance )
+				if ( Rand.Int( 0, 100 ) >= ZPSVGame.InfectionChance )
 					this.InfectPlayer();
 			}
+
+			if ( this.CurTeam == TeamType.Undead && this.CurZombieType == ZombieType.Carrier )
+				PlaySound( "carrier_pain" );	
+			else if ( this.CurTeam == TeamType.Undead && this.CurZombieType == ZombieType.Standard )
+				//TODO Standard Zombie pain sounds
+				PlaySound( "carrier_pain" );
+
 
 			base.TakeDamage( info );
 
@@ -306,6 +332,10 @@ namespace ZPS_Viral
 					ZPSVGame.ZombieLives--;
 				else
 					SwapTeam( TeamType.Spectator );
+
+				if ( this.CurZombieType == ZombieType.Carrier )
+					PlaySound( "carrier_death" );
+
 			}
 
 			Inventory.DeleteContents();

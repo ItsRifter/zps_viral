@@ -6,10 +6,10 @@ namespace ZPS_Viral
 	[Hammer.EditorModel( "models/weapons/remington.vmdl" )]
 	partial class Remington : WeaponBase
 	{
-		public override string ViewModelPath => "models/weapons/v_remington.vmdl";
+		public override string ViewModelPath => "weapons/rust_pumpshotgun/v_rust_pumpshotgun.vmdl";
 		public override float PrimaryRate => 1;
 		public override AmmoType AmmoType => AmmoType.Buckshot;
-		public override int ClipSize => 7;
+		public override int ClipSize => 6;
 		public override float ReloadTime => 0.5f;
 		public override int Bucket => 2;
 
@@ -55,6 +55,11 @@ namespace ZPS_Viral
 			{
 				ShootBullet( 0.15f, 0.3f, 9.0f, 3.0f );
 			}
+		}
+
+		public override void DryFire()
+		{
+			PlaySound( "remington_dryfire" );
 		}
 
 		[ClientRpc]

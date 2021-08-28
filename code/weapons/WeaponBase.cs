@@ -33,9 +33,7 @@ namespace ZPS_Viral
 		[Net, Predicted]
 		public TimeSince TimeSinceDeployed { get; set; }
 
-
-		//Not required
-		//public PickupTrigger PickupTrigger { get; protected set; }
+		public PickupTrigger PickupTrigger { get; protected set; }
 
 
 		public int AvailableAmmo()
@@ -45,9 +43,24 @@ namespace ZPS_Viral
 			return owner.AmmoCount( AmmoType );
 		}
 
+		public override bool CanCarry( Entity carrier )
+		{
+			if(carrier is ZPSVPlayer)
+			{
+				var player = carrier as ZPSVPlayer;	
+
+				if ( player.CurTeam == ZPSVPlayer.TeamType.Undead || player.CurTeam == ZPSVPlayer.TeamType.Infected )
+					return false;
+			}
+
+			return base.CanCarry( carrier );
+		}
+
 		public override void ActiveStart( Entity ent )
 		{
 			base.ActiveStart( ent );
+
+			var player = ent as ZPSVPlayer;
 
 			TimeSinceDeployed = 0;
 		}

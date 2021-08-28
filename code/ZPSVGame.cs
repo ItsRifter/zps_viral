@@ -25,7 +25,9 @@ namespace ZPS_Viral
 		public static float InfectionChance = 80f;
 
 		[Net]
-		public static int ZombieLives { get; set; } = 4; 
+		public static int ZombieLives { get; set; } = 4;
+
+		private MusicPlayer MusicPlayer;
 
 		/*Round statuses:
 			Idle = Not enough players are in the game
@@ -45,7 +47,8 @@ namespace ZPS_Viral
 		{
 			if ( IsServer )
 			{
-				new ZPS2Hud();
+				new ZPSViralHud();
+				MusicPlayer = new MusicPlayer();
 			}
 		}
 		[Event("StartGame")]
@@ -76,11 +79,14 @@ namespace ZPS_Viral
 
 		public void StartActiveGame()
 		{
-			foreach( var p in Entity.All.OfType<ZPSVPlayer>() )
+			foreach ( var p in Entity.All.OfType<ZPSVPlayer>() )
 			{
 				p.Camera = null;
 				p.Camera = new FirstPersonCamera();
 			}
+
+			if(!MusicPlayer.IsPlaying)
+				MusicPlayer.PlayRandomMusic();
 		}
 
 		public void StopGame()
@@ -277,7 +283,7 @@ namespace ZPS_Viral
 			}
 		}
 
-		[ServerCmd( "zps2debug" )]
+		[ServerCmd( "zpsviral_debug" )]
 		public static void SwitchDebugMode( bool turnOn )
 		{
 			DebugMode = turnOn;
@@ -300,19 +306,22 @@ namespace ZPS_Viral
 		}
 
 		//DEBUG: Infects player, Will remove later
-		[ServerCmd( "infect" )]
+		[ServerCmd( "zpsviral_infect" )]
 		public static void StartInfect()
 		{
 			var Human = ConsoleSystem.Caller as ZPSVPlayer;
 			Event.Run( "InfectHuman" );
 		}
 
-		public override void DoPlayerNoclip( Client player )
+		[Event("ForceNoclip")]
+		public override void DoPlayerNoclip( Client user )
 		{
-			if ( DebugMode == false )
+			var player = user as ZPSVPlayer;
+
+			if ( DebugMode == false || player.CurTeam != ZPSVPlayer.TeamType.Spectator)
 				return;
 
-			base.DoPlayerNoclip( player );
+			base.DoPlayerNoclip( user );
 		}
 	}
 }

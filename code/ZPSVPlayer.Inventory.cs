@@ -47,5 +47,19 @@ namespace ZPS_Viral
 		{
 			return List.Any( x => x.GetType() == t );
 		}
+
+		public override bool CanAdd( Entity ent )
+		{
+			foreach( var weapon in this.GetAllWeapons() )
+			{
+				if(ent == weapon)
+				{
+					Log.Info( "Already carrying: " + weapon );
+					return false;
+				}
+			}
+
+			return base.CanAdd( ent );
+		}
 	}
 }

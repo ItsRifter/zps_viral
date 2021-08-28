@@ -1,7 +1,7 @@
 ﻿using Sandbox;
 namespace ZPS_Viral
 {
-	[Library( "zps2_ammo_9mm", Title = "9mm Ammo Box" )]
+	[Library( "zpsviral_ammo_9mm", Title = "9mm Ammo Box" )]
 
 	[Hammer.EntityTool( "9mm Ammo Box", "Ammo", "Small 9mm ammo box" )]
 	[Hammer.EditorModel( "models/pistol_ammobox.vmdl" )]
