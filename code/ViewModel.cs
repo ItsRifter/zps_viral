@@ -2,7 +2,7 @@
 using System;
 using System.Linq;
 
-namespace ZPS2
+namespace ZPS_Viral
 {
 	partial class ViewModel : BaseViewModel
 	{

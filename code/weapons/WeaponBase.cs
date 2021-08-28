@@ -40,7 +40,7 @@ namespace ZPS_Viral
 
 		public int AvailableAmmo()
 		{
-			var owner = Owner as ZPS2Player;
+			var owner = Owner as ZPSVPlayer;
 			if ( owner == null ) return 0;
 			return owner.AmmoCount( AmmoType );
 		}
@@ -62,7 +62,7 @@ namespace ZPS_Viral
 
 			TimeSinceReload = 0;
 
-			if ( Owner is ZPS2Player player )
+			if ( Owner is ZPSVPlayer player )
 			{
 				if ( player.AmmoCount( AmmoType ) <= 0 )
 					return;
@@ -97,7 +97,7 @@ namespace ZPS_Viral
 		{
 			IsReloading = false;
 
-			if ( Owner is ZPS2Player player )
+			if ( Owner is ZPSVPlayer player )
 			{
 				var ammo = player.TakeAmmo( AmmoType, ClipSize - AmmoClip );
 				if ( ammo == 0 )

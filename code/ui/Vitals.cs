@@ -27,7 +27,7 @@ namespace ZPS_Viral
 			Health.Text = $"{player.Health.CeilToInt()}";
 			Health.SetClass( "danger", player.Health < 40.0f );
 
-			if ( player is ZPS2Player ply ) {
+			if ( player is ZPSVPlayer ply ) {
 
 				var k = ply.CurTeam.ToString();
 

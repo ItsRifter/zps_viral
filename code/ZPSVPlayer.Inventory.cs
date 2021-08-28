@@ -14,7 +14,7 @@ namespace ZPS_Viral
 
 		public override bool Add( Entity ent, bool makeActive = false )
 		{
-			var player = Owner as ZPS2Player;
+			var player = Owner as ZPSVPlayer;
 			var weapon = ent as WeaponBase;
 
 			if ( weapon != null && IsCarryingType( ent.GetType() ) )

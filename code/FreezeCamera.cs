@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Sandbox;
-using ZPS2.Entities;
+using ZPS_Viral.Entities;
 
-namespace ZPS2
+namespace ZPS_Viral
 {
 	public class FreezeCamera : Camera
 	{

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace ZPS2
+namespace ZPS_Viral
 {
 	public interface IRespawnableEntity
 	{

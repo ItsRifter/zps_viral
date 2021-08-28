@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using ZPS2.Entities;
+using ZPS_Viral.Entities;
 
 namespace ZPS_Viral
 {
@@ -51,9 +51,9 @@ namespace ZPS_Viral
 		[Event("StartGame")]
 		public void BeginGame()
 		{
-			foreach(var p in Entity.All.OfType<ZPS2Player>())
+			foreach(var p in Entity.All.OfType<ZPSVPlayer>())
 			{
-				if ( p.CurTeam == ZPS2Player.TeamType.Unassigned )
+				if ( p.CurTeam == ZPSVPlayer.TeamType.Unassigned )
 					break;
 
 				p.Camera = null;
@@ -76,7 +76,7 @@ namespace ZPS_Viral
 
 		public void StartActiveGame()
 		{
-			foreach( var p in Entity.All.OfType<ZPS2Player>() )
+			foreach( var p in Entity.All.OfType<ZPSVPlayer>() )
 			{
 				p.Camera = null;
 				p.Camera = new FirstPersonCamera();
@@ -138,12 +138,12 @@ namespace ZPS_Viral
 					randomInt = Rand.Int( 0, randHuman.Count - 1 );
 				}
 
-				randHuman[randomInt].SwapTeam( ZPS2Player.TeamType.Undead );
-				randHuman[randomInt].CurZombieType = ZPS2Player.ZombieType.Carrier;
+				randHuman[randomInt].SwapTeam( ZPSVPlayer.TeamType.Undead );
+				randHuman[randomInt].CurZombieType = ZPSVPlayer.ZombieType.Carrier;
 				randHuman[randomInt].Respawn();
 			} else
 			{
-				zombCheck[Rand.Int(0, zombCheck.Count - 1)].CurZombieType = ZPS2Player.ZombieType.Carrier;
+				zombCheck[Rand.Int(0, zombCheck.Count - 1)].CurZombieType = ZPSVPlayer.ZombieType.Carrier;
 				foreach ( var zombie in zombCheck )
 				{
 					zombie.Respawn();
@@ -168,51 +168,51 @@ namespace ZPS_Viral
 		{
 			foreach ( var player in Client.All )
 			{
-				if ( player.Pawn is ZPS2Player ply )
+				if ( player.Pawn is ZPSVPlayer ply )
 				{
-					if ( ply.CurTeam == ZPS2Player.TeamType.Unassigned )
+					if ( ply.CurTeam == ZPSVPlayer.TeamType.Unassigned )
 						break;
 
-					ply.SwapTeam( ZPS2Player.TeamType.Unassigned );
+					ply.SwapTeam( ZPSVPlayer.TeamType.Unassigned );
 					ply.Inventory.DeleteContents();
 					ply.InitialSpawn();
 				}
 			}
 		}
 
-		public static List<ZPS2Player> GetSurvivors()
+		public static List<ZPSVPlayer> GetSurvivors()
 		{
-			var curHumans = new List<ZPS2Player>();
+			var curHumans = new List<ZPSVPlayer>();
 
-			foreach ( var p in Entity.All.OfType<ZPS2Player>() )
+			foreach ( var p in Entity.All.OfType<ZPSVPlayer>() )
 			{
-				if ( p.CurTeam == ZPS2Player.TeamType.Survivor )
+				if ( p.CurTeam == ZPSVPlayer.TeamType.Survivor )
 					curHumans.Add( p );
 			}
 
 			return curHumans;
 		}
 
-		public static List<ZPS2Player> GetInfected()
+		public static List<ZPSVPlayer> GetInfected()
 		{
-			var curInfected = new List<ZPS2Player>();
+			var curInfected = new List<ZPSVPlayer>();
 
-			foreach ( var p in Entity.All.OfType<ZPS2Player>() )
+			foreach ( var p in Entity.All.OfType<ZPSVPlayer>() )
 			{
-				if ( p.CurTeam == ZPS2Player.TeamType.Infected )
+				if ( p.CurTeam == ZPSVPlayer.TeamType.Infected )
 					curInfected.Add( p );
 			}
 
 			return curInfected;
 		}
 
-		public static List<ZPS2Player> GetZombies()
+		public static List<ZPSVPlayer> GetZombies()
 		{
-			var curZombies = new List<ZPS2Player>();
+			var curZombies = new List<ZPSVPlayer>();
 
-			foreach ( var p in Entity.All.OfType<ZPS2Player>() )
+			foreach ( var p in Entity.All.OfType<ZPSVPlayer>() )
 			{
-				if ( p.CurTeam == ZPS2Player.TeamType.Undead )
+				if ( p.CurTeam == ZPSVPlayer.TeamType.Undead )
 					curZombies.Add( p );
 			}
 
@@ -271,7 +271,7 @@ namespace ZPS_Viral
 			else
 				filePath = "round_end_zombie";
 
-			foreach(var p in Entity.All.OfType<ZPS2Player>())
+			foreach(var p in Entity.All.OfType<ZPSVPlayer>())
 			{
 				Sound.FromScreen( filePath );
 			}
@@ -287,7 +287,7 @@ namespace ZPS_Viral
 		{
 			base.ClientJoined( client );
 
-			var player = new ZPS2Player();
+			var player = new ZPSVPlayer();
 			client.Pawn = player;
 
 			player.InitialSpawn();
@@ -303,7 +303,7 @@ namespace ZPS_Viral
 		[ServerCmd( "infect" )]
 		public static void StartInfect()
 		{
-			var Human = ConsoleSystem.Caller as ZPS2Player;
+			var Human = ConsoleSystem.Caller as ZPSVPlayer;
 			Event.Run( "InfectHuman" );
 		}
 

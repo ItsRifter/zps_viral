@@ -2,11 +2,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using ZPS2.Entities;
+using ZPS_Viral.Entities;
 
 namespace ZPS_Viral
 {
-	public partial class ZPS2Player : Player
+	public partial class ZPSVPlayer : Player
 	{
 
 		public enum TeamType
@@ -43,7 +43,7 @@ namespace ZPS_Viral
 
 		public ICamera LastCamera { get; set; }
 
-		public ZPS2Player()
+		public ZPSVPlayer()
 		{
 			Inventory = new Inventory( this );
 		}
@@ -260,7 +260,7 @@ namespace ZPS_Viral
 
 		public override void TakeDamage( DamageInfo info )
 		{
-			var attacker = info.Attacker as ZPS2Player;
+			var attacker = info.Attacker as ZPSVPlayer;
 
 			if ( ZPSVGame.CurState != ZPSVGame.RoundState.Active )
 				return;

@@ -27,7 +27,7 @@ namespace ZPS_Viral
 			{
 				PickupTrigger.EnableTouch = false;
 
-				var ply = carrier as ZPS2Player;
+				var ply = carrier as ZPSVPlayer;
 				ply.GiveAmmo( AmmoType.Pistol, 12 );
 			}
 		}

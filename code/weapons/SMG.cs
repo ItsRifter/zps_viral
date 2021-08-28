@@ -3,7 +3,7 @@ using System;
 
 namespace ZPS_Viral
 {
-	[Library( "zps2_mp5", Title = "MP5" )]
+	[Library( "zpsviral_mp5", Title = "MP5" )]
 	partial class SMG : WeaponBase
 	{
 		public override string ViewModelPath => "weapons/rust_smg/v_rust_smg.vmdl";

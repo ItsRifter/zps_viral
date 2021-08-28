@@ -2,7 +2,7 @@
 
 namespace ZPS_Viral
 {
-	[Library( "zps2_claws", Title = "Claws" )]
+	[Library( "zpsviral_claws", Title = "Claws" )]
 	partial class Claws : WeaponBase
 	{
 		public override float PrimaryRate => 2f;

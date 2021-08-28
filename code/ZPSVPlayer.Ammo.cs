@@ -7,7 +7,7 @@ using Sandbox;
 
 namespace ZPS_Viral
 {
-	partial class ZPS2Player
+	partial class ZPSVPlayer
 	{
 		[Net]
 		public List<int> Ammo { get; set; } = new();

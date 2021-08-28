@@ -7,7 +7,7 @@ namespace ZPS_Viral
 
 	}
 
-	partial class ZPS2Player
+	partial class ZPSVPlayer
 	{
 		ModelEntity pants;
 		ModelEntity jacket;

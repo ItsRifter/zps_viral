@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using Sandbox;
-using static ZPS2.ZPS2Player;
+using static ZPS_Viral.ZPSVPlayer;
 
 namespace ZPS_Viral.Entities
 {
@@ -70,9 +70,9 @@ namespace ZPS_Viral.Entities
 
 				other.Transform = destinations[Rand.Int(0, destinations.Count - 1)].Transform;
 
-				if(other is ZPS2Player)
+				if(other is ZPSVPlayer )
 				{
-					var player = other as ZPS2Player;
+					var player = other as ZPSVPlayer;
 					player.SwapTeam( SelectedTeam );
 
 					if ( ZPSVGame.CurState == ZPSVGame.RoundState.Idle || ZPSVGame.CurState == ZPSVGame.RoundState.Start )

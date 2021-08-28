@@ -4,7 +4,7 @@ using System;
 
 namespace ZPS_Viral
 {
-	partial class ZPS2Player
+	partial class ZPSVPlayer
 	{
 		public static bool AllowFlashlight { get; set; } = false;
 

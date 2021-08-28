@@ -2,7 +2,7 @@
 
 namespace ZPS_Viral
 {
-	[Library( "zps2_usp", Title = "USP" )]
+	[Library( "zpsviral_usp", Title = "USP" )]
 	partial class USP : WeaponBase
 	{
 		public override string ViewModelPath => "weapons/rust_pistol/v_rust_pistol.vmdl";

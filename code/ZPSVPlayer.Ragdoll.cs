@@ -2,7 +2,7 @@
 
 namespace ZPS_Viral
 {
-	partial class ZPS2Player
+	partial class ZPSVPlayer
 	{
 		[ClientRpc]
 		private void BecomeRagdollOnClient( Vector3 velocity, DamageFlags damageFlags, Vector3 forcePos, Vector3 force,

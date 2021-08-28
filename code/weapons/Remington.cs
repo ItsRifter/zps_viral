@@ -2,7 +2,7 @@
 
 namespace ZPS_Viral
 {
-	[Library( "zps2_remington", Title = "Remington" )]
+	[Library( "zpsviral_remington", Title = "Remington" )]
 	[Hammer.EditorModel( "models/weapons/remington.vmdl" )]
 	partial class Remington : WeaponBase
 	{
@@ -83,7 +83,7 @@ namespace ZPS_Viral
 			if ( AmmoClip >= ClipSize )
 				return;
 
-			if ( Owner is ZPS2Player player )
+			if ( Owner is ZPSVPlayer player )
 			{
 				var ammo = player.TakeAmmo( AmmoType, 1 );
 				if ( ammo == 0 )

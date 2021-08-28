@@ -28,7 +28,7 @@ namespace ZPS_Viral
 			var player = Local.Pawn;
 			if ( player == null ) return;
 
-			if ( player is ZPS2Player ply )
+			if ( player is ZPSVPlayer ply )
 			{
 				var k = ply.CurTeam.ToString();
 			}

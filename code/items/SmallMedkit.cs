@@ -21,7 +21,7 @@ namespace ZPS_Viral
 
 		public override void OnCarryStart( Entity carrier )
 		{
-			var ply = carrier as ZPS2Player;
+			var ply = carrier as ZPSVPlayer;
 
 			if ( ply.Health >= 100 )
 				return;
