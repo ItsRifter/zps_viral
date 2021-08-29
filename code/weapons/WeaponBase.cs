@@ -33,6 +33,9 @@ namespace ZPS_Viral
 		[Net, Predicted]
 		public TimeSince TimeSinceDeployed { get; set; }
 
+		[Net, Predicted]
+		public TimeSince TimeSinceDropped { get; set; }
+
 		public PickupTrigger PickupTrigger { get; protected set; }
 
 		public int AvailableAmmo()
@@ -44,6 +47,9 @@ namespace ZPS_Viral
 
 		public override bool CanCarry( Entity carrier )
 		{
+			if ( TimeSinceDropped < 0.5f ) {
+				return false;
+			}
 			if(carrier is ZPSVPlayer)
 			{
 				var player = carrier as ZPSVPlayer;
@@ -59,6 +65,7 @@ namespace ZPS_Viral
 			base.ActiveStart( ent );
 
 			TimeSinceDeployed = 0;
+			TimeSinceDropped = 0;
 		}
 
 		public override void Reload()
@@ -264,6 +271,8 @@ namespace ZPS_Viral
 		public override void OnCarryDrop( Entity dropper )
 		{
 			base.OnCarryDrop( dropper );
+
+			TimeSinceDropped = 0;
 
 			if ( PickupTrigger.IsValid() )
 			{
