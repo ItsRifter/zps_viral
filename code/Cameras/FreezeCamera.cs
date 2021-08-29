@@ -22,7 +22,11 @@ namespace ZPS_Viral
 			}
 
 			if ( cameraSpots.Count <= 0 )
+			{
+				Log.Info( "Error" );
 				return;
+			}
+				
 
 			Pos = cameraSpots[Rand.Int( 0, cameraSpots.Count - 1 )].Position;
 			Rot = cameraSpots[Rand.Int( 0, cameraSpots.Count - 1 )].Rotation;

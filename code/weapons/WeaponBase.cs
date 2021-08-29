@@ -35,7 +35,6 @@ namespace ZPS_Viral
 
 		public PickupTrigger PickupTrigger { get; protected set; }
 
-
 		public int AvailableAmmo()
 		{
 			var owner = Owner as ZPSVPlayer;
@@ -47,20 +46,17 @@ namespace ZPS_Viral
 		{
 			if(carrier is ZPSVPlayer)
 			{
-				var player = carrier as ZPSVPlayer;	
+				var player = carrier as ZPSVPlayer;
 
 				if ( player.CurTeam == ZPSVPlayer.TeamType.Undead || player.CurTeam == ZPSVPlayer.TeamType.Infected )
 					return false;
 			}
-
 			return base.CanCarry( carrier );
 		}
 
 		public override void ActiveStart( Entity ent )
 		{
 			base.ActiveStart( ent );
-
-			var player = ent as ZPSVPlayer;
 
 			TimeSinceDeployed = 0;
 		}
@@ -254,11 +250,11 @@ namespace ZPS_Viral
 			return AvailableAmmo() > 0;
 		}
 
-		/*
+		
 		public override void OnCarryStart( Entity carrier )
 		{
 			base.OnCarryStart( carrier );
-
+	
 			if ( PickupTrigger.IsValid() )
 			{
 				PickupTrigger.EnableTouch = false;
@@ -274,7 +270,6 @@ namespace ZPS_Viral
 				PickupTrigger.EnableTouch = true;
 			}
 		}
-		*/
 
 		public virtual void OnHolster()
 		{

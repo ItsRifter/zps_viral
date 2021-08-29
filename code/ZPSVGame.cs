@@ -56,7 +56,7 @@ namespace ZPS_Viral
 		{
 			foreach(var p in Entity.All.OfType<ZPSVPlayer>())
 			{
-				if ( p.CurTeam == ZPSVPlayer.TeamType.Unassigned )
+				if ( p.CurTeam == ZPSVPlayer.TeamType.Unassigned || p.CurTeam == ZPSVPlayer.TeamType.Spectator )
 					break;
 
 				p.Camera = null;
@@ -313,14 +313,9 @@ namespace ZPS_Viral
 			Event.Run( "InfectHuman" );
 		}
 
-		[Event("ForceNoclip")]
+		[Event("noclip")]
 		public override void DoPlayerNoclip( Client user )
 		{
-			var player = user as ZPSVPlayer;
-
-			if ( DebugMode == false || player.CurTeam != ZPSVPlayer.TeamType.Spectator)
-				return;
-
 			base.DoPlayerNoclip( user );
 		}
 	}

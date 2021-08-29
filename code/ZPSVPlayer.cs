@@ -66,6 +66,7 @@ namespace ZPS_Viral
 			EnableDrawing = true;
 			EnableHideInFirstPerson = true;
 			EnableShadowInFirstPerson = true;
+			EnableAllCollisions = true;
 
 			base.Respawn();
 			flashlight = new Flashlight();
@@ -84,7 +85,7 @@ namespace ZPS_Viral
 				int RandFirearm = Rand.Int( 1, 1 );
 				if ( RandFirearm == 1 )
 				{
-					Inventory.Add( new USP(), true );
+					AddWeaponToList( new USP(), true );
 				}
 			}
 		}
@@ -94,8 +95,9 @@ namespace ZPS_Viral
 			return InventoryWeapons;
 		}
 
-		public void AddWeaponToList(Entity weapon)
+		public void AddWeaponToList(Entity weapon, bool force)
 		{
+			Inventory.Add( weapon, force );
 			InventoryWeapons.Add( weapon );
 		}
 
@@ -110,29 +112,30 @@ namespace ZPS_Viral
 				//Controller = new ZombieWalkController -TODO
 
 			Animator = new StandardPlayerAnimator();
-			
-			Dress();
+
 			ClearAmmo();
 
 			EnableAllCollisions = true;
 			EnableDrawing = true;
 			EnableHideInFirstPerson = true;
 			EnableShadowInFirstPerson = true;
+			EnableAllCollisions = true;
 
 			base.Respawn();
 
 			if(this.CurTeam == TeamType.Spectator)
 			{
-				Camera = new SpectateRagdollCamera();
+				Camera = new SpectateCamera();
 				EnableAllCollisions = false;
 				RenderAlpha = 0;
-				Event.Run( "ForceNoclip", Local.Client );
+				Event.Run( "noclip", Local.Client );
 			} else
 			{
 				Camera = new FirstPersonCamera();
+				EnableAllCollisions = true;
+				RenderAlpha = 255;
+				Dress();
 			}
-			
-			GiveWeapons();
 
 			if( this.CurZombieType == ZombieType.Carrier )
 			{
@@ -146,7 +149,8 @@ namespace ZPS_Viral
 				vectorSpawns.Add( ZombiePoints.Position );
 			}
 
-			this.Position = vectorSpawns[Rand.Int(0, vectorSpawns.Count - 1)];	
+			this.Position = vectorSpawns[Rand.Int(0, vectorSpawns.Count - 1)];
+			GiveWeapons();
 		}
 
 		public void SwitchToBestWeapon()
@@ -170,6 +174,9 @@ namespace ZPS_Viral
 
 			if ( flashlight.IsValid() )
 			{
+				if ( this.CurTeam != TeamType.Survivor )
+					return;
+
 				if ( flashlight.timeSinceLightToggled > 0.1f && toggle )
 				{
 					flashlight.LightEnabled = !flashlight.LightEnabled;
@@ -182,14 +189,15 @@ namespace ZPS_Viral
 
 			if ( Input.Pressed( InputButton.Drop ) )
 			{
-				var weapon = this.Inventory.GetSlot( this.Inventory.GetActiveSlot() ) as WeaponBase;
-				
-				if ( weapon == null || weapon.IsDroppable == false )
+				var weapon = Inventory.GetSlot( Inventory.GetActiveSlot() );
+
+				if ( weapon == null )
 					return;
 
-				InventoryWeapons.Remove( weapon );
+				InventoryWeapons.Remove(weapon);
 
 				var dropped = Inventory.DropActive();
+
 				if ( dropped != null )
 				{
 					dropped.PhysicsGroup.ApplyImpulse( Velocity + EyeRot.Forward * 500.0f + Vector3.Up * 100.0f, true );
@@ -316,8 +324,37 @@ namespace ZPS_Viral
 		public override void OnKilled()
 		{
 			base.OnKilled();
-			
-			//foreach ( var weapon in Inventory. )
+
+			EnableAllCollisions = false;
+
+			foreach ( var weapon in InventoryWeapons )
+			{
+				String WhatToDrop = "";
+				bool HasSpawned = false;
+				switch ( weapon )
+				{
+					case USP: WhatToDrop = "USP";
+						break;
+					case Remington: WhatToDrop = "Remington";
+						break;
+				}
+
+				Log.Info( WhatToDrop );
+
+				if ( WhatToDrop.Equals( "USP" ) && !HasSpawned )
+				{
+					var USP = new USP();
+					USP.Position = this.Position;
+					HasSpawned = true;
+
+				} else if ( WhatToDrop.Equals( "Reminton" ) && !HasSpawned )
+				{
+					var Shotgun = new Remington();
+					Shotgun.Position = this.Position;
+					HasSpawned = true;
+				}
+
+			}
 
 			BecomeRagdollOnClient( Velocity, lastDamage.Flags, lastDamage.Position, lastDamage.Force, GetHitboxBone( lastDamage.HitboxIndex ) );
 
