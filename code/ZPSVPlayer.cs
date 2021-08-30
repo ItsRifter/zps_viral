@@ -43,12 +43,9 @@ namespace ZPS_Viral
 
 		public ICamera LastCamera { get; set; }
 
-		public List<Entity> InventoryWeapons;
-
 		public ZPSVPlayer()
 		{
 			Inventory = new Inventory( this );
-			InventoryWeapons = new List<Entity>();
 		}
 
 
@@ -90,15 +87,10 @@ namespace ZPS_Viral
 			}
 		}
 
-		public List<Entity> GetWeapons()
-		{
-			return InventoryWeapons;
-		}
 
 		public void AddWeaponToList(Entity weapon, bool force)
 		{
 			Inventory.Add( weapon, force );
-			InventoryWeapons.Add( weapon );
 		}
 
 		public override void Respawn()
@@ -193,8 +185,6 @@ namespace ZPS_Viral
 
 				if ( weapon == null )
 					return;
-
-				InventoryWeapons.Remove(weapon);
 
 				var dropped = Inventory.DropActive();
 
@@ -326,8 +316,10 @@ namespace ZPS_Viral
 			base.OnKilled();
 
 			EnableAllCollisions = false;
+			/*
+			List<Entity> holdingWeapons = GetAllWeapons();
 
-			foreach ( var weapon in InventoryWeapons )
+			foreach ( var weapon in  )
 			{
 				String WhatToDrop = "";
 				bool HasSpawned = false;
@@ -353,8 +345,9 @@ namespace ZPS_Viral
 					Shotgun.Position = this.Position;
 					HasSpawned = true;
 				}
-
+				
 			}
+			*/
 
 			BecomeRagdollOnClient( Velocity, lastDamage.Flags, lastDamage.Position, lastDamage.Force, GetHitboxBone( lastDamage.HitboxIndex ) );
 

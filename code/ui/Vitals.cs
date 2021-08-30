@@ -9,13 +9,14 @@ namespace ZPS_Viral
 	{
 		public Label Health;
 		public Label Team;
-		public Image Overlay;
+		public Panel Flashlight;
 
 		public Vitals()
 		{
 			StyleSheet.Load( "/ui/Vitals.scss" );
 			Health = Add.Label( "100", "health" );
 			Team = Add.Label( "", "team" );
+			Flashlight = Add.Panel( "flashlight" );
 		}
 
 		[Event( "client.tick" )]
@@ -49,7 +50,6 @@ namespace ZPS_Viral
 					{
 						RemoveClass( "survivor" );
 						AddClass( "infected" );
-						Overlay = Add.Image( "", "overlay" );
 					}
 				}
 

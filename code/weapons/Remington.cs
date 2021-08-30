@@ -12,9 +12,6 @@ namespace ZPS_Viral
 		public override int ClipSize => 6;
 		public override float ReloadTime => 0.5f;
 		public override int Bucket => 2;
-
-		public override bool IsDroppable => true;
-
 		public override int BulletsRemaining => ClipSize;
 
 		public override void Spawn()

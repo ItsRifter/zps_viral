@@ -32,8 +32,8 @@
 						parent_bone = ""
 						surface_prop = "default"
 						collision_prop = "default"
-						faceMergeAngle = 5.0
-						maxHullVertices = 26
+						faceMergeAngle = 20.0
+						maxHullVertices = 32
 					},
 				]
 			},

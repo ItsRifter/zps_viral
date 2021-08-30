@@ -18,5 +18,10 @@ namespace ZPS_Viral
 			flashlight.worldLight.SetParent( this.Owner, "head", new Transform( Vector3.Forward * 25 ) );
 			flashlight.worldLight.Enabled = shouldEnable;
 		}
+
+		public bool IsFlashlightOn()
+		{
+			return flashlight.worldLight.Enabled;
+		}
 	}
 }

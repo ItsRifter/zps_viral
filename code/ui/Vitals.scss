@@ -24,6 +24,20 @@
 			width: 78px;
 			height: 82px;
 		}
+
+		.flashlight {
+			background-image: url("materials/ui/battery_off_4.png");
+			background-size: cover;
+			top: 5%;
+			left: 72%;
+			width: 190px;
+			height: 82px;
+
+			&.on {
+				background-image: url("materials/ui/battery_on_4.png");
+				background-size: cover;
+			}
+		}
 	}
 
 	&.infected {
@@ -34,16 +48,6 @@
 			left: 94%;
 			width: 88px;
 			height: 92px;
-		}
-
-		.overlay {
-			//Opacity is 0 until the image itself is fixed
-			opacity: 0;
-			background-image: url("materials/ui/infectedoverlay.png");
-			background-size: cover;
-			right: 5%;
-			width: 100%;
-			height: 100%;
 		}
 	}
 

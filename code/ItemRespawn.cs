@@ -9,7 +9,7 @@ namespace ZPS_Viral
 
 	}
 
-	public class ItemRespawn
+	public class Respawnable
 	{
 		/// <summary>
 		/// A record of an entity and its position
