@@ -19,11 +19,11 @@
 							},
 							{
 								from = "slide_magazine.vmat"
-								to = "models/weapons/usp/material/slide_magazine.vmat"
+								to = "materials/weapons/slide_magazine.vmat"
 							},
 							{
 								from = "small_parts.vmat"
-								to = "models/weapons/usp/material/small_parts.vmat"
+								to = "materials/weapons/small_parts.vmat"
 							},
 							{
 								from = "materials/error.vmat"
