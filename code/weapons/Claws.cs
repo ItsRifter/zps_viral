@@ -12,7 +12,8 @@ namespace ZPS_Viral
 
 		public override bool IsDroppable => false;
 		public override int Bucket => 1;
-
+	
+		public override bool IsMelee => true;	
 		public override void Spawn()
 		{
 			base.Spawn();

@@ -3,22 +3,24 @@
 namespace ZPS_Viral
 {
 	[Library( "zpsviral_usp", Title = "USP" )]
-	[Hammer.EditorModel( "models/weapons/usp.vmdl" )]
+	[Hammer.EditorModel( "models/weapons/usp/usp.vmdl" )]
 	partial class USP : WeaponBase
 	{
-		public override string ViewModelPath => "weapons/rust_pistol/v_rust_pistol.vmdl";
+		public override string ViewModelPath => "models/weapons/usp/v_usp.vmdl";
 		public override float PrimaryRate => 15.0f;
 		public override float SecondaryRate => 1.0f;
 		public override float ReloadTime => 3.0f;
-		public override int ClipSize => 16;
+		public override int ClipSize => 14;
 		public override int BulletsRemaining => ClipSize;
 		public override int Bucket => 1;
 
+		public override float Weight => 0.77f;
+		
 		public override void Spawn()
 		{
 			base.Spawn();
 
-			SetModel( "models/weapons/usp.vmdl" );
+			SetModel( "models/weapons/usp/usp.vmdl" );
 			AmmoClip = BulletsRemaining;
 		}
 

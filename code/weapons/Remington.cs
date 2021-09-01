@@ -3,10 +3,10 @@
 namespace ZPS_Viral
 {
 	[Library( "zpsviral_remington", Title = "Remington" )]
-	[Hammer.EditorModel( "models/weapons/remington.vmdl" )]
+	[Hammer.EditorModel( "models/weapons/remington/remington.vmdl" )]
 	partial class Remington : WeaponBase
 	{
-		public override string ViewModelPath => "models/weapons/v_remington.vmdl";
+		public override string ViewModelPath => "models/weapons/remington/v_remington.vmdl";
 		public override float PrimaryRate => 1;
 		public override AmmoType AmmoType => AmmoType.Buckshot;
 		public override int ClipSize => 6;
@@ -14,11 +14,13 @@ namespace ZPS_Viral
 		public override int Bucket => 2;
 		public override int BulletsRemaining => ClipSize;
 
+		public override float Weight => 3.4f;
+		
 		public override void Spawn()
 		{
 			base.Spawn();
 
-			SetModel( "models/weapons/remington.vmdl" );
+			SetModel( "models/weapons/remington/remington.vmdl" );
 
 			AmmoClip = BulletsRemaining;
 		}

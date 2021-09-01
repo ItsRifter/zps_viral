@@ -17,7 +17,11 @@ namespace ZPS_Viral
 		public virtual int Bucket => 0;
 		public virtual int BucketWeight => 100;
 
+		public virtual float Weight => 0f;
+		
 		public virtual bool IsDroppable => true;
+
+		public virtual bool IsMelee => false;
 
 		public virtual int BulletsRemaining => 0;
 
@@ -37,6 +41,17 @@ namespace ZPS_Viral
 		public TimeSince TimeSinceDropped { get; set; }
 
 		public PickupTrigger PickupTrigger { get; protected set; }
+
+		public override void Spawn()
+		{
+			base.Spawn();
+			
+			PickupTrigger = new PickupTrigger();
+			PickupTrigger.SetParent(this);
+			
+			SetInteractsAs( CollisionLayer.Hitbox );
+			
+		}
 
 		public int AvailableAmmo()
 		{

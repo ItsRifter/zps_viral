@@ -42,9 +42,8 @@ namespace ZPS_Viral
 						AddClass( "survivor" );
 					}
 				}
-
 				
-				if(k.Equals("Infected"))
+				if(k.Equals("Infected") && (ply.InfectionTime <= 13f && ply.phaseInfection1)) 
 				{
 					if(!HasClass("infected"))
 					{
@@ -58,7 +57,7 @@ namespace ZPS_Viral
 					if ( !HasClass( "undead" ) )
 					{
 						RemoveClass( "survivor" );
-
+						
 						if(HasClass("infected"))
 							RemoveClass( "infected" );
 

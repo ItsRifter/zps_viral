@@ -230,25 +230,28 @@ namespace ZPS_Viral
 			var humans = GetSurvivors();
 			var infected = GetInfected();
 			var zombies = GetZombies();
-
+			
 			if(DebugMode)
 			{
 				if ( humans.Count >= 1 || humans.Count >= 1 && zombies.Count >= 1 )
 					Event.Run( "StartGame" );
 			}
-
+			
 			//Start round checks
-			if ( (humans.Count >= 2 || humans.Count >= 1 && zombies.Count >= 1) && CurState == RoundState.Idle )
-				Event.Run( "StartGame" );
-
-
-			//End win checks
-			if ( (humans.Count > 0 && infected.Count > 0) || zombies.Count > 0 && (CurState == RoundState.Idle || CurState == RoundState.Start) )
-				return;
-			else if ( (humans.Count <= 0 && infected.Count <= 0) && CurState == RoundState.Active)
-				Event.Run( "evnt_endgame", false );
-			else if (zombies.Count <= 0 && ZombieLives <= 0 && CurState == RoundState.Active )
-				Event.Run( "evnt_endgame", true );
+			if ( CurState == RoundState.Idle )
+			{
+				if ( humans.Count >= 2 || humans.Count >= 1 && zombies.Count >= 1 ) 
+					Event.Run( "StartGame" );
+			}
+			
+			//End round checks
+			if ( CurState == RoundState.Active )
+			{
+				if ( humans.Count <= 0 && infected.Count <= 0 )
+                	Event.Run( "evnt_endgame", false );
+                else if (zombies.Count <= 0 && ZombieLives <= 0 && infected.Count <= 0 )
+                	Event.Run( "evnt_endgame", true );
+			}
 		}
 
 		[Event( "evnt_endgame")]

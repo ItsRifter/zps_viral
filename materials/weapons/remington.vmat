@@ -5,16 +5,15 @@ Layer0
 	shader "vr_simple.vfx"
 
 	//---- PBR ----
-	F_AMBIENT_OCCLUSION_TEXTURE 1
 	F_METALNESS_TEXTURE 1
 
 	//---- Ambient Occlusion ----
-	TextureAmbientOcclusion "materials/weapons/textures/remington_Mixed_AO.jpg"
+	TextureAmbientOcclusion "materials/default/default_ao.tga"
 
 	//---- Color ----
 	g_flModelTintAmount "1.000"
 	g_vColorTint "[1.000000 1.000000 1.000000 0.000000]"
-	TextureColor "materials/weapons/textures/remington_Base_Color.jpg"
+	TextureColor "materials/weapons/export3dcoat_aiStandardSurface2SG_color.png"
 
 	//---- Fade ----
 	g_flFadeExponent "1.000"
@@ -27,13 +26,13 @@ Layer0
 	g_flDirectionalLightmapStrength "1.000"
 
 	//---- Metalness ----
-	TextureMetalness "materials/weapons/textures/remington_Metallic.jpg"
+	TextureMetalness "materials/weapons/export3dcoat_aiStandardSurface2SG_metalness.png"
 
 	//---- Normal ----
-	TextureNormal "materials/weapons/textures/remington_Normal_DirectX.jpg"
+	TextureNormal "materials/weapons/export3dcoat_aiStandardSurface2SG_nmap.png"
 
 	//---- Roughness ----
-	TextureRoughness "materials/weapons/textures/remington_Roughness.jpg"
+	TextureRoughness "materials/weapons/export3dcoat_aistandardsurface2sg_gloss.png"
 
 	//---- Texture Coordinates ----
 	g_nScaleTexCoordUByModelScaleAxis "0"
