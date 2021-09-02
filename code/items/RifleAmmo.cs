@@ -8,7 +8,7 @@ namespace ZPS_Viral
 	partial class RifleAmmo : ItemBase
 	{
 		public override string WorldModelPath => "models/ammo/rifle_ammo.vmdl";
-		public override int RemainingAmmo { get; set; } = 8;
+		public override int RemainingAmmo { get; set; } = 30;
 		public override void Spawn()
 		{
 			base.Spawn();
