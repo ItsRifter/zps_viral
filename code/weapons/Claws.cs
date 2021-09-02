@@ -5,6 +5,8 @@ namespace ZPS_Viral
 	[Library( "zpsviral_claws", Title = "Claws" )]
 	partial class Claws : WeaponBase
 	{
+		public override string ViewModelPath => "models/weapons/claws/carrier_claws.vmdl";
+		
 		public override float PrimaryRate => 2f;
 		public override float SecondaryRate => 0.0f;
 		public override float ReloadTime => 0.0f;
@@ -73,7 +75,7 @@ namespace ZPS_Viral
 				_ = new Sandbox.ScreenShake.Perlin();
 			}
 
-			ViewModelEntity?.SetAnimBool( "attack", true );
+			ViewModelEntity?.SetAnimBool( "fire", true );
 		}
 
 		[ClientRpc]
@@ -86,7 +88,7 @@ namespace ZPS_Viral
 				_ = new Sandbox.ScreenShake.Perlin( 1.0f, 1.0f, 3.0f );
 			}
 
-			ViewModelEntity?.SetAnimBool( "attack_hit", true );
+			ViewModelEntity?.SetAnimBool( "fire", true );
 		}
 
 		public override void AttackPrimary()

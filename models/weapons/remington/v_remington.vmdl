@@ -14,12 +14,8 @@
 						remaps = 
 						[
 							{
-								from = "materials/error.vmat"
-								to = "materials/rust_hands.vmat"
-							},
-							{
-								from = "aistandardsurface2sg.vmat"
-								to = "materials/weapons/remington.vmat"
+								from = "870_diffuse.vmat"
+								to = "materials/weapons/remington870.vmat"
 							},
 						]
 						use_global_default = false
@@ -33,8 +29,7 @@
 				[
 					{
 						_class = "RenderMeshFile"
-						name = "arms"
-						filename = "models/weapons/animation/v_remington.fbx"
+						filename = "models/weapons/remington/v_870.smd"
 						import_translation = [ 0.0, 0.0, 0.0 ]
 						import_rotation = [ 0.0, 0.0, 0.0 ]
 						import_scale = 1.0
@@ -48,25 +43,6 @@
 							exception_list = [  ]
 						}
 					},
-					{
-						_class = "RenderMeshFile"
-						filename = "models/weapons/animation/remington.fbx"
-						import_translation = [ -100.0, 90.0, 0.0 ]
-						import_rotation = [ -90.0, 45.0, 0.0 ]
-						import_scale = 0.1
-						align_origin_x_type = "None"
-						align_origin_y_type = "None"
-						align_origin_z_type = "None"
-						parent_bone = "_ROOT_sawnoffshotgun"
-						import_filter = 
-						{
-							exclude_by_default = false
-							exception_list = 
-							[
-								"12ge_low",
-							]
-						}
-					},
 				]
 			},
 			{
@@ -75,7 +51,7 @@
 				[
 					{
 						_class = "AnimFile"
-						name = "v_remington@deploy"
+						name = "draw"
 						activity_name = ""
 						activity_weight = 1
 						weight_list_name = ""
@@ -87,7 +63,7 @@
 						hidden = false
 						anim_markup_ordered = false
 						disable_compression = false
-						source_filename = "models/weapons/animation/deploy.fbx"
+						source_filename = "models/weapons/remington/draw.smd"
 						start_frame = -1
 						end_frame = -1
 						framerate = -1.0
@@ -95,7 +71,7 @@
 					},
 					{
 						_class = "AnimFile"
-						name = "v_remington@idle"
+						name = "dryfire"
 						activity_name = ""
 						activity_weight = 1
 						weight_list_name = ""
@@ -107,7 +83,7 @@
 						hidden = false
 						anim_markup_ordered = false
 						disable_compression = false
-						source_filename = "models/weapons/animation/idle.fbx"
+						source_filename = "models/weapons/remington/dryfire.smd"
 						start_frame = -1
 						end_frame = -1
 						framerate = -1.0
@@ -115,7 +91,7 @@
 					},
 					{
 						_class = "AnimFile"
-						name = "v_remington@fire"
+						name = "fire01"
 						activity_name = ""
 						activity_weight = 1
 						weight_list_name = ""
@@ -127,7 +103,7 @@
 						hidden = false
 						anim_markup_ordered = false
 						disable_compression = false
-						source_filename = "models/weapons/animation/fire.fbx"
+						source_filename = "models/weapons/remington/fire01.smd"
 						start_frame = -1
 						end_frame = -1
 						framerate = -1.0
@@ -135,7 +111,7 @@
 					},
 					{
 						_class = "AnimFile"
-						name = "v_remington@reload"
+						name = "idle01"
 						activity_name = ""
 						activity_weight = 1
 						weight_list_name = ""
@@ -147,7 +123,7 @@
 						hidden = false
 						anim_markup_ordered = false
 						disable_compression = false
-						source_filename = "models/weapons/animation/reload.fbx"
+						source_filename = "models/weapons/remington/idle01.smd"
 						start_frame = -1
 						end_frame = -1
 						framerate = -1.0
@@ -155,7 +131,7 @@
 					},
 					{
 						_class = "AnimFile"
-						name = "v_remington@end_reload"
+						name = "pump"
 						activity_name = ""
 						activity_weight = 1
 						weight_list_name = ""
@@ -167,7 +143,7 @@
 						hidden = false
 						anim_markup_ordered = false
 						disable_compression = false
-						source_filename = "models/weapons/animation/end_reload.fbx"
+						source_filename = "models/weapons/remington/pump.smd"
 						start_frame = -1
 						end_frame = -1
 						framerate = -1.0
@@ -175,7 +151,7 @@
 					},
 					{
 						_class = "AnimFile"
-						name = "v_remington@start_reload"
+						name = "reload_begin"
 						activity_name = ""
 						activity_weight = 1
 						weight_list_name = ""
@@ -187,7 +163,47 @@
 						hidden = false
 						anim_markup_ordered = false
 						disable_compression = false
-						source_filename = "models/weapons/animation/start_reload.fbx"
+						source_filename = "models/weapons/remington/reload_begin.smd"
+						start_frame = -1
+						end_frame = -1
+						framerate = -1.0
+						reverse = false
+					},
+					{
+						_class = "AnimFile"
+						name = "reload_end"
+						activity_name = ""
+						activity_weight = 1
+						weight_list_name = ""
+						fade_in_time = 0.2
+						fade_out_time = 0.2
+						looping = false
+						delta = false
+						worldSpace = false
+						hidden = false
+						anim_markup_ordered = false
+						disable_compression = false
+						source_filename = "models/weapons/remington/reload_end.smd"
+						start_frame = -1
+						end_frame = -1
+						framerate = -1.0
+						reverse = false
+					},
+					{
+						_class = "AnimFile"
+						name = "reload_loop"
+						activity_name = ""
+						activity_weight = 1
+						weight_list_name = ""
+						fade_in_time = 0.2
+						fade_out_time = 0.2
+						looping = false
+						delta = false
+						worldSpace = false
+						hidden = false
+						anim_markup_ordered = false
+						disable_compression = false
+						source_filename = "models/weapons/remington/reload_loop.smd"
 						start_frame = -1
 						end_frame = -1
 						framerate = -1.0
@@ -195,26 +211,6 @@
 					},
 				]
 				default_root_bone_name = ""
-			},
-			{
-				_class = "Skeleton"
-				children = 
-				[
-					{
-						_class = "Bone"
-						name = "muzzle"
-						origin = [ 148.064819, -43.528797, -12.178799 ]
-						angles = [ 0.0, 0.0, 0.0 ]
-						do_not_discard = true
-					},
-					{
-						_class = "Bone"
-						name = "ejection_point"
-						origin = [ 22.303652, -52.631489, -13.020825 ]
-						angles = [ 0.0, 0.0, 0.0 ]
-						do_not_discard = true
-					},
-				]
 			},
 		]
 		model_archetype = "default"

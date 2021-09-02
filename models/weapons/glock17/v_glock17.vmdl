@@ -14,20 +14,31 @@
 						remaps = 
 						[
 							{
-								from = "materials/error.vmat"
-								to = "materials/rust_hands.vmat"
+								from = "glock_frame.vmat"
+								to = "materials/weapons/glock_frame.vmat"
 							},
 							{
-								from = "glock.vmat"
-								to = "materials/weapons/glock.vmat"
-							},
-							{
-								from = "mag.vmat"
-								to = "materials/weapons/mag.vmat"
+								from = "glock_slide.vmat"
+								to = "materials/weapons/glock_slide.vmat"
 							},
 						]
 						use_global_default = false
 						global_default_material = ""
+					},
+				]
+			},
+			{
+				_class = "AttachmentList"
+				children = 
+				[
+					{
+						_class = "Attachment"
+						name = "muzzle"
+						parent_bone = "weaponcontrol"
+						relative_origin = [ 0.000214, -6.910494, 1.834048 ]
+						relative_angles = [ 0.0, 0.0, 0.0 ]
+						weight = 1.0
+						ignore_rotation = false
 					},
 				]
 			},
@@ -37,14 +48,14 @@
 				[
 					{
 						_class = "RenderMeshFile"
-						filename = "models/weapons/glock17/model/glock17.fbx"
-						import_translation = [ -1.0, 14.0, -3.0 ]
-						import_rotation = [ 8.0, 93.0, -75.0 ]
-						import_scale = 2.4
+						filename = "models/weapons/glock17/ref_glock17_mag.smd"
+						import_translation = [ 0.0, 0.0, 0.0 ]
+						import_rotation = [ 0.0, 0.0, 0.0 ]
+						import_scale = 1.0
 						align_origin_x_type = "None"
 						align_origin_y_type = "None"
 						align_origin_z_type = "None"
-						parent_bone = "r_hand"
+						parent_bone = ""
 						import_filter = 
 						{
 							exclude_by_default = false
@@ -53,8 +64,7 @@
 					},
 					{
 						_class = "RenderMeshFile"
-						name = "arms"
-						filename = "models/weapons/v_hand.fbx"
+						filename = "models/weapons/glock17/ref_glock17_nomag.smd"
 						import_translation = [ 0.0, 0.0, 0.0 ]
 						import_rotation = [ 0.0, 0.0, 0.0 ]
 						import_scale = 1.0
@@ -71,56 +81,12 @@
 				]
 			},
 			{
-				_class = "Skeleton"
-				children = 
-				[
-					{
-						_class = "Bone"
-						name = "muzzle"
-						origin = [ 126.384933, -43.528797, -18.735619 ]
-						angles = [ 0.0, 0.0, 0.0 ]
-						do_not_discard = true
-					},
-					{
-						_class = "Bone"
-						name = "ejection_point"
-						origin = [ 109.522415, -44.553448, -14.786454 ]
-						angles = [ 0.0, 0.0, 0.0 ]
-						do_not_discard = true
-					},
-				]
-			},
-			{
-				_class = "AttachmentList"
-				children = 
-				[
-					{
-						_class = "Attachment"
-						name = "muzzle"
-						parent_bone = "muzzle"
-						relative_origin = [ 1.398376, 0.0, 2.88376 ]
-						relative_angles = [ 0.0, 0.0, 0.0 ]
-						weight = 3.0
-						ignore_rotation = false
-					},
-					{
-						_class = "Attachment"
-						name = "ejection_point"
-						parent_bone = "ejection_point"
-						relative_origin = [ 0.0, 0.0, -1.005994 ]
-						relative_angles = [ 0.0, 0.0, 0.0 ]
-						weight = 1.0
-						ignore_rotation = false
-					},
-				]
-			},
-			{
 				_class = "AnimationList"
 				children = 
 				[
 					{
 						_class = "AnimFile"
-						name = "v_deploy_pistol@deploy"
+						name = "deploy"
 						activity_name = ""
 						activity_weight = 1
 						weight_list_name = ""
@@ -132,7 +98,7 @@
 						hidden = false
 						anim_markup_ordered = false
 						disable_compression = false
-						source_filename = "models/weapons/Animation/v_deploy_pistol.fbx"
+						source_filename = "models/weapons/usp/deploy.smd"
 						start_frame = -1
 						end_frame = -1
 						framerate = -1.0
@@ -140,7 +106,7 @@
 					},
 					{
 						_class = "AnimFile"
-						name = "v_idle_pistol@idle"
+						name = "fire"
 						activity_name = ""
 						activity_weight = 1
 						weight_list_name = ""
@@ -152,7 +118,7 @@
 						hidden = false
 						anim_markup_ordered = false
 						disable_compression = false
-						source_filename = "models/weapons/Animation/v_idle_pistol.fbx"
+						source_filename = "models/weapons/usp/fire.smd"
 						start_frame = -1
 						end_frame = -1
 						framerate = -1.0
@@ -160,7 +126,7 @@
 					},
 					{
 						_class = "AnimFile"
-						name = "v_fire_pistol@fire"
+						name = "fire_dry"
 						activity_name = ""
 						activity_weight = 1
 						weight_list_name = ""
@@ -172,7 +138,7 @@
 						hidden = false
 						anim_markup_ordered = false
 						disable_compression = false
-						source_filename = "models/weapons/Animation/v_fire_pistol.fbx"
+						source_filename = "models/weapons/usp/fire_dry.smd"
 						start_frame = -1
 						end_frame = -1
 						framerate = -1.0
@@ -180,7 +146,7 @@
 					},
 					{
 						_class = "AnimFile"
-						name = "v_reload_pistol@reload"
+						name = "reload"
 						activity_name = ""
 						activity_weight = 1
 						weight_list_name = ""
@@ -192,7 +158,47 @@
 						hidden = false
 						anim_markup_ordered = false
 						disable_compression = false
-						source_filename = "models/weapons/Animation/v_reload_pistol.fbx"
+						source_filename = "models/weapons/usp/reload.smd"
+						start_frame = -1
+						end_frame = -1
+						framerate = -1.0
+						reverse = false
+					},
+					{
+						_class = "AnimFile"
+						name = "reload_empty"
+						activity_name = ""
+						activity_weight = 1
+						weight_list_name = ""
+						fade_in_time = 0.2
+						fade_out_time = 0.2
+						looping = false
+						delta = false
+						worldSpace = false
+						hidden = false
+						anim_markup_ordered = false
+						disable_compression = false
+						source_filename = "models/weapons/usp/reload_empty.smd"
+						start_frame = -1
+						end_frame = -1
+						framerate = -1.0
+						reverse = false
+					},
+					{
+						_class = "AnimFile"
+						name = "idle"
+						activity_name = ""
+						activity_weight = 1
+						weight_list_name = ""
+						fade_in_time = 0.2
+						fade_out_time = 0.2
+						looping = false
+						delta = false
+						worldSpace = false
+						hidden = false
+						anim_markup_ordered = false
+						disable_compression = false
+						source_filename = "models/weapons/usp/idle.smd"
 						start_frame = -1
 						end_frame = -1
 						framerate = -1.0
@@ -204,6 +210,6 @@
 		]
 		model_archetype = ""
 		primary_associated_entity = ""
-		anim_graph_name = "models/weapons/v_pistol.vanmgrph"
+		anim_graph_name = "models/weapons/glock17/v_glock.vanmgrph"
 	}
 }

@@ -90,29 +90,7 @@ namespace ZPS_Viral
 
 			PlayMusic( RandomMusic[index], duration[index] );
 		}
-
-		[Event("server.tick")]
-		private void MusicThink()
-		{
-			if ( !IsPlaying )
-				return;
-
-			if (NextThink <= 0f )
-			{
-				MusicDuration -= 1;
-				NextThink = 60;
-			}
-			else
-				NextThink--;
-
-			if( MusicDuration <= 0)
-			{
-				IsPlaying = false;
-				PlayRandomMusic();
-			}
-		}
 		
-
 		private void PlayMusic(string MusicPath, int duration)
 		{
 			if ( IsPlaying )

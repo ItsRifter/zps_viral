@@ -1,0 +1,6 @@
+"VertexLitGeneric"
+{
+	"$basetexture" "models/viewmodels/punker/survivor/punker_arm_diffuse"
+	"$bumpmap" "models/viewmodels/punker/survivor/punker_arm_normal"
+	"$phong"     "1"
+}

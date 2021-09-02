@@ -12,9 +12,13 @@ namespace ZPS_Viral
 
 		private void EnableFlashlight( bool shouldEnable )
 		{
+			if ( !IsServer )
+				return;
+			
 			if ( !AllowFlashlight )
 				return;
-
+			
+			PlaySound("flashlight_toggle");
 			flashlight.worldLight.SetParent( this.Owner, "head", new Transform( Vector3.Forward * 25 ) );
 			flashlight.worldLight.Enabled = shouldEnable;
 		}

@@ -3,11 +3,11 @@
 namespace ZPS_Viral
 {
 	[Library( "zpsviral_remington", Title = "Remington" )]
-	[Hammer.EditorModel( "models/weapons/remington/remington.vmdl" )]
+	[Hammer.EditorModel( "models/weapons/remington/w_remington.vmdl" )]
 	partial class Remington : WeaponBase
 	{
 		public override string ViewModelPath => "models/weapons/remington/v_remington.vmdl";
-		public override float PrimaryRate => 1;
+		public override float PrimaryRate => 1f;
 		public override AmmoType AmmoType => AmmoType.Buckshot;
 		public override int ClipSize => 6;
 		public override float ReloadTime => 0.5f;
@@ -15,12 +15,14 @@ namespace ZPS_Viral
 		public override int BulletsRemaining => ClipSize;
 
 		public override float Weight => 3.4f;
+
+		private bool _shouldPump;
 		
 		public override void Spawn()
 		{
 			base.Spawn();
 
-			SetModel( "models/weapons/remington/remington.vmdl" );
+			SetModel( "models/weapons/remington/w_remington.vmdl" );
 
 			AmmoClip = BulletsRemaining;
 		}
@@ -47,12 +49,12 @@ namespace ZPS_Viral
 			// Tell the clients to play the shoot effects
 			//
 			ShootEffects();
-			PlaySound( "remington_fire" );
+			PlaySound( "870_fire" );
 
 			//
 			// Shoot the bullets
 			//
-			for ( int i = 0; i < 10; i++ )
+			for ( int i = 0; i < 8; i++ )
 			{
 				ShootBullet( 0.15f, 0.3f, 9.0f, 3.0f );
 			}
@@ -60,7 +62,7 @@ namespace ZPS_Viral
 
 		public override void DryFire()
 		{
-			PlaySound( "remington_dryfire" );
+			PlaySound( "870_dryfire" );
 		}
 
 		[ClientRpc]
@@ -77,6 +79,13 @@ namespace ZPS_Viral
 			{
 				new Sandbox.ScreenShake.Perlin( 1.0f, 1.5f, 2.0f );
 			}
+			
+		}
+		
+		[ClientRpc]
+		public override void StartReloadEffects()
+		{
+			PlaySound( "870_reload" );
 		}
 
 		public override void OnReloadFinish()
@@ -88,15 +97,22 @@ namespace ZPS_Viral
 
 			if ( AmmoClip >= ClipSize )
 				return;
-
+			
 			if ( Owner is ZPSVPlayer player )
 			{
 				var ammo = player.TakeAmmo( AmmoType, 1 );
+				
 				if ( ammo == 0 )
+				{
+					FinishReload();
 					return;
-
+				}
+				
+				if ( AmmoClip == 0)
+					_shouldPump = true;
+				
 				AmmoClip += ammo;
-
+				
 				if ( AmmoClip < ClipSize )
 				{
 					Reload();
@@ -111,13 +127,19 @@ namespace ZPS_Viral
 		[ClientRpc]
 		protected virtual void FinishReload()
 		{
-			ViewModelEntity?.SetAnimBool( "reload_finished", true );
+			if ( _shouldPump )
+			{
+				PlaySound( "870_pump" );
+				ViewModelEntity?.SetAnimBool( "pump", true );
+				_shouldPump = false;
+			}
 		}
-
+		
 		public override void SimulateAnimator( PawnAnimator anim )
 		{
 			anim.SetParam( "holdtype", 2 );
 			anim.SetParam( "aimat_weight", 1.0f );
 		}
+		
 	}
 }

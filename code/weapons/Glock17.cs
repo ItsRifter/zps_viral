@@ -3,7 +3,7 @@
 namespace ZPS_Viral
 {
 	[Library( "zpsviral_glock17", Title = "Glock 17" )]
-	[Hammer.EditorModel( "models/weapons/glock17/glock17.vmdl" )]
+	[Hammer.EditorModel( "models/weapons/glock17/w_glock17.vmdl" )]
 	partial class Glock17 : WeaponBase
 	{
 		public override string ViewModelPath => "models/weapons/glock17/v_glock17.vmdl";
@@ -20,7 +20,7 @@ namespace ZPS_Viral
 		{
 			base.Spawn();
 
-			SetModel( "models/weapons/glock17/glock17.vmdl" );
+			SetModel( "models/weapons/glock17/w_glock17.vmdl" );
 			AmmoClip = BulletsRemaining;
 		}
 
@@ -28,7 +28,23 @@ namespace ZPS_Viral
 		{
 			return base.CanPrimaryAttack() && Input.Pressed( InputButton.Attack1 );
 		}
-
+		
+		[ClientRpc]
+		public override void StartReloadEffects()
+		{
+			
+			if(AmmoClip <= 0)
+			{
+				ViewModelEntity?.SetAnimBool( "reload_empty", true );
+				PlaySound( "glock17_reloadempty" );
+			}
+			else
+			{
+				ViewModelEntity?.SetAnimBool( "reload", true );
+				PlaySound( "glock17_reload" );
+			}
+		}
+		
 		public override void AttackPrimary()
 		{
 			TimeSincePrimaryAttack = 0;
@@ -41,7 +57,7 @@ namespace ZPS_Viral
 			}
 
 			ShootEffects();
-			PlaySound( "pistol_fire" );
+			PlaySound( "glock17_fire" );
 
 			ShootBullet( 0.05f, 1.5f, 15.0f, 3.0f );
 
@@ -49,7 +65,7 @@ namespace ZPS_Viral
 
 		public override void DryFire()
 		{
-			PlaySound( "pistol_dryfire" );
+			PlaySound( "glock17_dryfire" );
 		}
 	}
 }

@@ -66,7 +66,7 @@ namespace ZPS_Viral
 			Animator = new StandardPlayerAnimator();
 			Camera = new FirstPersonCamera();
 
-			Dress();
+			//Dress();
 
 			EnableAllCollisions = true;
 			EnableDrawing = true;
@@ -200,14 +200,15 @@ namespace ZPS_Viral
 			{
 				if ( CurTeam != TeamType.Survivor )
 					return;
-
 				if ( flashlight.timeSinceLightToggled > 0.1f && toggle )
 				{
+					
 					flashlight.LightEnabled = !flashlight.LightEnabled;
 
 					EnableFlashlight( flashlight.LightEnabled );
 
 					flashlight.timeSinceLightToggled = 0;
+					
 				}
 			}
 

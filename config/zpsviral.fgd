@@ -49,6 +49,18 @@ metadata
 ]
 
 // 
+// ZPS_Viral.AK47 : ZPS_Viral.WeaponBase 
+// 
+@PointClass editormodel( "models/weapons/ak47/w_ak47.vmdl" ) = zpsviral_ak47 : ""
+[
+	targetname(target_source) : "Name" : : "The name that other entities refer to this entity by."
+	parentname(target_destination) [ group="Hierarchy" ] : "Parent" : : "The name of this entity's parent in the movement hierarchy. Entities with parents move with their parent."
+	enable_shadows(boolean) [ group="Render Properties" ] : "Shadow Casting" : 1 : "Whether this entity should cast shadows or not"
+
+	input SetColor(string) : "Sets the color of this entity. Format is '255 255 255 255'."
+]
+
+// 
 // ZPS_Viral.Axe : ZPS_Viral.WeaponBase 
 // 
 @PointClass editormodel( "models/weapons/axe/rust_boneknife.vmdl" ) = zpsviral_axe : ""
@@ -75,7 +87,7 @@ metadata
 // 
 // ZPS_Viral.Glock17 : ZPS_Viral.WeaponBase 
 // 
-@PointClass editormodel( "models/weapons/glock17/glock17.vmdl" ) = zpsviral_glock17 : ""
+@PointClass editormodel( "models/weapons/glock17/w_glock17.vmdl" ) = zpsviral_glock17 : ""
 [
 	targetname(target_source) : "Name" : : "The name that other entities refer to this entity by."
 	parentname(target_destination) [ group="Hierarchy" ] : "Parent" : : "The name of this entity's parent in the movement hierarchy. Entities with parents move with their parent."
@@ -87,7 +99,7 @@ metadata
 // 
 // ZPS_Viral.Remington : ZPS_Viral.WeaponBase 
 // 
-@PointClass editormodel( "models/weapons/remington/remington.vmdl" ) = zpsviral_remington : ""
+@PointClass editormodel( "models/weapons/remington/w_remington.vmdl" ) = zpsviral_remington : ""
 [
 	targetname(target_source) : "Name" : : "The name that other entities refer to this entity by."
 	parentname(target_destination) [ group="Hierarchy" ] : "Parent" : : "The name of this entity's parent in the movement hierarchy. Entities with parents move with their parent."
@@ -111,7 +123,7 @@ metadata
 // 
 // ZPS_Viral.USP : ZPS_Viral.WeaponBase 
 // 
-@PointClass editormodel( "models/weapons/usp/usp.vmdl" ) = zpsviral_usp : ""
+@PointClass editormodel( "models/weapons/usp/w_usp.vmdl" ) = zpsviral_usp : ""
 [
 	targetname(target_source) : "Name" : : "The name that other entities refer to this entity by."
 	parentname(target_destination) [ group="Hierarchy" ] : "Parent" : : "The name of this entity's parent in the movement hierarchy. Entities with parents move with their parent."

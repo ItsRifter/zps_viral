@@ -3,7 +3,7 @@
 namespace ZPS_Viral
 {
 	[Library( "zpsviral_usp", Title = "USP" )]
-	[Hammer.EditorModel( "models/weapons/usp/usp.vmdl" )]
+	[Hammer.EditorModel( "models/weapons/usp/w_usp.vmdl" )]
 	partial class USP : WeaponBase
 	{
 		public override string ViewModelPath => "models/weapons/usp/v_usp.vmdl";
@@ -20,10 +20,25 @@ namespace ZPS_Viral
 		{
 			base.Spawn();
 
-			SetModel( "models/weapons/usp/usp.vmdl" );
+			SetModel( "models/weapons/usp/w_usp.vmdl" );
 			AmmoClip = BulletsRemaining;
 		}
 
+		[ClientRpc]
+		public override void StartReloadEffects()
+		{
+			if ( AmmoClip <= 0 )
+			{
+				ViewModelEntity?.SetAnimBool( "reload_empty", true );
+				PlaySound( "usp_reloadempty" );
+			}
+			else
+			{
+				ViewModelEntity?.SetAnimBool( "reload", true );
+				PlaySound( "usp_reload" );
+			}
+		}
+		
 		public override bool CanPrimaryAttack()
 		{
 			return base.CanPrimaryAttack() && Input.Pressed( InputButton.Attack1 );
@@ -41,7 +56,7 @@ namespace ZPS_Viral
 			}
 
 			ShootEffects();
-			PlaySound( "pistol_fire" );
+			PlaySound( "usp_fire" );
 
 			ShootBullet( 0.05f, 1.5f, 15.0f, 3.0f );
 
@@ -49,7 +64,7 @@ namespace ZPS_Viral
 
 		public override void DryFire()
 		{
-			PlaySound( "pistol_dryfire" );
+			PlaySound( "usp_dryfire" );
 		}
 	}
 }
