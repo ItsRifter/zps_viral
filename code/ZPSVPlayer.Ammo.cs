@@ -66,6 +66,7 @@ namespace ZPS_Viral
 	{
 		Pistol,
 		Buckshot,
-		SMG
+		Magnum,
+		Rifle
 	}
 }

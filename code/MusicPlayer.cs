@@ -86,7 +86,7 @@ namespace ZPS_Viral
 
 			};
 
-			int index = Rand.Int( 0, RandomMusic.Length );
+			int index = Rand.Int( 0, RandomMusic.Length - 1 );
 
 			PlayMusic( RandomMusic[index], duration[index] );
 		}

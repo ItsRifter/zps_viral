@@ -46,9 +46,6 @@ namespace ZPS_Viral
 		{
 			base.Spawn();
 			
-			PickupTrigger = new PickupTrigger();
-			PickupTrigger.SetParent(this);
-			
 			SetInteractsAs( CollisionLayer.Hitbox );
 			
 		}
@@ -276,11 +273,6 @@ namespace ZPS_Viral
 		public override void OnCarryStart( Entity carrier )
 		{
 			base.OnCarryStart( carrier );
-	
-			if ( PickupTrigger.IsValid() )
-			{
-				PickupTrigger.EnableTouch = false;
-			}
 		}
 
 		public override void OnCarryDrop( Entity dropper )

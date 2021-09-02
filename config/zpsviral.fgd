@@ -13,7 +13,7 @@
 // 
 // ZPS_Viral.PistolAmmo : ZPS_Viral.ItemBase 
 // 
-@PointClass editormodel( "models/pistol_ammobox.vmdl" ) 
+@PointClass editormodel( "models/ammo/pistol_ammo.vmdl" ) 
 metadata
 {
 	entity_tool_name = "9mm Ammo Box"
@@ -21,6 +21,44 @@ metadata
 	entity_tool_tip = "Small 9mm ammo box"
 }
 = zpsviral_ammo_9mm : ""
+[
+	targetname(target_source) : "Name" : : "The name that other entities refer to this entity by."
+	parentname(target_destination) [ group="Hierarchy" ] : "Parent" : : "The name of this entity's parent in the movement hierarchy. Entities with parents move with their parent."
+	enable_shadows(boolean) [ group="Render Properties" ] : "Shadow Casting" : 1 : "Whether this entity should cast shadows or not"
+
+	input SetColor(string) : "Sets the color of this entity. Format is '255 255 255 255'."
+]
+
+// 
+// ZPS_Viral.RifleAmmo : ZPS_Viral.ItemBase 
+// 
+@PointClass editormodel( "models/ammo/rifle_ammo.vmdl" ) 
+metadata
+{
+	entity_tool_name = "Rifle Ammo Box"
+	entity_tool_group = "Ammo"
+	entity_tool_tip = "Rifle ammo box"
+}
+= zpsviral_ammo_rifle : ""
+[
+	targetname(target_source) : "Name" : : "The name that other entities refer to this entity by."
+	parentname(target_destination) [ group="Hierarchy" ] : "Parent" : : "The name of this entity's parent in the movement hierarchy. Entities with parents move with their parent."
+	enable_shadows(boolean) [ group="Render Properties" ] : "Shadow Casting" : 1 : "Whether this entity should cast shadows or not"
+
+	input SetColor(string) : "Sets the color of this entity. Format is '255 255 255 255'."
+]
+
+// 
+// ZPS_Viral.ShotgunAmmo : ZPS_Viral.ItemBase 
+// 
+@PointClass editormodel( "models/ammo/shotgun_ammo.vmdl" ) 
+metadata
+{
+	entity_tool_name = "Buckshot Ammo Box"
+	entity_tool_group = "Ammo"
+	entity_tool_tip = "Buckshot ammo box"
+}
+= zpsviral_ammo_buckshot : ""
 [
 	targetname(target_source) : "Name" : : "The name that other entities refer to this entity by."
 	parentname(target_destination) [ group="Hierarchy" ] : "Parent" : : "The name of this entity's parent in the movement hierarchy. Entities with parents move with their parent."
@@ -109,18 +147,6 @@ metadata
 ]
 
 // 
-// ZPS_Viral.SMG : ZPS_Viral.WeaponBase 
-// 
-@PointClass = zpsviral_mp5 : ""
-[
-	targetname(target_source) : "Name" : : "The name that other entities refer to this entity by."
-	parentname(target_destination) [ group="Hierarchy" ] : "Parent" : : "The name of this entity's parent in the movement hierarchy. Entities with parents move with their parent."
-	enable_shadows(boolean) [ group="Render Properties" ] : "Shadow Casting" : 1 : "Whether this entity should cast shadows or not"
-
-	input SetColor(string) : "Sets the color of this entity. Format is '255 255 255 255'."
-]
-
-// 
 // ZPS_Viral.USP : ZPS_Viral.WeaponBase 
 // 
 @PointClass editormodel( "models/weapons/usp/w_usp.vmdl" ) = zpsviral_usp : ""
@@ -130,6 +156,43 @@ metadata
 	enable_shadows(boolean) [ group="Render Properties" ] : "Shadow Casting" : 1 : "Whether this entity should cast shadows or not"
 
 	input SetColor(string) : "Sets the color of this entity. Format is '255 255 255 255'."
+]
+
+// 
+// ZPS_Viral.Entities.ItemCrate : Sandbox.Prop 
+// 
+@PointClass editormodel( "models/misc/itemcrate.vmdl" ) model() 
+metadata
+{
+	entity_tool_name = "Item Crate"
+	entity_tool_group = "Ammo"
+	entity_tool_tip = "An item crate which gives specific items"
+}
+= item_crate : ""
+[
+	model(studio) [report]: "World Model" : "" : "The model this entity should use."
+	skin(materialgroup) [ group="Render Properties" ] : "Skin" : "default" : "Some models have multiple versions of their textures, called skins." 
+	bodygroups(bodygroupchoices) [ group="Render Properties" ] : "Body Groups" : "" : "Some models have multiple variations of certain items, such as characters having different hair styles, etc."
+	rendercolor(color255) : "FX Color (R G B)" : "255 255 255" : "The FX color is used by the selected Render Mode."
+	renderamt(integer) [ group="Render Properties" ] : "FX Amount (0 - 255)" : 255 : "The FX amount is used by the selected Render Mode."
+	targetname(target_source) : "Name" : : "The name that other entities refer to this entity by."
+	parentname(target_destination) [ group="Hierarchy" ] : "Parent" : : "The name of this entity's parent in the movement hierarchy. Entities with parents move with their parent."
+	itemtospawn_1(string) : "Item To Spawn 1" :  : "What item to spawn, MUST BE CASE SENSITIVE"
+	itemtospawn_2(string) : "Item To Spawn 2" :  : "What item to spawn, MUST BE CASE SENSITIVE"
+	itemtospawn_3(string) : "Item To Spawn 3" :  : "What item to spawn, MUST BE CASE SENSITIVE"
+	collisiongroupoverride(choices) : "Collision Group Override" : -1 : "" = [
+		-1 : "UNUSED"
+		0 : "COLLISION GROUP ALWAYS"
+		1 : "COLLISION GROUP NONPHYSICAL"
+		4 : "COLLISION GROUP DEFAULT"
+		5 : "COLLISION GROUP DEBRIS"
+		14 : "COLLISION GROUP WEAPON"
+	]
+	enable_shadows(boolean) [ group="Render Properties" ] : "Shadow Casting" : 1 : "Whether this entity should cast shadows or not"
+
+	input SetColor(string) : "Sets the color of this entity. Format is '255 255 255 255'."
+
+	output OnDamaged(void) : "Fired when the entity gets damaged"
 ]
 
 // 

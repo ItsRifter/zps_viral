@@ -5,43 +5,29 @@ namespace ZPS_Viral
 {
 	partial class ItemBase : BaseCarriable, IRespawnableEntity
 	{
-		public virtual Type ItemType => Type.Health;
+		
+		public virtual string WorldModelPath => "models/ammo/pistol_ammo.vmdl";
 
-		public virtual string WorldModelPath => "weapons/rust_pistol/rust_pistol.vmdl";
+		public virtual string PickupSound => "ammo_pickup";
 
-		public virtual string PickupSound => "shotgun_pickup";
+		public virtual int RemainingAmmo { get; set; } = 1;
 
 		public PickupTrigger PickupTrigger { get; protected set; }
-
-		public enum Type
-		{
-			Health,
-			Armor,
-			Weapon,
-			Ammo,
-			Other
-		}
 
 		public override void Spawn()
 		{
 			base.Spawn();
-
+			
+			SetInteractsAs( CollisionLayer.Hitbox );
+			
 			SetModel( WorldModelPath );
-
-			PickupTrigger = new PickupTrigger();
-			PickupTrigger.Parent = this;
-			PickupTrigger.Position = Position;
 		}
 
 		public override void OnCarryStart( Entity carrier )
 		{
 			base.OnCarryStart( carrier );
-
-			if ( PickupTrigger.IsValid() )
-			{
-				PickupTrigger.EnableTouch = false;
-				PlaySound( PickupSound );
-			}
+			
+			PlaySound( PickupSound );
 		}
 	}
 }

@@ -4,14 +4,11 @@ namespace ZPS_Viral
 	[Library( "zpsviral_ammo_9mm", Title = "9mm Ammo Box" )]
 
 	[Hammer.EntityTool( "9mm Ammo Box", "Ammo", "Small 9mm ammo box" )]
-	[Hammer.EditorModel( "models/pistol_ammobox.vmdl" )]
+	[Hammer.EditorModel( "models/ammo/pistol_ammo.vmdl" )]
 	partial class PistolAmmo : ItemBase
 	{
-		public override Type ItemType => Type.Ammo;
-		public virtual string WorldModelPath => "models/pistol_ammobox.vmdl";
-
-		public override string PickupSound => "smg_pickup";
-
+		public override string WorldModelPath => "models/ammo/pistol_ammo.vmdl";
+		public override int RemainingAmmo { get; set; } = 12;
 		public override void Spawn()
 		{
 			base.Spawn();
@@ -22,14 +19,9 @@ namespace ZPS_Viral
 		public override void OnCarryStart( Entity carrier )
 		{
 			base.OnCarryStart( carrier );
-
-			if ( PickupTrigger.IsValid() )
-			{
-				PickupTrigger.EnableTouch = false;
-
-				var ply = carrier as ZPSVPlayer;
-				ply.GiveAmmo( AmmoType.Pistol, 12 );
-			}
+			
+			if(carrier is ZPSVPlayer ply)
+				ply.GiveAmmo( AmmoType.Pistol, RemainingAmmo );
 		}
 	}
 }

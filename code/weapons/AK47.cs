@@ -9,7 +9,7 @@ namespace ZPS_Viral
 	{
 		public override string ViewModelPath => "models/weapons/ak47/v_ak47.vmdl";
 
-		public override AmmoType AmmoType => AmmoType.SMG;
+		public override AmmoType AmmoType => AmmoType.Rifle;
 		public override float PrimaryRate => 12.0f;
 		public override float SecondaryRate => 1.0f;
 		public override int ClipSize => 30;

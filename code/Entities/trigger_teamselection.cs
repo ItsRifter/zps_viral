@@ -63,23 +63,19 @@ namespace ZPS_Viral.Entities
 				destinations.Add( Entity.FindByName( TargetEntity6 ) );
 
 
-			if ( destinations != null )
+			// Fire the output, before actual teleportation so map IO can do things like disable a trigger_teleport we are teleporting this entity into
+			OnTriggered.Fire( other );
+				
+			if(other is ZPSVPlayer player )
 			{
-				// Fire the output, before actual teleportation so map IO can do things like disable a trigger_teleport we are teleporting this entity into
-				OnTriggered.Fire( other );
+				int random = Rand.Int( 0, destinations.Count - 1 );
+					
+				player.Position = destinations[random].Position;
+				player.SwapTeam( SelectedTeam );
 
-				other.Transform = destinations[Rand.Int(0, destinations.Count - 1)].Transform;
-
-				if(other is ZPSVPlayer )
+				if ( ZPSVGame.CurState == ZPSVGame.RoundState.Idle || ZPSVGame.CurState == ZPSVGame.RoundState.Start )
 				{
-					var player = other as ZPSVPlayer;
-					player.SwapTeam( SelectedTeam );
-
-					if ( ZPSVGame.CurState == ZPSVGame.RoundState.Idle || ZPSVGame.CurState == ZPSVGame.RoundState.Start )
-					{
-						player.Camera = null;
-						player.Camera = new FreezeCamera();
-					}
+					player.EyeRot = destinations[random].Rotation;
 				}
 			}
 		}
