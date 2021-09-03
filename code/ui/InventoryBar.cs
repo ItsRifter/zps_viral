@@ -56,6 +56,9 @@ namespace ZPS_Viral
 		{
 			bool wantOpen = IsOpen;
 
+			if ( SelectedWeapon != null && SelectedWeapon.IsReloading )
+				return;
+			
 			// If we're not open, maybe this input has something that will 
 			// make us want to start being open?
 			wantOpen = wantOpen || input.MouseWheel != 0;

@@ -14,6 +14,11 @@ namespace ZPS_Viral
 		public float Weight = 1.25f; 
 		
 		public PickupTrigger PickupTrigger { get; protected set; }
+
+		public override void Spawn()
+		{
+			base.Spawn();
+		}
 		
 		public override bool CanCarry( Entity carrier )
 		{

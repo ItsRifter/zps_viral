@@ -13,7 +13,7 @@ namespace ZPS_Viral
 		public Label RifleAmmo;
 		public Label MagnumAmmo;
 
-		private string ammoType;
+		public string ammoType;
 		
 		public Ammo()
 		{
@@ -37,16 +37,12 @@ namespace ZPS_Viral
 
 			if ( pawn is ZPSVPlayer player )
 			{
-
 				var weapon = player.ActiveChild as WeaponBase;
 				SetClass( "active", true  );
 
 				if ( player.CurTeam == ZPSVPlayer.TeamType.Undead )
 				{
-					PistolAmmo.Text = "";
-					BuckshotAmmo.Text = "";
-					RifleAmmo.Text = "";
-					MagnumAmmo.Text = "";
+					return;
 				}
 				
 				if ( weapon == null )
@@ -62,7 +58,43 @@ namespace ZPS_Viral
                 BuckshotAmmo.Text = "Shells: " + player.AmmoCount(AmmoType.Buckshot);
                 RifleAmmo.Text = "Rifle: " + player.AmmoCount(AmmoType.Rifle);
 				MagnumAmmo.Text = "Magnum: " + player.AmmoCount( AmmoType.Magnum );
+
+				if ( player.AmmoTypeToDrop == "pistol" )
+				{
+					PistolAmmo.SetClass( "isSelected", true );
+				}
+				else
+				{
+					PistolAmmo.SetClass( "isSelected", false );
+				}
 				
+				if ( player.AmmoTypeToDrop == "buckshot" )
+				{
+					BuckshotAmmo.SetClass( "isSelected", true );
+				}
+				else
+				{
+					BuckshotAmmo.SetClass( "isSelected", false );
+				}
+				
+				if ( player.AmmoTypeToDrop == "rifle" )
+				{
+					RifleAmmo.SetClass( "isSelected", true );
+				}
+				else
+				{
+					RifleAmmo.SetClass( "isSelected", false );
+				}
+				
+				if ( player.AmmoTypeToDrop == "magnum" )
+				{
+					MagnumAmmo.SetClass( "isSelected", true );
+				}
+				else
+				{
+					MagnumAmmo.SetClass( "isSelected", false );
+				}
+
 				Weapon.Text = $"{weapon.AmmoClip}";
 
 			}

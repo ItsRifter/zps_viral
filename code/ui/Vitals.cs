@@ -8,11 +8,13 @@ namespace ZPS_Viral
 	public class Vitals : Panel
 	{
 		public Label Health;
+		public Panel Icon;
 		public Panel Team;
 
 		public Vitals()
 		{
 			Health = Add.Label( "100", "health" );
+			Icon = Add.Panel( "team" );
 		}
 
 		public override void Tick()
@@ -30,14 +32,24 @@ namespace ZPS_Viral
 					return;
 				}
 
+				
+				
 				if( k.Equals( "Survivor"))
 				{
 					if ( !HasClass( "survivor" ) )
 					{
+						Icon.SetClass( "survivor", true );
 						AddClass( "survivor" );
-						
-						if(HasClass("undead"))
+
+						if ( HasClass( "undead" ) )
+						{
 							RemoveClass( "undead" );
+							Icon.SetClass( "undead", false );
+						}
+						
+						
+						
+						
 					}
 				}
 				
@@ -47,6 +59,8 @@ namespace ZPS_Viral
 					{
 						RemoveClass( "survivor" );
 						AddClass( "infected" );
+						Icon.SetClass( "infected", true );
+						Icon.SetClass( "survivor", false);
 					}
 				}
 
@@ -54,12 +68,19 @@ namespace ZPS_Viral
 				{
 					if ( !HasClass( "undead" ) )
 					{
-						if(HasClass("survivor"))
+						if ( HasClass( "survivor" ) )
+						{
 							RemoveClass( "survivor" );
-						
-						if(HasClass("infected"))
-							RemoveClass( "infected" );
+							Icon.SetClass( "survivor", false );
+						}
 
+						if ( HasClass( "infected" ) )
+						{
+							RemoveClass( "infected" );
+							Icon.SetClass( "infected", false );
+						}
+						
+						Icon.SetClass( "undead", true );
 						AddClass( "undead" );
 					}
 					
@@ -67,14 +88,23 @@ namespace ZPS_Viral
 				}
 				if ( k.Equals( "Unassigned" ) )
 				{
-					if(HasClass("survivor"))
+					if ( HasClass( "survivor" ) )
+					{
 						RemoveClass( "survivor" );
+						Icon.SetClass( "survivor", false );
+					}
 
 					if ( HasClass( "infected" ) )
+					{
 						RemoveClass( "infected" );
-					
-					if(HasClass("undead"))
+						Icon.SetClass( "infected", false );
+					}
+
+					if ( HasClass( "undead" ) )
+					{
 						RemoveClass( "undead" );
+						Icon.SetClass( "undead", false );
+					}
 				}
 			}
 

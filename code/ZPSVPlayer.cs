@@ -39,7 +39,7 @@ namespace ZPS_Viral
 		public bool phaseInfection1 { get; set; }
 		private bool phaseInfection2;
 
-		public float FeedBar = 5f;
+		public float FeedBar = 5;
 		public bool BerserkMode = false;
 		
 		[Net]
@@ -51,7 +51,11 @@ namespace ZPS_Viral
 		public ICamera LastCamera { get; set; }
 
 		private TimeSince timeSinceDied;
+		private TimeSince timeSinceLastHit;
+		private TimeSince timeTillNextRegen;
 
+		private int RegenAmount = 5;
+		
 		public float CurWeight = 0f;
 		private float CarryAllowance = 9.5f;
 
@@ -114,11 +118,11 @@ namespace ZPS_Viral
 				CurWeight += 1.25f;
 			}
 		}
-		
+
 		public override void StartTouch( Entity other )
 		{
-			return;
 		}
+
 
 		public override void Respawn()
 		{
@@ -162,7 +166,6 @@ namespace ZPS_Viral
                 	RenderColor = new Color32( 255, 140, 140 );
                 }
     
-                //TODO: Make zombie points
                 List<Vector3> vectorSpawns = new List<Vector3>();
                 foreach(var ZombiePoints in Entity.All.OfType<ZombiePoint>())
                 {
@@ -299,7 +302,7 @@ namespace ZPS_Viral
 				DropAmmoType();
 			}
 
-			if ( Input.Pressed( InputButton.View ) && IsServer)
+			if ( Input.Pressed( InputButton.View ) )
 			{
 				if(AmmoTypeToDrop == "pistol")
 					AmmoTypeToDrop = "buckshot";	
@@ -308,7 +311,12 @@ namespace ZPS_Viral
 				else if( AmmoTypeToDrop == "rifle")
 					AmmoTypeToDrop = "magnum";
 				else if( AmmoTypeToDrop == "magnum")
-					AmmoTypeToDrop = "pistol";	
+					AmmoTypeToDrop = "pistol";
+
+				using ( Prediction.Off() )
+				{
+					SetDropOnClient( To.Single( this ), AmmoTypeToDrop );
+				}
 			}
 			
 			if ( Input.Pressed( InputButton.Run ) && CurTeam == TeamType.Undead && FeedBar > 0f )
@@ -322,15 +330,36 @@ namespace ZPS_Viral
 			}
 		}
 
+		[Event( "server.tick" )]
+		public void Regeneration()
+		{
+			if ( CurTeam != TeamType.Undead )
+				return;
+			
+			
+			if ( timeSinceLastHit >= 5)
+			{
+				if(timeTillNextRegen <= 4)
+					return;
+				
+				Log.Info("HEAL"  );
+				
+				Health += RegenAmount;
+				
+				timeTillNextRegen = 0;
+			}
+		}
+		
+		
 		public void DropAmmoType()
 		{
 			if ( AmmoTypeToDrop == "pistol" && AmmoCount( AmmoType.Pistol ) >= 12 )
 			{
 				var pistolAmmo = new PistolAmmo();
 
-				pistolAmmo.Position = Position + new Vector3( 0, 0, 50 );
-					
-				pistolAmmo.PhysicsGroup.ApplyImpulse( Velocity + EyeRot.Forward * 250.0f + Vector3.Up * 100.0f, true );
+				pistolAmmo.Position = Position + new Vector3( 0, 0, 85 );
+				
+				pistolAmmo.PhysicsGroup.ApplyImpulse( EyeRot.Forward * 250.0f + Vector3.Up * 100.0f, true );
 				pistolAmmo.PhysicsGroup.ApplyAngularImpulse( Vector3.Random * 100.0f, true );
 					
 				//CurWeight -= pistolAmmo.Weight;
@@ -342,9 +371,9 @@ namespace ZPS_Viral
 			{
 				var shotgunAmmo = new ShotgunAmmo();
 
-				shotgunAmmo.Position = Position + new Vector3( 0, 0, 50 );
+				shotgunAmmo.Position = Position + new Vector3( 0, 0, 85 );
 
-				shotgunAmmo.PhysicsGroup.ApplyImpulse( Velocity + EyeRot.Forward * 250.0f + Vector3.Up * 100.0f, true );
+				shotgunAmmo.PhysicsGroup.ApplyImpulse( EyeRot.Forward * 250.0f + Vector3.Up * 100.0f, true );
 				shotgunAmmo.PhysicsGroup.ApplyAngularImpulse( Vector3.Random * 100.0f, true );
 
 				//CurWeight -= shotgunAmmo.Weight;
@@ -356,9 +385,9 @@ namespace ZPS_Viral
 			{
 				var rifleAmmo = new RifleAmmo();
 
-				rifleAmmo.Position = Position + new Vector3( 0, 0, 50 );
+				rifleAmmo.Position = Position + new Vector3( 0, 0, 85 );
 
-				rifleAmmo.PhysicsGroup.ApplyImpulse( Velocity + EyeRot.Forward * 250.0f + Vector3.Up * 100.0f, true );
+				rifleAmmo.PhysicsGroup.ApplyImpulse( EyeRot.Forward * 250.0f + Vector3.Up * 100.0f, true );
 				rifleAmmo.PhysicsGroup.ApplyAngularImpulse( Vector3.Random * 100.0f, true );
 
 				//CurWeight -= rifleAmmo.Weight;
@@ -366,6 +395,12 @@ namespace ZPS_Viral
 				TakeAmmo( AmmoType.Rifle, 30 );
 				timeSinceDropped = 0;
 			}
+		}
+		
+		[ClientRpc]
+		public void SetDropOnClient( string ammoType )
+		{
+			AmmoTypeToDrop = ammoType;
 		}
 		
 		[Event("server.tick")]
@@ -447,19 +482,23 @@ namespace ZPS_Viral
 			if ( attacker.IsValid() && attacker.CurTeam == CurTeam )
 				return;
 
-			if( CurTeam == TeamType.Survivor && attacker.IsValid() && (attacker.CurTeam == TeamType.Undead && attacker.CurZombieType == ZombieType.Carrier) )
+			if( CurTeam == TeamType.Survivor && attacker.IsValid() && attacker.CurTeam == TeamType.Undead && attacker.CurZombieType == ZombieType.Carrier )
 			{
 				if ( Rand.Int( 0, 100 ) >= ZPSVGame.InfectionChance )
 					InfectPlayer();
 			}
 
 			if ( CurTeam == TeamType.Undead && CurZombieType == ZombieType.Carrier )
+			{
 				PlaySound( "carrier_pain" );	
+				timeSinceLastHit = 0;
+			}	
 			else if ( CurTeam == TeamType.Undead && CurZombieType == ZombieType.Standard )
-				//TODO Standard Zombie pain sounds
+			{
 				PlaySound( "carrier_pain" );
-
-
+				timeSinceLastHit = 0;
+			}
+			
 			base.TakeDamage( info );
 
 		}
