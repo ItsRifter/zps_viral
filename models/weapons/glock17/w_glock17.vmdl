@@ -97,6 +97,29 @@
 					},
 				]
 			},
+			{
+				_class = "Skeleton"
+				children = 
+				[
+					{
+						_class = "Bone"
+						name = "ROOT"
+						children = 
+						[
+							{
+								_class = "Bone"
+								name = "hold_R"
+								origin = [ -4.118886, 0.0, 0.391966 ]
+								angles = [ 0.0, 0.0, 0.0 ]
+								do_not_discard = true
+							},
+						]
+						origin = [ 0.0, 0.0, 0.0 ]
+						angles = [ 0.0, 0.0, 0.0 ]
+						do_not_discard = true
+					},
+				]
+			},
 		]
 		model_archetype = "physics_prop_model"
 		primary_associated_entity = "prop_physics"

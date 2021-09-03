@@ -6,9 +6,9 @@ using System.Linq;
 /// <summary>
 /// The main inventory panel, top left of the screen.
 /// </summary>
-
 namespace ZPS_Viral
 {
+
 	public class InventoryBar : Panel
 	{
 		List<InventoryColumn> columns = new();
@@ -32,13 +32,14 @@ namespace ZPS_Viral
 		{
 			base.Tick();
 
-			SetClass( "active", IsOpen );
+			SetClass( "active", true );
 
 			var player = Local.Pawn as Player;
 			if ( player == null ) return;
 
 			Weapons.Clear();
-			Weapons.AddRange( player.Children.Select( x => x as WeaponBase ).Where( x => x.IsValid() && x.IsUsable() ) );
+			Weapons.AddRange( player.Children.Select( x => x as WeaponBase )
+				.Where( x => x.IsValid() ) );
 
 			foreach ( var weapon in Weapons )
 			{
@@ -58,12 +59,6 @@ namespace ZPS_Viral
 			// If we're not open, maybe this input has something that will 
 			// make us want to start being open?
 			wantOpen = wantOpen || input.MouseWheel != 0;
-			wantOpen = wantOpen || input.Pressed( InputButton.Slot1 );
-			wantOpen = wantOpen || input.Pressed( InputButton.Slot2 );
-			wantOpen = wantOpen || input.Pressed( InputButton.Slot3 );
-			wantOpen = wantOpen || input.Pressed( InputButton.Slot4 );
-			wantOpen = wantOpen || input.Pressed( InputButton.Slot5 );
-			wantOpen = wantOpen || input.Pressed( InputButton.Slot6 );
 
 			if ( Weapons.Count == 0 )
 			{
@@ -80,70 +75,23 @@ namespace ZPS_Viral
 
 			// Not open fuck it off
 			if ( !IsOpen ) return;
-
-			//
-			// Fire pressed when we're open - select the weapon and close.
-			//
-			if ( input.Down( InputButton.Attack1 ) )
-			{
-				input.SuppressButton( InputButton.Attack1 );
-				input.ActiveChild = SelectedWeapon;
-				IsOpen = false;
-				Sound.FromScreen( "dm.ui_select" );
-				return;
-			}
-
+			
 			// get our current index
-			var oldSelected = SelectedWeapon;
 			int SelectedIndex = Weapons.IndexOf( SelectedWeapon );
-			SelectedIndex = SlotPressInput( input, SelectedIndex );
 
 			// forward if mouse wheel was pressed
-			SelectedIndex += input.MouseWheel;
+			SelectedIndex -= input.MouseWheel;
 			SelectedIndex = SelectedIndex.UnsignedMod( Weapons.Count );
 
 			SelectedWeapon = Weapons[SelectedIndex];
-
+			input.ActiveChild = SelectedWeapon;
+			
 			for ( int i = 0; i < 6; i++ )
 			{
 				columns[i].TickSelection( SelectedWeapon );
 			}
 
 			input.MouseWheel = 0;
-
-			if ( oldSelected != SelectedWeapon )
-			{
-				Sound.FromScreen( "dm.ui_tap" );
-			}
-		}
-
-		int SlotPressInput( InputBuilder input, int SelectedIndex )
-		{
-			var columninput = -1;
-
-			if ( input.Pressed( InputButton.Slot1 ) ) columninput = 0;
-			if ( input.Pressed( InputButton.Slot2 ) ) columninput = 1;
-			if ( input.Pressed( InputButton.Slot3 ) ) columninput = 2;
-			if ( input.Pressed( InputButton.Slot4 ) ) columninput = 3;
-			if ( input.Pressed( InputButton.Slot5 ) ) columninput = 4;
-			if ( input.Pressed( InputButton.Slot6 ) ) columninput = 5;
-
-			if ( columninput == -1 ) return SelectedIndex;
-
-			if ( SelectedWeapon.IsValid() && SelectedWeapon.Bucket == columninput )
-			{
-				return NextInBucket();
-			}
-
-			// Are we already selecting a weapon with this column?
-			var firstOfColumn = Weapons.Where( x => x.Bucket == columninput ).OrderBy( x => x.BucketWeight ).FirstOrDefault();
-			if ( firstOfColumn == null )
-			{
-				// DOOP sound
-				return SelectedIndex;
-			}
-
-			return Weapons.IndexOf( firstOfColumn );
 		}
 
 		int NextInBucket()
@@ -152,7 +100,8 @@ namespace ZPS_Viral
 
 			WeaponBase first = null;
 			WeaponBase prev = null;
-			foreach ( var weapon in Weapons.Where( x => x.Bucket == SelectedWeapon.Bucket ).OrderBy( x => x.BucketWeight ) )
+			foreach ( var weapon in Weapons.Where( x => x.Bucket == SelectedWeapon.Bucket )
+				.OrderBy( x => x.BucketWeight ) )
 			{
 				if ( first == null ) first = weapon;
 				if ( prev == SelectedWeapon ) return Weapons.IndexOf( weapon );

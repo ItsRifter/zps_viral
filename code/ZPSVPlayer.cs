@@ -51,7 +51,12 @@ namespace ZPS_Viral
 		public ICamera LastCamera { get; set; }
 
 		private TimeSince timeSinceDied;
-		
+
+		public float CurWeight = 0f;
+		private float CarryAllowance = 9.5f;
+
+		public string AmmoTypeToDrop = "pistol";
+
 		public ZPSVPlayer()
 		{
 			Inventory = new Inventory( this );
@@ -67,7 +72,11 @@ namespace ZPS_Viral
 			Camera = new FirstPersonCamera();
 
 			//Dress();
-
+			ClearAmmo();
+			
+			CurWeight = 0f;
+			RenderAlpha = 255;
+			
 			EnableAllCollisions = true;
 			EnableDrawing = true;
 			EnableHideInFirstPerson = true;
@@ -89,20 +98,26 @@ namespace ZPS_Viral
 			else
 			{
 				int RandFirearm = Rand.Int( 1, 2 );
-				switch(RandFirearm)
+				if ( RandFirearm == 1 )
 				{
-					case 1: AddWeaponToList( new USP(), true );
-						break;
-					case 2: AddWeaponToList( new Glock17(), true );
-						break;
+					var usp = new USP();
+					CurWeight += usp.Weight;
+					Inventory.Add( usp, true );
+				} else if ( RandFirearm == 2 )
+				{
+					var glock17 = new Glock17();
+					CurWeight += glock17.Weight;	
+					Inventory.Add( glock17, true );
 				}
+				
+				GiveAmmo(AmmoType.Pistol, 12);
+				CurWeight += 1.25f;
 			}
 		}
-
-
-		public void AddWeaponToList(Entity weapon, bool force)
+		
+		public override void StartTouch( Entity other )
 		{
-			Inventory.Add( weapon, force );
+			return;
 		}
 
 		public override void Respawn()
@@ -133,14 +148,6 @@ namespace ZPS_Viral
 			{
 				EnableAllCollisions = false;
 				RenderAlpha = 0;
-				
-				List<Vector3> spectateSpawns = new List<Vector3>();
-				foreach(var ZombiePoints in Entity.All.OfType<SurvivorPoint>())
-				{
-					spectateSpawns.Add( ZombiePoints.Position );
-				}
-
-				Position = spectateSpawns[Rand.Int(0, spectateSpawns.Count - 1)];
 
 			} else
 			{
@@ -182,12 +189,16 @@ namespace ZPS_Viral
 		public override void Simulate( Client cl )
 		{
 			//base.Simulate( cl );
+			SimulateActiveChild( cl, ActiveChild );
+
+			if ( (ZPSVGame.CurState == ZPSVGame.RoundState.Idle || ZPSVGame.CurState == ZPSVGame.RoundState.Start) &&
+			     (CurTeam == TeamType.Survivor || CurTeam == TeamType.Undead) )
+					return;
+			
 			
 			var controller = GetActiveController();
 			controller?.Simulate( cl, this, GetActiveAnimator() );
 			
-			SimulateActiveChild( cl, ActiveChild );
-
 			if ( LifeState == LifeState.Dead )
 			{
 				if(timeSinceDied > 6 && IsServer && ZPSVGame.CurState == ZPSVGame.RoundState.Active)
@@ -219,6 +230,8 @@ namespace ZPS_Viral
 				if ( weapon == null || weapon.IsDroppable == false )
 					return;
 
+				CurWeight -= weapon.Weight;
+				
 				var dropped = Inventory.DropActive();
 
 				if ( dropped != null )
@@ -240,12 +253,64 @@ namespace ZPS_Viral
 					.EntitiesOnly()
 					.Run();
 				
-				if ( tr.Entity is WeaponBase weapon && IsServer )
+				if ( tr.Entity is WeaponBase weapon )
 				{
-					AddWeaponToList( weapon, false );
+					float checkWeight = CurWeight + weapon.Weight;
+					
+					if ( checkWeight >= CarryAllowance )
+						return;
+
+					if ( Inventory.Contains( weapon ) )
+						return;
+
+					Inventory.Add( weapon );
+					CurWeight += weapon.Weight;
+
+					if ( Inventory.Count() == 1)
+					{
+						ActiveChild = weapon;
+					}
+						
+
+				} else if ( tr.Entity is ItemBase item )
+				{
+					float CheckWeight = CurWeight + item.Weight;
+     
+                     	if ( CheckWeight >= CarryAllowance )
+                     		return;
+                       
+					item.OnCarryStart( this );
+					//CurWeight += item.Weight;
+					
+					Sound.FromScreen( "ammo_pickup" );
+					
 				}
 			}
 
+			
+			if ( Input.Pressed( InputButton.Zoom ) )
+			{
+				if ( IsClient )
+					return;
+				
+				if ( timeSinceDropped < 0.5f ) 
+					return;
+
+				DropAmmoType();
+			}
+
+			if ( Input.Pressed( InputButton.View ) && IsServer)
+			{
+				if(AmmoTypeToDrop == "pistol")
+					AmmoTypeToDrop = "buckshot";	
+				else if ( AmmoTypeToDrop == "buckshot" )
+					AmmoTypeToDrop = "rifle";
+				else if( AmmoTypeToDrop == "rifle")
+					AmmoTypeToDrop = "magnum";
+				else if( AmmoTypeToDrop == "magnum")
+					AmmoTypeToDrop = "pistol";	
+			}
+			
 			if ( Input.Pressed( InputButton.Run ) && CurTeam == TeamType.Undead && FeedBar > 0f )
 			{
 				FeedBar -= 0.5f;
@@ -257,6 +322,52 @@ namespace ZPS_Viral
 			}
 		}
 
+		public void DropAmmoType()
+		{
+			if ( AmmoTypeToDrop == "pistol" && AmmoCount( AmmoType.Pistol ) >= 12 )
+			{
+				var pistolAmmo = new PistolAmmo();
+
+				pistolAmmo.Position = Position + new Vector3( 0, 0, 50 );
+					
+				pistolAmmo.PhysicsGroup.ApplyImpulse( Velocity + EyeRot.Forward * 250.0f + Vector3.Up * 100.0f, true );
+				pistolAmmo.PhysicsGroup.ApplyAngularImpulse( Vector3.Random * 100.0f, true );
+					
+				//CurWeight -= pistolAmmo.Weight;
+					
+				TakeAmmo( AmmoType.Pistol, 12 );
+				timeSinceDropped = 0;
+					
+			} else if ( AmmoTypeToDrop == "buckshot" && AmmoCount( AmmoType.Buckshot ) >= 6 )
+			{
+				var shotgunAmmo = new ShotgunAmmo();
+
+				shotgunAmmo.Position = Position + new Vector3( 0, 0, 50 );
+
+				shotgunAmmo.PhysicsGroup.ApplyImpulse( Velocity + EyeRot.Forward * 250.0f + Vector3.Up * 100.0f, true );
+				shotgunAmmo.PhysicsGroup.ApplyAngularImpulse( Vector3.Random * 100.0f, true );
+
+				//CurWeight -= shotgunAmmo.Weight;
+
+				TakeAmmo( AmmoType.Buckshot, 6 );
+				timeSinceDropped = 0;
+					
+			} else if ( AmmoTypeToDrop == "rifle" && AmmoCount( AmmoType.Rifle ) >= 30 )
+			{
+				var rifleAmmo = new RifleAmmo();
+
+				rifleAmmo.Position = Position + new Vector3( 0, 0, 50 );
+
+				rifleAmmo.PhysicsGroup.ApplyImpulse( Velocity + EyeRot.Forward * 250.0f + Vector3.Up * 100.0f, true );
+				rifleAmmo.PhysicsGroup.ApplyAngularImpulse( Vector3.Random * 100.0f, true );
+
+				//CurWeight -= rifleAmmo.Weight;
+
+				TakeAmmo( AmmoType.Rifle, 30 );
+				timeSinceDropped = 0;
+			}
+		}
+		
 		[Event("server.tick")]
 		public void InfectionThink()
 		{
@@ -352,8 +463,7 @@ namespace ZPS_Viral
 			base.TakeDamage( info );
 
 		}
-
-		[Event( "InfectHuman")]
+		
 		public void InfectPlayer()
 		{
 			if ( CurTeam != TeamType.Survivor )
@@ -370,8 +480,7 @@ namespace ZPS_Viral
 			
 			timeSinceDied = 0;
 			LifeState = LifeState.Dead;
-			
-			
+
 			StopUsing();
 			
 			EnableAllCollisions = false;

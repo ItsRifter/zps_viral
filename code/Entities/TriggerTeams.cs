@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Sandbox;
 using static ZPS_Viral.ZPSVPlayer;
@@ -37,30 +38,32 @@ namespace ZPS_Viral.Entities
 		[Property( Title = "Team to join" )]
 		public TeamType SelectedTeam { get; set; } = TeamType.Spectator;
 
+		private List<Entity> _destinations;
+		
 		public override void OnTouchStart( Entity other )
 		{
 			if ( !Enabled ) return;
 
-			List<Entity> destinations = new List<Entity>();
+			_destinations = new List<Entity>();
 
 			//Really bad hardcoded method, should change this to how logic_cases work - garry pls add
 			if( TargetEntity1 != null)
-				destinations.Add(Entity.FindByName( TargetEntity1 ) );
+				_destinations.Add(Entity.FindByName( TargetEntity1 ) );
 
 			if ( TargetEntity2 != null )
-				destinations.Add( Entity.FindByName( TargetEntity2 ) );
+				_destinations.Add( Entity.FindByName( TargetEntity2 ) );
 
 			if ( TargetEntity3 != null )
-				destinations.Add( Entity.FindByName( TargetEntity3 ) );
+				_destinations.Add( Entity.FindByName( TargetEntity3 ) );
 
 			if ( TargetEntity4 != null )
-				destinations.Add( Entity.FindByName( TargetEntity4 ) );
+				_destinations.Add( Entity.FindByName( TargetEntity4 ) );
 
 			if ( TargetEntity5 != null )
-				destinations.Add( Entity.FindByName( TargetEntity5 ) );
+				_destinations.Add( Entity.FindByName( TargetEntity5 ) );
 
 			if ( TargetEntity6 != null )
-				destinations.Add( Entity.FindByName( TargetEntity6 ) );
+				_destinations.Add( Entity.FindByName( TargetEntity6 ) );
 
 
 			// Fire the output, before actual teleportation so map IO can do things like disable a trigger_teleport we are teleporting this entity into
@@ -68,15 +71,10 @@ namespace ZPS_Viral.Entities
 				
 			if(other is ZPSVPlayer player )
 			{
-				int random = Rand.Int( 0, destinations.Count - 1 );
+				int random = Rand.Int( 0, _destinations.Count - 1 );
 					
-				player.Position = destinations[random].Position;
+				player.Position = _destinations[random].Position;
 				player.SwapTeam( SelectedTeam );
-
-				if ( ZPSVGame.CurState == ZPSVGame.RoundState.Idle || ZPSVGame.CurState == ZPSVGame.RoundState.Start )
-				{
-					player.EyeRot = destinations[random].Rotation;
-				}
 			}
 		}
 	}

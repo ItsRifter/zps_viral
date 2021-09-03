@@ -13,7 +13,6 @@ namespace ZPS_Viral
 		public override float ReloadTime => 0.5f;
 		public override int Bucket => 2;
 		public override int BulletsRemaining => ClipSize;
-
 		public override float Weight => 3.4f;
 
 		private bool _shouldPump;

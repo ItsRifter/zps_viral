@@ -5,6 +5,7 @@ using Sandbox.UI.Construct;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using ZPS_Viral;
 
 namespace ZPS_Viral
 {
@@ -27,8 +28,10 @@ namespace ZPS_Viral
 		internal void UpdateWeapon( WeaponBase weapon )
 		{
 			var icon = ChildrenOfType<InventoryIcon>().FirstOrDefault( x => x.Weapon == weapon );
+			//Log.Info();
 			if ( icon == null )
 			{
+				
 				icon = new InventoryIcon( weapon );
 				icon.Parent = this;
 				Icons.Add( icon );

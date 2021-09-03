@@ -42,7 +42,10 @@ namespace ZPS_Viral
 			Active,
 			Post
 		}
-
+		
+		public static List<Vector3> spectateSpawnsPos;
+		public static List<Rotation> spectateSpawnsRot;
+		
 		public ZPSVGame()
 		{
 			if ( IsServer )
@@ -54,15 +57,6 @@ namespace ZPS_Viral
 		[Event("StartGame")]
 		public void BeginGame()
 		{
-			foreach(var p in Entity.All.OfType<ZPSVPlayer>())
-			{
-				if ( p.CurTeam == ZPSVPlayer.TeamType.Unassigned || p.CurTeam == ZPSVPlayer.TeamType.Spectator )
-					break;
-
-				p.Camera = null;
-				p.Camera = new FreezeCamera();
-			}
-
 			Sound.FromScreen( "round_begin" );
 
 			if(DebugMode)
@@ -306,14 +300,6 @@ namespace ZPS_Viral
 			base.ClientDisconnect( cl, reason );
 
 			CheckRoundStatus();
-		}
-
-		//DEBUG: Infects player, Will remove later
-		[ServerCmd( "zpsviral_infect" )]
-		public static void StartInfect()
-		{
-			var Human = ConsoleSystem.Caller as ZPSVPlayer;
-			Event.Run( "InfectHuman" );
 		}
 
 		[Event("noclip")]

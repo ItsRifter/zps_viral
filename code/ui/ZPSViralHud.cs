@@ -15,10 +15,10 @@ namespace ZPS_Viral
 		{
 			if ( !IsClient )
 				return;
+			
+			RootPanel.AddChild<Vitals>().StyleSheet.Load( "/ui/ZPSViralHud.scss" );;
 
-			RootPanel.AddChild<Vitals>();
-
-			RootPanel.AddChild<Ammo>().StyleSheet.Load( "/ui/ZPSViralHud.scss" );
+			RootPanel.AddChild<Ammo>().StyleSheet.Load( "/ui/ZPSViralHud.scss" );;
 
 			RootPanel.AddChild<NameTags>();
 			RootPanel.AddChild<DamageIndicator>();

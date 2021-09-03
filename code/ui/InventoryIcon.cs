@@ -21,7 +21,7 @@ namespace ZPS_Viral
 		internal void TickSelection( WeaponBase selectedWeapon )
 		{
 			SetClass( "active", selectedWeapon == Weapon );
-			SetClass( "empty", !Weapon?.IsUsable() ?? true );
+			//SetClass( "empty", !Weapon?.IsUsable() ?? true );
 		}
 
 		public override void Tick()

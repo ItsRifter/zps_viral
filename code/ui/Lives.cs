@@ -19,7 +19,7 @@ namespace ZPS_Viral
 		public Lives()
 		{
 			StyleSheet.Load( "/ui/Lives.scss" );
-			LiveText = Add.Label( "0", "lives" );
+			LiveText = Add.Label( "5", "lives" );
 		}
 
 		[Event( "client.tick" )]

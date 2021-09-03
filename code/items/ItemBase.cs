@@ -5,29 +5,35 @@ namespace ZPS_Viral
 {
 	partial class ItemBase : BaseCarriable, IRespawnableEntity
 	{
+		public virtual AmmoType ammoType => AmmoType.Pistol; 
 		
-		public virtual string WorldModelPath => "models/ammo/pistol_ammo.vmdl";
-
 		public virtual string PickupSound => "ammo_pickup";
 
 		public virtual int RemainingAmmo { get; set; } = 1;
 
+		public float Weight = 1.25f; 
+		
 		public PickupTrigger PickupTrigger { get; protected set; }
-
-		public override void Spawn()
+		
+		public override bool CanCarry( Entity carrier )
 		{
-			base.Spawn();
-			
-			SetInteractsAs( CollisionLayer.Hitbox );
-			
-			SetModel( WorldModelPath );
-		}
+			if(carrier is ZPSVPlayer player)
+			{
+				if ( player.CurTeam == ZPSVPlayer.TeamType.Undead || player.CurTeam == ZPSVPlayer.TeamType.Infected )
+					return false;
+			}
 
+			return true;
+		}
+		
 		public override void OnCarryStart( Entity carrier )
 		{
 			base.OnCarryStart( carrier );
 			
-			PlaySound( PickupSound );
+			PlaySound( "ammo_pickup" );
+			
+			if(carrier is ZPSVPlayer ply)
+				ply.GiveAmmo( ammoType, RemainingAmmo );
 		}
 	}
 }

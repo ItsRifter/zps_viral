@@ -11,11 +11,12 @@ namespace ZPS_Viral
 
 		public override AmmoType AmmoType => AmmoType.Rifle;
 		public override float PrimaryRate => 12.0f;
-		public override float SecondaryRate => 1.0f;
 		public override int ClipSize => 30;
-		public override float ReloadTime => 4.0f;
-		public override int Bucket => 2;
+		public override float ReloadTime => 3.65f;
+		public override int Bucket => 3;
 		public override int BulletsRemaining => ClipSize;
+		
+		public override float Weight => 3.8f;
 
 		public override void Spawn()
 		{
@@ -50,7 +51,8 @@ namespace ZPS_Viral
 			ShootBullet( 0.1f, 1.5f, 22f, 3.0f );
 
 		}
-
+		
+		[ClientRpc]
 		public override void StartReloadEffects()
 		{
 			if ( AmmoClip <= 0 )
@@ -85,6 +87,12 @@ namespace ZPS_Viral
 		{
 			anim.SetParam( "holdtype", 2 );
 			anim.SetParam( "aimat_weight", 1.0f );
+		}
+		
+		public override void DryFire()
+		{
+			ViewModelEntity?.SetAnimBool( "dry_fire", true );
+			PlaySound( "ak47_dryfire" );
 		}
 	}
 }

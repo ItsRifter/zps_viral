@@ -7,10 +7,8 @@ namespace ZPS_Viral
 	[Hammer.EditorModel( "models/medkit.vmdl" )]
 	partial class SmallMedkit : ItemBase
 	{
-		public virtual string WorldModelPath => "models/medkit.vmdl";
-
-		public override string PickupSound => "medkit_pickup";
-
+		public string WorldModelPath => "models/medkit.vmdl";
+		
 		public override void Spawn()
 		{
 			base.Spawn();

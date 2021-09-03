@@ -3,7 +3,7 @@ using System;
 
 namespace ZPS_Viral
 {
-	[Library( "zpsviral_axe", Title = "Hatchet" )]
+	[Library( "zpsviral_axe", Title = "Axe" )]
 	[Hammer.EditorModel( "models/weapons/axe/rust_boneknife.vmdl" )]
 	partial class Axe : WeaponBase
 	{

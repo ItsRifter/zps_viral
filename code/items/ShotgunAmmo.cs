@@ -7,21 +7,15 @@ namespace ZPS_Viral
 	[Hammer.EditorModel( "models/ammo/shotgun_ammo.vmdl" )]
 	partial class ShotgunAmmo : ItemBase
 	{
-		public override string WorldModelPath => "models/ammo/shotgun_ammo.vmdl";
-		public override int RemainingAmmo { get; set; } = 8;
+		public string WorldModelPath => "models/ammo/shotgun_ammo.vmdl";
+		
+		public override AmmoType ammoType => AmmoType.Buckshot; 
+		public override int RemainingAmmo { get; set; } = 6;
 		public override void Spawn()
 		{
 			base.Spawn();
 
 			SetModel( WorldModelPath );
-		}
-
-		public override void OnCarryStart( Entity carrier )
-		{
-			base.OnCarryStart( carrier );
-			
-			if(carrier is ZPSVPlayer ply)
-				ply.GiveAmmo( AmmoType.Buckshot, RemainingAmmo );
 		}
 	}
 }

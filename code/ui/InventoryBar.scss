@@ -1,17 +1,14 @@
 ﻿inventorybar
 {
 	position: absolute;
-	left: 200px;
-	top: 80px;
+	left: 25px;
+	bottom: 0px;
 	font-family: Roboto;
 	opacity: 0;
-	transition: all 0.2s ease-out;
-
 
 	&.active
 	{
-		top: 100px;
-		transition: all 0.1s ease-out;
+		bottom: 100px;
 		opacity: 1;
 	}
 }
@@ -20,15 +17,15 @@ inventorycolumn
 {
 	margin-right: 5px;
 	mix-blend-mode: lighten;
-	color: #fc0;
+	color: #9f9f9f;
 	flex-direction: column;
 	align-items: flex-start; // align to the left, don't stretch
 
 	.slot-number
 	{
-		background-color: #fa02;
+		background-color: rgba(61, 61, 61, 0);
 		padding: 22px 15px 0px 10px;
-		font-size: 20px;
+		font-size: 0px;
 		font-weight: bolder;
 		width: 40px;
 		height: 40px;
@@ -41,7 +38,6 @@ inventorycolumn
 		width: 40px;
 		height: 40px;
 		overflow: hidden;
-		transition: all 0.1s ease-out;
 
 		.icon
 		{
@@ -57,7 +53,6 @@ inventorycolumn
 
 		inventoryicon
 		{
-			transition: all 0.1s ease-out;
 			opacity: 0.2;
 			display: flex;
 			width: 200px;
@@ -80,8 +75,8 @@ inventoryicon
 {
 	margin-top: 5px;
 	mix-blend-mode: lighten;
-	color: #fc0;
-	background-color: #fa04;
+	color: #000000;
+	background-color: grey;
 	font-size: 40px;
 	font-weight: lighter;
 	padding: 10px;
@@ -94,7 +89,7 @@ inventoryicon
 		width: 150px;
 		height: 150px;
 		background-size: 100%;
-		background-image-tint: #fa0;
+		background-image-tint: #ffffff;
 		position: absolute;
 	}
 
@@ -108,17 +103,32 @@ inventoryicon
 			opacity: 1;
 		}
 	}
+	
+}
 
-	&.empty
-	{
-		opacity: 0.5;
-		background-color: #c004;
-		color: #f002;
 
-		.icon
-		{
-			background-color: #f50;
-		}
-	}
+.zpsviral_usp .icon
+{
+	background-image: url( materials/ui/usp.png );
+}
+
+.zpsviral_glock17 .icon
+{
+	background-image: url( materials/ui/glock17.png );
+}
+
+.zpsviral_remington .icon
+{
+	background-image: url( materials/ui/870.png );
+}
+
+.zpsviral_mp5 .icon
+{
+	background-image: url( materials/ui/mp5.png );
+}
+
+.zpsviral_ak47 .icon
+{
+	background-image: url( materials/ui/ak47.png );
 }
 

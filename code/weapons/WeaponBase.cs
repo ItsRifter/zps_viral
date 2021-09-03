@@ -62,14 +62,14 @@ namespace ZPS_Viral
 			if ( TimeSinceDropped < 0.5f ) {
 				return false;
 			}
-			if(carrier is ZPSVPlayer)
+			
+			if(carrier is ZPSVPlayer player)
 			{
-				var player = carrier as ZPSVPlayer;
-
 				if ( player.CurTeam == ZPSVPlayer.TeamType.Undead || player.CurTeam == ZPSVPlayer.TeamType.Infected )
 					return false;
 			}
-			return base.CanCarry( carrier );
+
+			return true;
 		}
 
 		public override void ActiveStart( Entity ent )

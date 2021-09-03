@@ -8,19 +8,14 @@ namespace ZPS_Viral
 	public class Vitals : Panel
 	{
 		public Label Health;
-		public Label Team;
-		public Panel Flashlight;
+		public Panel Team;
 
 		public Vitals()
 		{
-			StyleSheet.Load( "/ui/Vitals.scss" );
 			Health = Add.Label( "100", "health" );
-			Team = Add.Label( "", "team" );
-			Flashlight = Add.Panel( "flashlight" );
 		}
 
-		[Event( "client.tick" )]
-		public void Tick()
+		public override void Tick()
 		{
 			var player = Local.Pawn;
 			if ( player == null ) return;
@@ -40,10 +35,13 @@ namespace ZPS_Viral
 					if ( !HasClass( "survivor" ) )
 					{
 						AddClass( "survivor" );
+						
+						if(HasClass("undead"))
+							RemoveClass( "undead" );
 					}
 				}
 				
-				if(k.Equals("Infected") && (ply.InfectionTime <= 13f && ply.phaseInfection1)) 
+				if(k.Equals("Infected") && ply.InfectionTime <= 13f && ply.phaseInfection1) 
 				{
 					if(!HasClass("infected"))
 					{
@@ -56,13 +54,16 @@ namespace ZPS_Viral
 				{
 					if ( !HasClass( "undead" ) )
 					{
-						RemoveClass( "survivor" );
+						if(HasClass("survivor"))
+							RemoveClass( "survivor" );
 						
 						if(HasClass("infected"))
 							RemoveClass( "infected" );
 
 						AddClass( "undead" );
 					}
+					
+					
 				}
 				if ( k.Equals( "Unassigned" ) )
 				{
@@ -71,11 +72,13 @@ namespace ZPS_Viral
 
 					if ( HasClass( "infected" ) )
 						RemoveClass( "infected" );
+					
+					if(HasClass("undead"))
+						RemoveClass( "undead" );
 				}
 			}
 
 			Health.Text = $"{player.Health.CeilToInt()}";
-			Health.SetClass( "danger", player.Health < 40.0f );
 		}
 	}
 }
