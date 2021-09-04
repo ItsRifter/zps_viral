@@ -31,7 +31,6 @@ namespace ZPS_Viral
 			//Log.Info();
 			if ( icon == null )
 			{
-				
 				icon = new InventoryIcon( weapon );
 				icon.Parent = this;
 				Icons.Add( icon );
@@ -40,7 +39,7 @@ namespace ZPS_Viral
 
 		internal void TickSelection( WeaponBase selectedWeapon )
 		{
-			SetClass( "active", selectedWeapon?.Bucket == Column );
+			SetClass( "active", true );
 
 			for ( int i = 0; i < Icons.Count; i++ )
 			{

@@ -32,7 +32,13 @@ namespace ZPS_Viral.Entities
 
 		[Property( "Teleport Destination 06" )]
 		public string TargetEntity6 { get; set; }
-
+		
+		[Property( "Teleport Destination 07" )]
+		public string TargetEntity7 { get; set; }
+		
+		[Property( "Teleport Destination 08" )]
+		public string TargetEntity8 { get; set; }
+		
 		protected Output OnTriggered { get; set; }
 
 		[Property( Title = "Team to join" )]
@@ -48,22 +54,28 @@ namespace ZPS_Viral.Entities
 
 			//Really bad hardcoded method, should change this to how logic_cases work - garry pls add
 			if( TargetEntity1 != null)
-				_destinations.Add(Entity.FindByName( TargetEntity1 ) );
+				_destinations.Add(FindByName( TargetEntity1 ) );
 
 			if ( TargetEntity2 != null )
-				_destinations.Add( Entity.FindByName( TargetEntity2 ) );
+				_destinations.Add( FindByName( TargetEntity2 ) );
 
 			if ( TargetEntity3 != null )
-				_destinations.Add( Entity.FindByName( TargetEntity3 ) );
+				_destinations.Add( FindByName( TargetEntity3 ) );
 
 			if ( TargetEntity4 != null )
-				_destinations.Add( Entity.FindByName( TargetEntity4 ) );
+				_destinations.Add( FindByName( TargetEntity4 ) );
 
 			if ( TargetEntity5 != null )
-				_destinations.Add( Entity.FindByName( TargetEntity5 ) );
+				_destinations.Add( FindByName( TargetEntity5 ) );
 
 			if ( TargetEntity6 != null )
-				_destinations.Add( Entity.FindByName( TargetEntity6 ) );
+				_destinations.Add( FindByName( TargetEntity6 ) );
+			
+			if ( TargetEntity7 != null )
+				_destinations.Add( FindByName( TargetEntity7 ) );
+			
+			if ( TargetEntity8 != null )
+				_destinations.Add( FindByName( TargetEntity8 ) );
 
 
 			// Fire the output, before actual teleportation so map IO can do things like disable a trigger_teleport we are teleporting this entity into

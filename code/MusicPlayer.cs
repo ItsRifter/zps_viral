@@ -7,7 +7,7 @@ using Sandbox;
 
 namespace ZPS_Viral
 {
-	class MusicPlayer
+	partial class MusicPlayer
 	{
 		private string LastPlayed;
 

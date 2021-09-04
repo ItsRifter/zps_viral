@@ -17,8 +17,6 @@ namespace ZPS_Viral
 		{
 			Header = Add.Panel( "header" );
 			Header.Add.Label( "Player", "name" );
-			Header.Add.Label( "Kills", "kills" );
-			Header.Add.Label( "Deaths", "deaths" );
 			Header.Add.Label( "Ping", "ping" );
 		}
 	}
@@ -26,17 +24,20 @@ namespace ZPS_Viral
 	public class ScoreboardEntry : Sandbox.UI.ScoreboardEntry
 	{
 		public Label Fps;
+		public Label Ping;
 
 		public ScoreboardEntry()
 		{
 			Fps = Add.Label( "", "fps" );
+			Ping = Add.Label( "", "ping" );
 		}
 
 		public override void UpdateFrom( PlayerScore.Entry entry )
 		{
 			base.UpdateFrom( entry );
-
+			
 			Fps.Text = entry.Get<int>( "fps", 0 ).ToString();
+			Ping.Text = entry.Get<int>( "ping", 5 ).ToString();
 		}
 	}
 }

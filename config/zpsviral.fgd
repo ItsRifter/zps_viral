@@ -242,6 +242,8 @@ metadata
 	teleport_destination_04(string) : "Teleport Destination 04" :  : ""
 	teleport_destination_05(string) : "Teleport Destination 05" :  : ""
 	teleport_destination_06(string) : "Teleport Destination 06" :  : ""
+	teleport_destination_07(string) : "Teleport Destination 07" :  : ""
+	teleport_destination_08(string) : "Teleport Destination 08" :  : ""
 	selectedteam(choices) : "Team to join" : 4 : "" = [
 		0 : "Unassigned"
 		1 : "Survivor"

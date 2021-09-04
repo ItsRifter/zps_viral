@@ -60,7 +60,7 @@ namespace ZPS_Viral
 		private float CarryAllowance = 9.5f;
 
 		public string AmmoTypeToDrop = "pistol";
-
+		
 		public ZPSVPlayer()
 		{
 			Inventory = new Inventory( this );
@@ -87,6 +87,8 @@ namespace ZPS_Viral
 			EnableShadowInFirstPerson = true;
 			EnableAllCollisions = true;
 
+			Health = 150;
+			
 			base.Respawn();
 			flashlight = new Flashlight();
 			AllowFlashlight = true;
@@ -181,14 +183,15 @@ namespace ZPS_Viral
 		{
 			var best = Children.Select( x => x as WeaponBase )
 				.Where( x => x.IsValid() && x.IsUsable() )
-				.OrderByDescending( x => x.BucketWeight )
+				.OrderBy( x => x.BucketWeight )
 				.FirstOrDefault();
 
 			if ( best == null ) return;
 
 			ActiveChild = best;
+			
 		}
-
+		
 		public override void Simulate( Client cl )
 		{
 			//base.Simulate( cl );
@@ -198,6 +201,7 @@ namespace ZPS_Viral
 			     (CurTeam == TeamType.Survivor || CurTeam == TeamType.Undead) )
 					return;
 			
+			TickPlayerUse();
 			
 			var controller = GetActiveController();
 			controller?.Simulate( cl, this, GetActiveAnimator() );
@@ -255,6 +259,9 @@ namespace ZPS_Viral
 					.Size( 7)
 					.EntitiesOnly()
 					.Run();
+
+				if ( !tr.Entity.IsValid() )
+					return;
 				
 				if ( tr.Entity is WeaponBase weapon )
 				{
@@ -268,12 +275,9 @@ namespace ZPS_Viral
 
 					Inventory.Add( weapon );
 					CurWeight += weapon.Weight;
-
-					if ( Inventory.Count() == 1)
-					{
-						ActiveChild = weapon;
-					}
-						
+					
+					if(Inventory.Count() <= 1)
+						SwitchToBestWeapon();
 
 				} else if ( tr.Entity is ItemBase item )
 				{
@@ -285,12 +289,13 @@ namespace ZPS_Viral
 					item.OnCarryStart( this );
 					//CurWeight += item.Weight;
 					
-					Sound.FromScreen( "ammo_pickup" );
-					
+					using ( Prediction.Off() )
+					{
+						PlaySound( "ammo_pickup" );
+					}
 				}
 			}
 
-			
 			if ( Input.Pressed( InputButton.Zoom ) )
 			{
 				if ( IsClient )
@@ -337,12 +342,16 @@ namespace ZPS_Viral
 				return;
 			
 			
-			if ( timeSinceLastHit >= 5)
+			if ( timeSinceLastHit >= 15)
 			{
 				if(timeTillNextRegen <= 4)
 					return;
-				
-				Log.Info("HEAL"  );
+
+				if ( Health > 150 )
+				{
+					Health = 150;
+					return;
+				}
 				
 				Health += RegenAmount;
 				

@@ -28,7 +28,7 @@ namespace ZPS_Viral
 		public static int ZombieLives { get; set; } = 4;
 
 		private MusicPlayer MusicPlayer;
-
+		
 		/*Round statuses:
 			Idle = Not enough players are in the game
 			Start = Initial setup

@@ -1,6 +1,7 @@
 ﻿using Sandbox;
 using Sandbox.UI;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 
 /// <summary>
@@ -54,7 +55,7 @@ namespace ZPS_Viral
 		[Event.BuildInput]
 		public void ProcessClientInput( InputBuilder input )
 		{
-			bool wantOpen = IsOpen;
+			bool wantOpen = true;
 
 			if ( SelectedWeapon != null && SelectedWeapon.IsReloading )
 				return;
@@ -72,20 +73,17 @@ namespace ZPS_Viral
 			// We're not open, but we want to be
 			if ( IsOpen != wantOpen )
 			{
-				SelectedWeapon = Local.Pawn.ActiveChild as WeaponBase;
+				//SelectedWeapon = Local.Pawn.ActiveChild as WeaponBase;
 				IsOpen = true;
 			}
-
-			// Not open fuck it off
+			
 			if ( !IsOpen ) return;
 			
-			// get our current index
 			int SelectedIndex = Weapons.IndexOf( SelectedWeapon );
-
-			// forward if mouse wheel was pressed
+			
 			SelectedIndex -= input.MouseWheel;
 			SelectedIndex = SelectedIndex.UnsignedMod( Weapons.Count );
-
+			
 			SelectedWeapon = Weapons[SelectedIndex];
 			input.ActiveChild = SelectedWeapon;
 			
