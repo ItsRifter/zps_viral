@@ -6,7 +6,6 @@ namespace ZPS_Viral
 	partial class Claws : WeaponBase
 	{
 		public override string ViewModelPath => "models/weapons/claws/carrier_claws.vmdl";
-		
 		public override float PrimaryRate => 2f;
 		public override float SecondaryRate => 0.0f;
 		public override float ReloadTime => 0.0f;
@@ -15,6 +14,7 @@ namespace ZPS_Viral
 		public override bool IsDroppable => false;
 		public override int Bucket => 1;
 	
+		public override int BaseDamage => 20;
 		public override bool IsMelee => true;	
 		public override void Spawn()
 		{
@@ -53,7 +53,7 @@ namespace ZPS_Viral
 
 				using ( Prediction.Off() )
 				{
-					var damageInfo = DamageInfo.FromBullet( tr.EndPos, forward * 100, 20 )
+					var damageInfo = DamageInfo.FromBullet( tr.EndPos, forward * 100, BaseDamage )
 						.UsingTraceResult( tr )
 						.WithAttacker( Owner )
 						.WithWeapon( this );

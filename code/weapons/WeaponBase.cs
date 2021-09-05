@@ -12,6 +12,8 @@ namespace ZPS_Viral
 	partial class WeaponBase : BaseWeapon
 	{
 		public virtual AmmoType AmmoType => AmmoType.Pistol;
+
+		public virtual string WorldModelPath { get; set; }
 		public virtual int ClipSize => 16;
 		public virtual float ReloadTime => 3.0f;
 		public virtual int Bucket => 0;
@@ -44,6 +46,8 @@ namespace ZPS_Viral
 
 		public PickupTrigger PickupTrigger { get; protected set; }
 
+		public virtual int BaseDamage => 0;
+		
 		public override void Spawn()
 		{
 			base.Spawn();

@@ -7,7 +7,7 @@ namespace ZPS_Viral
 	[Hammer.EditorModel( "models/misc/kevlar.vmdl" )]
 	partial class Kevlar : ItemBase
 	{
-		public string WorldModelPath => "models/misc/kevlar.vmdl";
+		public override string WorldModelPath => "models/misc/kevlar.vmdl";
 
 		public override int ArmorPoints => 50;
 		public override int RemainingAmmo { get; set; } = 0;

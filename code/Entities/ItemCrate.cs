@@ -52,8 +52,6 @@ namespace ZPS_Viral.Entities
 			{
 				
 			}
-			
-			
 		}
 	}
 }

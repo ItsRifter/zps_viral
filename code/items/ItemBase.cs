@@ -7,6 +7,8 @@ namespace ZPS_Viral
 	{
 		public virtual AmmoType ammoType => AmmoType.Pistol; 
 		
+		public virtual string WorldModelPath { get; set; }
+		
 		public virtual string PickupSound => "ammo_pickup";
 
 		public virtual int ArmorPoints { get; set; } = 0;

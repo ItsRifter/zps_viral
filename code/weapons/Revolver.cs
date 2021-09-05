@@ -7,6 +7,8 @@ namespace ZPS_Viral
 	partial class Revolver : WeaponBase
 	{
 		public override string ViewModelPath => "models/weapons/revolver/v_revolver.vmdl";
+		
+		public override string WorldModelPath => "models/weapons/revolver/w_revolver.vmdl";
 		public override AmmoType AmmoType => AmmoType.Magnum;
 		public override float PrimaryRate => 1.35f;
 		public override float SecondaryRate => 1.0f;
@@ -16,12 +18,13 @@ namespace ZPS_Viral
 		public override int Bucket => 1;
 		public override int CheckIndex => 40;
 		public override int WeightSlots => 2;
+		public override int BaseDamage => 75;
 		
 		public override void Spawn()
 		{
 			base.Spawn();
 
-			SetModel( "models/weapons/revolver/w_revolver.vmdl" );
+			SetModel( WorldModelPath );
 			AmmoClip = BulletsRemaining;
 		}
 
@@ -51,7 +54,7 @@ namespace ZPS_Viral
 			ShootEffects();
 			PlaySound( "revolver_fire" );
 
-			ShootBullet( 0.05f, 1.5f, 45.0f, 2.0f );
+			ShootBullet( 0.05f, 1.5f, BaseDamage, 2.0f );
 
 		}
 

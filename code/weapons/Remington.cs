@@ -7,6 +7,8 @@ namespace ZPS_Viral
 	partial class Remington : WeaponBase
 	{
 		public override string ViewModelPath => "models/weapons/remington/v_remington.vmdl";
+
+		public override string WorldModelPath => "models/weapons/remington/w_remington.vmdl";
 		public override float PrimaryRate => 1f;
 		public override AmmoType AmmoType => AmmoType.Buckshot;
 		public override int ClipSize => 6;
@@ -14,7 +16,8 @@ namespace ZPS_Viral
 		public override int Bucket => 2;
 		public override int BulletsRemaining => ClipSize;
 		public override int  WeightSlots => 2;
-
+		
+		public override int BaseDamage => 15;
 		public override int CheckIndex => 20;
 		
 		private bool _shouldPump;
@@ -23,7 +26,7 @@ namespace ZPS_Viral
 		{
 			base.Spawn();
 
-			SetModel( "models/weapons/remington/w_remington.vmdl" );
+			SetModel( WorldModelPath );
 
 			AmmoClip = BulletsRemaining;
 		}
@@ -57,7 +60,7 @@ namespace ZPS_Viral
 			//
 			for ( int i = 0; i < 8; i++ )
 			{
-				ShootBullet( 0.15f, 0.3f, 9.0f, 3.0f );
+				ShootBullet( 0.15f, 0.3f, BaseDamage, 3.0f );
 			}
 		}
 

@@ -9,6 +9,7 @@ namespace ZPS_Viral
 	{
 		public override string ViewModelPath => "models/weapons/mp5/v_mp5.vmdl";
 
+		public override string WorldModelPath => "models/weapons/mp5/w_mp5.vmdl";
 		public override AmmoType AmmoType => AmmoType.Pistol;
 		public override float PrimaryRate => 14.0f;
 		public override int ClipSize => 30;
@@ -16,6 +17,7 @@ namespace ZPS_Viral
 		public override int Bucket => 2;
 		public override int BulletsRemaining => ClipSize;
 		
+		public override int BaseDamage => 45;
 		public override int CheckIndex => 30;
 		public override int  WeightSlots => 2;
 
@@ -23,7 +25,7 @@ namespace ZPS_Viral
 		{
 			base.Spawn();
 
-			SetModel( "models/weapons/mp5/w_mp5.vmdl" );
+			SetModel( WorldModelPath );
 			AmmoClip = BulletsRemaining;
 		}
 

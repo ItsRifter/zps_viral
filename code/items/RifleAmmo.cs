@@ -7,7 +7,7 @@ namespace ZPS_Viral
 	[Hammer.EditorModel( "models/ammo/rifle_ammo.vmdl" )]
 	partial class RifleAmmo : ItemBase
 	{
-		public string WorldModelPath => "models/ammo/rifle_ammo.vmdl";
+		public override string WorldModelPath => "models/ammo/rifle_ammo.vmdl";
 		
 		public override AmmoType ammoType => AmmoType.Rifle; 
 		public override int RemainingAmmo { get; set; } = 30;

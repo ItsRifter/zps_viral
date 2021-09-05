@@ -43,7 +43,23 @@ namespace ZPS_Viral
 
 		private static bool DebugMode = false;
 
-		public static float InfectionChance = 80f;
+		public static int InfectionChance = 80;
+
+		private List<WeaponBase> MapEntitiesWeapons;
+		private List<Vector3> MapEntitiesWeaponsPos;
+		private List<Rotation> MapEntitiesWeaponsRot;
+		
+		private List<ItemBase> MapEntitiesItems;
+		private List<Vector3> MapEntitiesItemsPos;	
+		private List<Rotation> MapEntitiesItemsRot;
+		
+		private List<Entity> MapEntitiesProps;
+		private List<Vector3> MapEntitiesPropsPos;	
+		private List<Rotation> MapEntitiesPropsRot;
+		
+		private List<Entity> MapEntitiesMisc;
+		private List<Vector3> MapEntitiesMiscPos;	
+		private List<Rotation> MapEntitiesMiscRot;
 
 		[Net]
 		public static int ZombieLives { get; set; } = 4;
@@ -59,13 +75,210 @@ namespace ZPS_Viral
 			{
 				new ZPSViralHud();
 				MusicPlayer = new MusicPlayer();
+
+				MapEntitiesWeapons = new List<WeaponBase>();
+				MapEntitiesWeaponsPos = new List<Vector3>();
+				MapEntitiesWeaponsRot = new List<Rotation>();
+				
+				MapEntitiesItems = new List<ItemBase>();
+				MapEntitiesItemsPos = new List<Vector3>();
+				MapEntitiesItemsRot = new List<Rotation>();
+				
+				MapEntitiesProps = new List<Entity>();
+				MapEntitiesPropsPos = new List<Vector3>();
+				MapEntitiesPropsRot = new List<Rotation>();
+				
+				MapEntitiesMisc = new List<Entity>();
+				MapEntitiesMiscPos = new List<Vector3>();
+				MapEntitiesMiscRot = new List<Rotation>();
 			}
 		}
+
+		public void GrabMapEntities()
+		{
+			foreach ( var mapEnt in All.OfType<WeaponBase>() )
+			{
+				MapEntitiesWeapons.Add( mapEnt );
+				MapEntitiesWeaponsPos.Add( mapEnt.Position );
+				MapEntitiesWeaponsRot.Add( mapEnt.Rotation );
+				Log.Info("Grabbed: " + mapEnt);
+			}
+			
+			foreach ( var mapEnt in All.OfType<ItemBase>() )
+			{
+				MapEntitiesItems.Add( mapEnt  );
+				MapEntitiesItemsPos.Add( mapEnt.Position );
+				MapEntitiesItemsRot.Add( mapEnt.Rotation );
+				Log.Info("Grabbed: " + mapEnt);
+			}
+			
+			foreach ( var mapEnt in All.OfType<BreakableWall>() )
+			{
+				MapEntitiesMisc.Add(mapEnt);
+				MapEntitiesMiscPos.Add(mapEnt.Position);
+				MapEntitiesMiscRot.Add( mapEnt.Rotation );
+				Log.Info("Grabbed: " + mapEnt);
+			}
+			
+			foreach ( var mapEnt in All.OfType<Prop>() )
+			{
+				MapEntitiesProps.Add( mapEnt );
+				MapEntitiesPropsPos.Add( mapEnt.Position );
+				MapEntitiesPropsRot.Add( mapEnt.Rotation );
+				Log.Info("Grabbed: " + mapEnt);
+			}
+			
+		}
+
+		public void ClearMapEntities()
+		{
+			foreach ( var mapEnt in All.OfType<WeaponBase>() )
+			{
+				mapEnt.Delete();
+				Log.Info("Cleared: " + mapEnt);
+			}
+			
+			foreach ( var mapEnt in All.OfType<ItemBase>() )
+			{
+				mapEnt.Delete();
+				Log.Info("Cleared: " + mapEnt);
+			}
+			
+			foreach ( var mapEnt in All.OfType<BreakableWall>() )
+			{
+				mapEnt.Delete();
+				Log.Info("Cleared: " + mapEnt);
+			}
+			
+			foreach ( var mapEnt in Entity.All.OfType<ItemCrate>() )
+			{
+				mapEnt.Delete();
+				Log.Info("Cleared: " + mapEnt);
+			}
+		}
+		
+		[Event("RestartEnts")]
+		private void RespawnEntities()
+		{
+			Log.Info("Restarting entities" );
+			
+			int index = 0;
+			foreach ( var mapWeapons in MapEntitiesWeapons )
+			{
+				if ( MapEntitiesWeapons[index].ToString() == "USP" )
+				{
+					var ent = new USP();
+					ent.Position = MapEntitiesWeaponsPos[index];
+					ent.Rotation = MapEntitiesWeaponsRot[index];
+					
+				} else if ( MapEntitiesWeapons[index].ToString() == "Glock17" )
+				{
+					var ent = new Glock17();
+					ent.Position = MapEntitiesWeaponsPos[index];
+					ent.Rotation = MapEntitiesWeaponsRot[index];
+					
+				} else if ( MapEntitiesWeapons[index].ToString() == "Remington" )
+				{
+					var ent = new Remington();
+					ent.Position = MapEntitiesWeaponsPos[index];
+					ent.Rotation = MapEntitiesWeaponsRot[index];
+					
+				} else if ( MapEntitiesWeapons[index].ToString() == "AK47" )
+				{
+					var ent = new AK47();
+					ent.Position = MapEntitiesWeaponsPos[index];
+					ent.Rotation = MapEntitiesWeaponsRot[index];
+				}
+
+				index++;
+			}
+
+			index = 0;
+			
+			foreach ( var mapItems in MapEntitiesItems )
+			{
+				if ( MapEntitiesItems[index].ToString() == "PistolAmmo" )
+				{
+					var ent = new PistolAmmo();
+					ent.Position = MapEntitiesItemsPos[index];
+                    ent.Rotation = MapEntitiesItemsRot[index];
+                    
+				} else if ( MapEntitiesItems[index].ToString() == "ShotgunAmmo" )
+				{
+					var ent = new ShotgunAmmo();
+					ent.Position = MapEntitiesItemsPos[index];
+					ent.Rotation = MapEntitiesItemsRot[index];
+					
+				} else if ( MapEntitiesItems[index].ToString() == "RifleAmmo" )
+				{
+					var ent = new RifleAmmo();
+					ent.Position = MapEntitiesItemsPos[index];
+					ent.Rotation = MapEntitiesItemsRot[index];
+					
+				} else if ( MapEntitiesItems[index].ToString() == "MagnumAmmo" )
+				{
+					var ent = new MagnumAmmo();
+					ent.Position = MapEntitiesItemsPos[index];
+					ent.Rotation = MapEntitiesItemsRot[index];
+					
+				}
+				
+				index++;
+			}
+			
+			index = 0;
+			
+			foreach ( var mapItems in MapEntitiesProps )
+			{
+				if ( MapEntitiesProps[index].ToString() == "ItemCrate" )
+				{
+					var ent = new ItemCrate();
+					ent.Position = MapEntitiesItemsPos[index];
+					ent.Rotation = MapEntitiesItemsRot[index];
+                    
+				}
+				
+				index++;
+			}
+
+			index = 0;
+			
+			/*
+			foreach ( var mapItems in MapEntitiesMisc )
+			{
+				if ( MapEntitiesMisc[index].ToString() == "BreakableWall" )
+				{
+					var ent = new BreakableWall();
+					ent.Position = MapEntitiesMiscPos[index];
+					ent.Rotation = MapEntitiesMiscRot[index];
+					ent.Health = MapEntitiesMisc[index].Health;
+					
+					Log.Info("Created wall that's breakable"  );
+				}
+				
+				index++;
+			}
+			*/
+			
+			Log.Info("Finished restart of entities"  );
+		}
+
+		[ServerCmd( "zpsviral_restartents" )]
+		public static void CMDRestartEnts()
+		{
+			Event.Run( "RestartEnts" );
+		}
+		
 		[Event("StartGame")]
 		public void BeginGame()
 		{
 			Sound.FromScreen( "round_begin" );
-
+			
+			if(MapEntitiesWeapons.Count == 0)
+				GrabMapEntities();
+			else 
+				RespawnEntities();
+			
 			if(DebugMode)
 			{
 				CurState = RoundState.Active;
@@ -73,6 +286,11 @@ namespace ZPS_Viral
 				GiveRandomSurvivorWeapons();
 				return;
 			}
+			
+			if ( MapMode == Mode.Survival )
+				ZombieLives = 4;
+			else
+				ZombieLives = 999;
 
 			CurState = RoundState.Start;
 			TimeCurLeft = 10f;
@@ -98,11 +316,7 @@ namespace ZPS_Viral
 		public void RestartGame()
 		{
 			ResetAllPlayers();
-			if ( MapMode == Mode.Survival )
-				ZombieLives = 4;
-			else
-				ZombieLives = 999;
-			
+			ClearMapEntities();
 			CurState = RoundState.Idle;
 		}
 
@@ -300,7 +514,7 @@ namespace ZPS_Viral
 		public override void ClientJoined( Client client )
 		{
 			base.ClientJoined( client );
-
+			
 			var player = new ZPSVPlayer();
 			client.Pawn = player;
 

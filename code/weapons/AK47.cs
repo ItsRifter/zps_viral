@@ -9,6 +9,8 @@ namespace ZPS_Viral
 	{
 		public override string ViewModelPath => "models/weapons/ak47/v_ak47.vmdl";
 
+		public override string WorldModelPath => "models/weapons/ak47/w_ak47.vmdl";
+
 		public override AmmoType AmmoType => AmmoType.Rifle;
 		public override float PrimaryRate => 12.0f;
 		public override int ClipSize => 30;
@@ -18,11 +20,13 @@ namespace ZPS_Viral
 		public override int CheckIndex => 31;
 		public override int WeightSlots => 2;
 
+		public override int BaseDamage => 55;
+		
 		public override void Spawn()
 		{
 			base.Spawn();
 
-			SetModel( "models/weapons/ak47/w_ak47.vmdl" );
+			SetModel( WorldModelPath );
 			AmmoClip = BulletsRemaining;
 		}
 

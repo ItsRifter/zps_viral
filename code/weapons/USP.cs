@@ -7,6 +7,8 @@ namespace ZPS_Viral
 	partial class USP : WeaponBase
 	{
 		public override string ViewModelPath => "models/weapons/usp/v_usp.vmdl";
+
+		public override string WorldModelPath => "models/weapons/usp/w_usp.vmdl";
 		public override float PrimaryRate => 15.0f;
 		public override float SecondaryRate => 1.0f;
 		public override float ReloadTime => 3.0f;
@@ -15,14 +17,14 @@ namespace ZPS_Viral
 		public override int Bucket => 1;
 
 		public override int CheckIndex => 10;
-		
 		public override int WeightSlots => 1;
+		public override int BaseDamage => 30;
 		
 		public override void Spawn()
 		{
 			base.Spawn();
 
-			SetModel( "models/weapons/usp/w_usp.vmdl" );
+			SetModel( WorldModelPath );
 			AmmoClip = BulletsRemaining;
 		}
 
@@ -60,7 +62,7 @@ namespace ZPS_Viral
 			ShootEffects();
 			PlaySound( "usp_fire" );
 
-			ShootBullet( 0.05f, 1.5f, 15.0f, 3.0f );
+			ShootBullet( 0.05f, 1.5f, BaseDamage, 3.0f );
 
 		}
 

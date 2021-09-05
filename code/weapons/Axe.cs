@@ -8,6 +8,8 @@ namespace ZPS_Viral
 	partial class Axe : WeaponBase
 	{
 		public override string ViewModelPath => "models/weapons/axe/v_axe.vmdl";
+		
+		public override string WorldModelPath => "models/weapons/axe/w_axe.vmdl";
 		public override int ClipSize => -1;
 		public override float PrimaryRate => 1.0f;
 		public override float SecondaryRate => 0.5f;
@@ -19,11 +21,13 @@ namespace ZPS_Viral
 
 		private int MeleeDistance = 85;
 		
+		public override int BaseDamage => 40;
+		
 		public override void Spawn()
 		{
 			base.Spawn();
 
-			SetModel( "models/weapons/axe/w_axe.vmdl" );
+			SetModel( WorldModelPath );
 		}
 		
 		private bool MeleeAttack()
@@ -45,7 +49,7 @@ namespace ZPS_Viral
 
 				using ( Prediction.Off() )
 				{
-					var damageInfo = DamageInfo.FromBullet( tr.EndPos, forward * MeleeDistance, 30 )
+					var damageInfo = DamageInfo.FromBullet( tr.EndPos, forward * MeleeDistance, BaseDamage )
 						.UsingTraceResult( tr )
 						.WithAttacker( Owner )
 						.WithWeapon( this );

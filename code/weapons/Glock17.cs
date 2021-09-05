@@ -7,6 +7,8 @@ namespace ZPS_Viral
 	partial class Glock17 : WeaponBase
 	{
 		public override string ViewModelPath => "models/weapons/glock17/v_glock17.vmdl";
+		
+		public override string WorldModelPath => "models/weapons/glock17/w_glock17.vmdl";
 		public override float PrimaryRate => 15.0f;
 		public override float SecondaryRate => 1.0f;
 		public override float ReloadTime => 3.0f;
@@ -16,11 +18,12 @@ namespace ZPS_Viral
 		public override int CheckIndex => 11;
 		public override int WeightSlots => 1;
 		
+		public override int BaseDamage => 40;
 		public override void Spawn()
 		{
 			base.Spawn();
 
-			SetModel( "models/weapons/glock17/w_glock17.vmdl" );
+			SetModel( WorldModelPath );
 			AmmoClip = BulletsRemaining;
 		}
 

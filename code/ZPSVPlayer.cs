@@ -218,7 +218,7 @@ namespace ZPS_Viral
 			SimulateActiveChild( cl, ActiveChild );
 
 			if ( (ZPSVGame.CurState == ZPSVGame.RoundState.Idle || ZPSVGame.CurState == ZPSVGame.RoundState.Start) &&
-			     (CurTeam == TeamType.Survivor || CurTeam == TeamType.Undead) )
+			     (CurTeam == TeamType.Survivor || CurTeam == TeamType.Undead || CurTeam == TeamType.Infected && phaseInfection1 ) )
 					return;
 			
 			TickPlayerUse();
@@ -250,7 +250,7 @@ namespace ZPS_Viral
 				}
 			}
 
-			if ( Input.Pressed( InputButton.Drop ) )
+			if ( Input.Pressed( InputButton.Drop ) && IsServer )
 			{
 				var weapon = Inventory.GetSlot( Inventory.GetActiveSlot() ) as WeaponBase;
 
@@ -272,7 +272,7 @@ namespace ZPS_Viral
 				}
 			} 
 			
-			if ( Input.Pressed( InputButton.Use ) )
+			if ( Input.Pressed( InputButton.Use ) && IsServer )
 			{
 				var tr = Trace.Ray( EyePos, EyePos + EyeRot.Forward * 92 )
 					.UseHitboxes( )
@@ -327,7 +327,7 @@ namespace ZPS_Viral
 				}
 			}
 
-			if ( Input.Pressed( InputButton.Zoom ) )
+			if ( Input.Pressed( InputButton.Zoom ) && IsServer )
 			{
 				if ( IsClient )
 					return;
@@ -338,7 +338,7 @@ namespace ZPS_Viral
 				DropAmmoType();
 			}
 
-			if ( Input.Pressed( InputButton.View ) )
+			if ( Input.Pressed( InputButton.View ) && IsServer )
 			{
 				
 				if(AmmoTypeToDrop == "pistol")
@@ -372,6 +372,13 @@ namespace ZPS_Viral
 		{
 			ArmorPoints += amount;
 		}
+
+		[ClientRpc]
+		public void SetDropOnClient(string ammoType)
+		{
+			AmmoTypeToDrop = ammoType;
+		}
+		
 		
 		[Event( "server.tick" )]
 		public void Regeneration()
@@ -454,15 +461,23 @@ namespace ZPS_Viral
 
 				TakeAmmo( AmmoType.Rifle, 30 );
 				timeSinceDropped = 0;
+				
+			} else if ( AmmoTypeToDrop == "magnum" && AmmoCount( AmmoType.Magnum ) >= 6 )
+			{
+				var magnumAmmo = new MagnumAmmo();
+
+				magnumAmmo.Position = Position + new Vector3( 0, 0, 85 );
+
+				magnumAmmo.PhysicsGroup.ApplyImpulse( EyeRot.Forward * 250.0f + Vector3.Up * 100.0f, true );
+				magnumAmmo.PhysicsGroup.ApplyAngularImpulse( Vector3.Random * 100.0f, true );
+
+				//CurWeight -= rifleAmmo.Weight;
+
+				TakeAmmo( AmmoType.Magnum, 6 );
+				timeSinceDropped = 0;
 			}
 		}
-		
-		[ClientRpc]
-		public void SetDropOnClient( string ammoType )
-		{
-			AmmoTypeToDrop = ammoType;
-		}
-		
+
 		[Event("server.tick")]
 		public void InfectionThink()
 		{
@@ -581,7 +596,7 @@ namespace ZPS_Viral
 			if ( CurTeam != TeamType.Survivor )
 				return;
 
-			CurTeam = TeamType.Infected;
+			SwapTeam( TeamType.Infected );
 		}
 
 		public override void OnKilled()
