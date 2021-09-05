@@ -29,13 +29,12 @@ namespace ZPS_Viral
 
 		private TimeSince timeSinceDropped;
 		private TimeSince timeSinceJumpReleased;
-		
 		private DamageInfo lastDamage;
 
-		[Net]
+		public int ArmorPoints { get; set; }
+
 		public float InfectionTime { get; set; } = 25f;
 
-		[Net]
 		public bool phaseInfection1 { get; set; }
 		private bool phaseInfection2;
 
@@ -48,22 +47,23 @@ namespace ZPS_Viral
 		[Net]
 		public ZombieType CurZombieType { get; set; }
 
-		public ICamera LastCamera { get; set; }
-
 		private TimeSince timeSinceDied;
 		private TimeSince timeSinceLastHit;
 		private TimeSince timeTillNextRegen;
 
 		private int RegenAmount = 5;
 		
-		public float CurWeight = 0f;
-		private float CarryAllowance = 9.5f;
+		public int CurWeightSlots;
+		private int CarryAllowance = 4;
 
 		public string AmmoTypeToDrop = "pistol";
+
+		private List<WeaponBase> curWeapons;
 		
 		public ZPSVPlayer()
 		{
 			Inventory = new Inventory( this );
+			curWeapons = new List<WeaponBase>();
 		}
 
 
@@ -77,8 +77,9 @@ namespace ZPS_Viral
 
 			//Dress();
 			ClearAmmo();
+			curWeapons.Clear();
 			
-			CurWeight = 0f;
+			CurWeightSlots = 0;
 			RenderAlpha = 255;
 			
 			EnableAllCollisions = true;
@@ -87,8 +88,6 @@ namespace ZPS_Viral
 			EnableShadowInFirstPerson = true;
 			EnableAllCollisions = true;
 
-			Health = 150;
-			
 			base.Respawn();
 			flashlight = new Flashlight();
 			AllowFlashlight = true;
@@ -103,21 +102,38 @@ namespace ZPS_Viral
 				Inventory.Add( new Claws(), true );
 			else
 			{
+				int RandMelee = Rand.Int( 1, 2 );
+				if ( RandMelee == 1 )
+				{
+					var axe = new Axe();
+					CurWeightSlots += axe.WeightSlots;
+					curWeapons.Add( axe );
+					Inventory.Add( axe );
+				} else if ( RandMelee == 2 )
+				{
+					var machete = new Machete();
+					CurWeightSlots += machete.WeightSlots;	
+					curWeapons.Add( machete );
+					Inventory.Add( machete );
+				}
+				
 				int RandFirearm = Rand.Int( 1, 2 );
 				if ( RandFirearm == 1 )
 				{
 					var usp = new USP();
-					CurWeight += usp.Weight;
+					CurWeightSlots += usp.WeightSlots;
+					curWeapons.Add( usp );
 					Inventory.Add( usp, true );
 				} else if ( RandFirearm == 2 )
 				{
 					var glock17 = new Glock17();
-					CurWeight += glock17.Weight;	
+					CurWeightSlots += glock17.WeightSlots;	
+					curWeapons.Add( glock17 );
 					Inventory.Add( glock17, true );
 				}
 				
 				GiveAmmo(AmmoType.Pistol, 12);
-				CurWeight += 1.25f;
+				//CurWeightSlots += 1.25f;
 			}
 		}
 
@@ -141,7 +157,8 @@ namespace ZPS_Viral
 			Animator = new StandardPlayerAnimator();
 
 			ClearAmmo();
-
+			curWeapons.Clear();
+			
 			EnableAllCollisions = true;
 			EnableDrawing = true;
 			EnableHideInFirstPerson = true;
@@ -163,9 +180,12 @@ namespace ZPS_Viral
 
 			if ( CurTeam == TeamType.Undead )
 			{
+				Health = 200;
+				
 				if( CurZombieType == ZombieType.Carrier )
                 {
                 	RenderColor = new Color32( 255, 140, 140 );
+                    Health = 250;
                 }
     
                 List<Vector3> vectorSpawns = new List<Vector3>();
@@ -236,8 +256,9 @@ namespace ZPS_Viral
 
 				if ( weapon == null || weapon.IsDroppable == false )
 					return;
-
-				CurWeight -= weapon.Weight;
+				
+				CurWeightSlots -= weapon.WeightSlots;
+				curWeapons.Remove( weapon );
 				
 				var dropped = Inventory.DropActive();
 
@@ -265,34 +286,44 @@ namespace ZPS_Viral
 				
 				if ( tr.Entity is WeaponBase weapon )
 				{
-					float checkWeight = CurWeight + weapon.Weight;
+					int checkWeight = CurWeightSlots + weapon.WeightSlots;
 					
-					if ( checkWeight >= CarryAllowance )
+					if ( checkWeight > CarryAllowance )
 						return;
 
-					if ( Inventory.Contains( weapon ) )
+					bool hasWeapon = false;
+
+
+					for ( int i = 0; i < curWeapons.Count; i++ )
+					{
+						if ( curWeapons[i].CheckIndex == weapon.CheckIndex)
+							hasWeapon = true;
+					}
+					
+					if ( hasWeapon )
 						return;
 
+					curWeapons.Add( weapon );
 					Inventory.Add( weapon );
-					CurWeight += weapon.Weight;
+					
+					CurWeightSlots += weapon.WeightSlots;
 					
 					if(Inventory.Count() <= 1)
 						SwitchToBestWeapon();
-
-				} else if ( tr.Entity is ItemBase item )
-				{
-					float CheckWeight = CurWeight + item.Weight;
-     
-                     	if ( CheckWeight >= CarryAllowance )
-                     		return;
-                       
-					item.OnCarryStart( this );
-					//CurWeight += item.Weight;
-					
+						
 					using ( Prediction.Off() )
 					{
-						PlaySound( "ammo_pickup" );
+						PlaySound( "weapon_pickup" );
 					}
+					
+				}
+				
+				if ( tr.Entity is ItemBase item )
+				{
+					
+					item.OnCarryStart( this );
+					Log.Info(ArmorPoints);
+					//CurWeight += item.Weight;
 				}
 			}
 
@@ -309,6 +340,7 @@ namespace ZPS_Viral
 
 			if ( Input.Pressed( InputButton.View ) )
 			{
+				
 				if(AmmoTypeToDrop == "pistol")
 					AmmoTypeToDrop = "buckshot";	
 				else if ( AmmoTypeToDrop == "buckshot" )
@@ -335,22 +367,41 @@ namespace ZPS_Viral
 			}
 		}
 
+		[ClientRpc]
+		public void UpdateArmorClient(int amount)
+		{
+			ArmorPoints += amount;
+		}
+		
 		[Event( "server.tick" )]
 		public void Regeneration()
 		{
 			if ( CurTeam != TeamType.Undead )
 				return;
-			
+
+			if ( LifeState == LifeState.Dead )
+				return;
 			
 			if ( timeSinceLastHit >= 15)
 			{
 				if(timeTillNextRegen <= 4)
 					return;
 
-				if ( Health > 150 )
+				if ( CurZombieType == ZombieType.Carrier )
 				{
-					Health = 150;
-					return;
+					if ( Health > 250 )
+					{
+						Health = 250;
+						return;
+					}
+				}
+				else
+				{
+					if ( Health > 200 )
+                    {
+                    	Health = 200;
+                    	return;
+                    }
 				}
 				
 				Health += RegenAmount;
@@ -446,6 +497,7 @@ namespace ZPS_Viral
 			if ( CurTeam == TeamType.Infected && InfectionTime <= 0f )
 			{
 				SwapTeam( TeamType.Undead );
+				EnableFlashlight( false );
 				GiveWeapons();
 				phaseInfection1 = false;
 				phaseInfection2 = false;
@@ -490,13 +542,25 @@ namespace ZPS_Viral
 
 			if ( attacker.IsValid() && attacker.CurTeam == CurTeam )
 				return;
-
+			
 			if( CurTeam == TeamType.Survivor && attacker.IsValid() && attacker.CurTeam == TeamType.Undead && attacker.CurZombieType == ZombieType.Carrier )
 			{
 				if ( Rand.Int( 0, 100 ) >= ZPSVGame.InfectionChance )
 					InfectPlayer();
 			}
-
+			
+			if ( ArmorPoints > 0 )
+			{
+				int reduction = ArmorPoints - 20;
+				
+				ArmorPoints -= reduction;
+				
+				if ( ArmorPoints <= 0 )
+				{
+					ArmorPoints = 0;
+				}
+			}
+			
 			if ( CurTeam == TeamType.Undead && CurZombieType == ZombieType.Carrier )
 			{
 				PlaySound( "carrier_pain" );	
@@ -525,6 +589,9 @@ namespace ZPS_Viral
 			//base.OnKilled();
 			
 			Game.Current?.OnKilled( this );
+
+			flashlight.LightEnabled = false;
+			EnableFlashlight( false );
 			
 			timeSinceDied = 0;
 			LifeState = LifeState.Dead;

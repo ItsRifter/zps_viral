@@ -17,9 +17,13 @@ namespace ZPS_Viral
 			
 			if ( !AllowFlashlight )
 				return;
-			
-			PlaySound("flashlight_toggle");
-			flashlight.worldLight.SetParent( this.Owner, "head", new Transform( Vector3.Forward * 25 ) );
+
+			using ( Prediction.Off() )
+			{ 
+				PlaySound("flashlight_toggle");
+			}
+		
+			flashlight.worldLight.SetParent( Owner, "head", new Transform( Vector3.Forward * 25 ) );
 			flashlight.worldLight.Enabled = shouldEnable;
 		}
 

@@ -9,10 +9,12 @@ namespace ZPS_Viral
 		
 		public virtual string PickupSound => "ammo_pickup";
 
+		public virtual int ArmorPoints { get; set; } = 0;
+		
 		public virtual int RemainingAmmo { get; set; } = 1;
 
-		public float Weight = 1.25f; 
-		
+		public float Weight = 1.25f;
+
 		public PickupTrigger PickupTrigger { get; protected set; }
 
 		public override void Spawn()
@@ -35,10 +37,15 @@ namespace ZPS_Viral
 		{
 			base.OnCarryStart( carrier );
 			
-			PlaySound( "ammo_pickup" );
-			
-			if(carrier is ZPSVPlayer ply)
+			using ( Prediction.Off() )
+			{
+				PlaySound( PickupSound );
+			}
+
+			if ( carrier is ZPSVPlayer ply )
+			{
 				ply.GiveAmmo( ammoType, RemainingAmmo );
+			}
 		}
 	}
 }

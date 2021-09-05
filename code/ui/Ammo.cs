@@ -51,6 +51,8 @@ namespace ZPS_Viral
 					return;
 				}
 				
+				Weapon.Text = $"{weapon.AmmoClip}";
+				
 				if ( weapon.IsMelee )
 					Weapon.Text = "";
 				
@@ -95,7 +97,7 @@ namespace ZPS_Viral
 					MagnumAmmo.SetClass( "isSelected", false );
 				}
 
-				Weapon.Text = $"{weapon.AmmoClip}";
+				
 
 			}
 		}

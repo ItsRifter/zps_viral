@@ -14,7 +14,9 @@ namespace ZPS_Viral
 		public override int BulletsRemaining => ClipSize;
 		public override int Bucket => 1;
 
-		public override float Weight => 0.77f;
+		public override int CheckIndex => 10;
+		
+		public override int WeightSlots => 1;
 		
 		public override void Spawn()
 		{

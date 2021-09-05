@@ -131,8 +131,23 @@
 						[
 							{
 								_class = "CAnimStateTransition"
-								m_conditions = [  ]
-								m_blendDuration = 0.2
+								m_conditions = 
+								[
+									{
+										_class = "CParameterAnimCondition"
+										m_comparisonOp = 0
+										m_paramID = 
+										{
+											m_id = 1116399025
+										}
+										m_comparisonValue = 
+										{
+											m_nType = 1
+											m_data = true
+										}
+									},
+								]
+								m_blendDuration = 0.0
 								m_destState = 
 								{
 									m_id = 44937295
@@ -166,7 +181,7 @@
 										}
 									},
 								]
-								m_blendDuration = 0.2
+								m_blendDuration = 0.0
 								m_destState = 
 								{
 									m_id = 1539240915

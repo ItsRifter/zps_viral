@@ -17,7 +17,9 @@ namespace ZPS_Viral
 		public virtual int Bucket => 0;
 		public virtual int BucketWeight => 100;
 
-		public virtual float Weight => 0f;
+		public virtual int CheckIndex => 0;
+		
+		public virtual int WeightSlots => 0;
 		
 		public virtual bool IsDroppable => true;
 

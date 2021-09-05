@@ -15,20 +15,6 @@ namespace ZPS_Viral
 		[Net]
 		private static float TimeCurLeft { get; set; }
 
-		[Net]
-		public static RoundState CurState { get; set; } = RoundState.Idle;
-
-		private int NextThink;
-
-		private static bool DebugMode = false;
-
-		public static float InfectionChance = 80f;
-
-		[Net]
-		public static int ZombieLives { get; set; } = 4;
-
-		private MusicPlayer MusicPlayer;
-		
 		/*Round statuses:
 			Idle = Not enough players are in the game
 			Start = Initial setup
@@ -42,7 +28,28 @@ namespace ZPS_Viral
 			Active,
 			Post
 		}
+
+		public enum Mode
+		{
+			Survival,
+			Objective
+		}
 		
+		public static RoundState CurState { get; set; } = RoundState.Idle;
+		
+		public static Mode MapMode { get; set; } = Mode.Survival;
+
+		private int NextThink;
+
+		private static bool DebugMode = false;
+
+		public static float InfectionChance = 80f;
+
+		[Net]
+		public static int ZombieLives { get; set; } = 4;
+
+		private MusicPlayer MusicPlayer;
+
 		public static List<Vector3> spectateSpawnsPos;
 		public static List<Rotation> spectateSpawnsRot;
 		
@@ -91,7 +98,11 @@ namespace ZPS_Viral
 		public void RestartGame()
 		{
 			ResetAllPlayers();
-			ZombieLives = 4;
+			if ( MapMode == Mode.Survival )
+				ZombieLives = 4;
+			else
+				ZombieLives = 999;
+			
 			CurState = RoundState.Idle;
 		}
 

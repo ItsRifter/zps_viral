@@ -4,43 +4,48 @@ using System;
 namespace ZPS_Viral
 {
 	[Library( "zpsviral_axe", Title = "Axe" )]
-	[Hammer.EditorModel( "models/weapons/axe/rust_boneknife.vmdl" )]
+	[Hammer.EditorModel( "models/weapons/axe/w_axe.vmdl" )]
 	partial class Axe : WeaponBase
 	{
-		public override string ViewModelPath => "models/weapons/axe/v_rust_boneknife.vmdl";
+		public override string ViewModelPath => "models/weapons/axe/v_axe.vmdl";
 		public override int ClipSize => -1;
 		public override float PrimaryRate => 1.0f;
 		public override float SecondaryRate => 0.5f;
 		public override float ReloadTime => 4.0f;
 		public override int Bucket => 0;
-
+		public override int CheckIndex => 0;
+		public override int WeightSlots => 1;
 		public override bool IsMelee => true;
 
-		private int MeleeDistance = 25;
+		private int MeleeDistance = 85;
 		
 		public override void Spawn()
 		{
 			base.Spawn();
 
-			SetModel( "models/weapons/axe/rust_boneknife.vmdl" );
+			SetModel( "models/weapons/axe/w_axe.vmdl" );
 		}
-
-		public virtual void MeleeStrike( float damage, float force )
+		
+		private bool MeleeAttack()
 		{
 			var forward = Owner.EyeRot.Forward;
 			forward = forward.Normal;
 
-			foreach ( var tr in TraceBullet( Owner.EyePos, Owner.EyePos + forward * MeleeDistance, 10f ) )
+			bool hit = false;
+
+			foreach ( var tr in TraceBullet( Owner.EyePos, Owner.EyePos + forward * MeleeDistance, 20.0f ) )
 			{
 				if ( !tr.Entity.IsValid() ) continue;
 
 				tr.Surface.DoBulletImpact( tr );
 
+				hit = true;
+
 				if ( !IsServer ) continue;
 
 				using ( Prediction.Off() )
 				{
-					var damageInfo = DamageInfo.FromBullet( tr.EndPos, forward * 100 * force, damage )
+					var damageInfo = DamageInfo.FromBullet( tr.EndPos, forward * MeleeDistance, 30 )
 						.UsingTraceResult( tr )
 						.WithAttacker( Owner )
 						.WithWeapon( this );
@@ -48,17 +53,51 @@ namespace ZPS_Viral
 					tr.Entity.TakeDamage( damageInfo );
 				}
 			}
+
+			return hit;
+		}
+
+		[ClientRpc]
+		private void OnMeleeMiss()
+		{
+			Host.AssertClient();
+
+			if ( IsLocalPawn )
+			{
+				_ = new Sandbox.ScreenShake.Perlin();
+			}
+
+			ViewModelEntity?.SetAnimBool( "miss" + Rand.Int( 1, 2 ), true );
+		}
+
+		[ClientRpc]
+		private void OnMeleeHit()
+		{
+			Host.AssertClient();
+
+			if ( IsLocalPawn )
+			{
+				_ = new Sandbox.ScreenShake.Perlin( 1.0f, 1.0f, 3.0f );
+			}
+
+			ViewModelEntity?.SetAnimBool( "fire" + Rand.Int( 1, 2 ), true );
 		}
 
 		public override void AttackPrimary()
 		{
-			//if (!CanPrimaryAttack()) return;
+			TimeSincePrimaryAttack = 0;
+			TimeSinceSecondaryAttack = 0;
 
-			PlaySound( "rust_boneknife.attack" );
-			MeleeStrike( 30, 1.5f );
-
-			(Owner as AnimEntity).SetAnimBool( "b_attack", true );
-			ShootEffects();
+			if ( MeleeAttack() )
+			{
+				OnMeleeHit();
+				PlaySound("z_hit");
+			}
+			else
+			{
+				OnMeleeMiss();
+				PlaySound( "z_miss" );
+			}
 		}
 		
 		[ClientRpc]
@@ -66,10 +105,10 @@ namespace ZPS_Viral
 		{
 			Host.AssertClient();
 
-			ViewModelEntity?.SetAnimBool( "fire", true );
-			CrosshairPanel?.CreateEvent( "fire" );
+			ViewModelEntity?.SetAnimBool( "fire" + Rand.Int( 1, 2 ), true );
 		}
 
+		
 		public override void SimulateAnimator( PawnAnimator anim )
 		{
 			anim.SetParam( "holdtype", 4 ); // TODO this is shit

@@ -8,31 +8,35 @@ namespace ZPS_Viral
 	public class Vitals : Panel
 	{
 		public Label Health;
+		public Label Armor;
+		public Panel ArmorIcon;
 		public Panel Icon;
 		public Panel Team;
 
 		public Vitals()
 		{
 			Health = Add.Label( "100", "health" );
+			Armor = Add.Label( "0", "armor" );
 			Icon = Add.Panel( "team" );
+			ArmorIcon = Add.Panel( "armoricon" );
 		}
 
 		public override void Tick()
 		{
-			var player = Local.Pawn;
-			if ( player == null ) return;
+			var pawn = Local.Pawn;
+			if ( pawn == null ) return;
 
-			if ( player is ZPSVPlayer ply ) {
-
-				var k = ply.CurTeam.ToString();
+			if ( pawn is ZPSVPlayer player ) 
+			{
+				var k = player.CurTeam.ToString();
 
 				if ( k.Equals( "Unassigned" ) )
 				{
 					Health.Text = "";
+					Armor.Text = "";
+					ArmorIcon.SetClass( "armoricon", false );
 					return;
 				}
-
-				
 				
 				if( k.Equals( "Survivor"))
 				{
@@ -40,20 +44,16 @@ namespace ZPS_Viral
 					{
 						Icon.SetClass( "survivor", true );
 						AddClass( "survivor" );
-
+						
 						if ( HasClass( "undead" ) )
 						{
 							RemoveClass( "undead" );
 							Icon.SetClass( "undead", false );
 						}
-						
-						
-						
-						
 					}
 				}
 				
-				if(k.Equals("Infected") && ply.InfectionTime <= 13f && ply.phaseInfection1) 
+				if(k.Equals("Infected") && player.InfectionTime <= 13f && player.phaseInfection1) 
 				{
 					if(!HasClass("infected"))
 					{
@@ -106,9 +106,22 @@ namespace ZPS_Viral
 						Icon.SetClass( "undead", false );
 					}
 				}
+				
+				
+				ArmorIcon.SetClass( "armoricon", player.ArmorPoints >= 1 );
+				
+				Armor.Text = $"{player.ArmorPoints}";
+				
+				if ( player.ArmorPoints <= 0 )
+				{
+					Armor.Text = "";
+				}
+				
+				
+				Health.Text = $"{player.Health.CeilToInt()}";
 			}
-
-			Health.Text = $"{player.Health.CeilToInt()}";
+			
+			
 		}
 	}
 }

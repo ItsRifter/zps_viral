@@ -11,6 +11,44 @@
 ]
 
 // 
+// ZPS_Viral.Kevlar : ZPS_Viral.ItemBase 
+// 
+@PointClass editormodel( "models/misc/kevlar.vmdl" ) 
+metadata
+{
+	entity_tool_name = "Kevlar Vest"
+	entity_tool_group = "Health"
+	entity_tool_tip = "Kevlar Vest"
+}
+= zpsviral_misc_kevlar : ""
+[
+	targetname(target_source) : "Name" : : "The name that other entities refer to this entity by."
+	parentname(target_destination) [ group="Hierarchy" ] : "Parent" : : "The name of this entity's parent in the movement hierarchy. Entities with parents move with their parent."
+	enable_shadows(boolean) [ group="Render Properties" ] : "Shadow Casting" : 1 : "Whether this entity should cast shadows or not"
+
+	input SetColor(string) : "Sets the color of this entity. Format is '255 255 255 255'."
+]
+
+// 
+// ZPS_Viral.MagnumAmmo : ZPS_Viral.ItemBase 
+// 
+@PointClass editormodel( "models/ammo/magnum_ammo.vmdl" ) 
+metadata
+{
+	entity_tool_name = "Magnum Ammo Box"
+	entity_tool_group = "Ammo"
+	entity_tool_tip = "Magnum ammo box"
+}
+= zpsviral_ammo_magnum : ""
+[
+	targetname(target_source) : "Name" : : "The name that other entities refer to this entity by."
+	parentname(target_destination) [ group="Hierarchy" ] : "Parent" : : "The name of this entity's parent in the movement hierarchy. Entities with parents move with their parent."
+	enable_shadows(boolean) [ group="Render Properties" ] : "Shadow Casting" : 1 : "Whether this entity should cast shadows or not"
+
+	input SetColor(string) : "Sets the color of this entity. Format is '255 255 255 255'."
+]
+
+// 
 // ZPS_Viral.PistolAmmo : ZPS_Viral.ItemBase 
 // 
 @PointClass editormodel( "models/ammo/pistol_ammo.vmdl" ) 
@@ -101,7 +139,7 @@ metadata
 // 
 // ZPS_Viral.Axe : ZPS_Viral.WeaponBase 
 // 
-@PointClass editormodel( "models/weapons/axe/rust_boneknife.vmdl" ) = zpsviral_axe : ""
+@PointClass editormodel( "models/weapons/axe/w_axe.vmdl" ) = zpsviral_axe : ""
 [
 	targetname(target_source) : "Name" : : "The name that other entities refer to this entity by."
 	parentname(target_destination) [ group="Hierarchy" ] : "Parent" : : "The name of this entity's parent in the movement hierarchy. Entities with parents move with their parent."
@@ -135,6 +173,18 @@ metadata
 ]
 
 // 
+// ZPS_Viral.Machete : ZPS_Viral.WeaponBase 
+// 
+@PointClass editormodel( "models/weapons/machete/w_machete.vmdl" ) = zpsviral_machete : ""
+[
+	targetname(target_source) : "Name" : : "The name that other entities refer to this entity by."
+	parentname(target_destination) [ group="Hierarchy" ] : "Parent" : : "The name of this entity's parent in the movement hierarchy. Entities with parents move with their parent."
+	enable_shadows(boolean) [ group="Render Properties" ] : "Shadow Casting" : 1 : "Whether this entity should cast shadows or not"
+
+	input SetColor(string) : "Sets the color of this entity. Format is '255 255 255 255'."
+]
+
+// 
 // ZPS_Viral.MP5 : ZPS_Viral.WeaponBase 
 // 
 @PointClass editormodel( "models/weapons/mp5/w_mp5.vmdl" ) = zpsviral_mp5 : ""
@@ -159,6 +209,18 @@ metadata
 ]
 
 // 
+// ZPS_Viral.Revolver : ZPS_Viral.WeaponBase 
+// 
+@PointClass editormodel( "models/weapons/revolver/w_revolver.vmdl" ) = zpsviral_revolver : ""
+[
+	targetname(target_source) : "Name" : : "The name that other entities refer to this entity by."
+	parentname(target_destination) [ group="Hierarchy" ] : "Parent" : : "The name of this entity's parent in the movement hierarchy. Entities with parents move with their parent."
+	enable_shadows(boolean) [ group="Render Properties" ] : "Shadow Casting" : 1 : "Whether this entity should cast shadows or not"
+
+	input SetColor(string) : "Sets the color of this entity. Format is '255 255 255 255'."
+]
+
+// 
 // ZPS_Viral.USP : ZPS_Viral.WeaponBase 
 // 
 @PointClass editormodel( "models/weapons/usp/w_usp.vmdl" ) = zpsviral_usp : ""
@@ -168,6 +230,45 @@ metadata
 	enable_shadows(boolean) [ group="Render Properties" ] : "Shadow Casting" : 1 : "Whether this entity should cast shadows or not"
 
 	input SetColor(string) : "Sets the color of this entity. Format is '255 255 255 255'."
+]
+
+// 
+// ZPS_Viral.Entities.AutoRun : Sandbox.Entity 
+// 
+@SolidClass 
+metadata
+{
+	auto_apply_material = "materials/tools/toolstrigger.vmat"
+}
+= zpsviral_setmode : "Sets the mode [Survival/Objective]"
+[
+	targetname(target_source) : "Name" : : "The name that other entities refer to this entity by."
+	parentname(target_destination) [ group="Hierarchy" ] : "Parent" : : "The name of this entity's parent in the movement hierarchy. Entities with parents move with their parent."
+	mapspawn(flags) : "Start map on this mode - DO NOT SET BOTH ON" :  : "" = [
+		1 : "Is Survival" : 1
+		2 : "Is Objective" : 0
+	]
+	enable_shadows(boolean) [ group="Render Properties" ] : "Shadow Casting" : 1 : "Whether this entity should cast shadows or not"
+]
+
+// 
+// ZPS_Viral.Entities.BreakableWall : Sandbox.AnimEntity 
+// 
+@PointClass tags( SupportsSolids ) model() = zpsviral_breakable : "Acts the same as a func_breakable"
+[
+	model(studio) [report]: "World Model" : "" : "The model this entity should use."
+	skin(materialgroup) [ group="Render Properties" ] : "Skin" : "default" : "Some models have multiple versions of their textures, called skins." 
+	bodygroups(bodygroupchoices) [ group="Render Properties" ] : "Body Groups" : "" : "Some models have multiple variations of certain items, such as characters having different hair styles, etc."
+	rendercolor(color255) : "FX Color (R G B)" : "255 255 255" : "The FX color is used by the selected Render Mode."
+	renderamt(integer) [ group="Render Properties" ] : "FX Amount (0 - 255)" : 255 : "The FX amount is used by the selected Render Mode."
+	targetname(target_source) : "Name" : : "The name that other entities refer to this entity by."
+	parentname(target_destination) [ group="Hierarchy" ] : "Parent" : : "The name of this entity's parent in the movement hierarchy. Entities with parents move with their parent."
+	health_until_break(float) : "Health Until Break" : 0 : ""
+	enable_shadows(boolean) [ group="Render Properties" ] : "Shadow Casting" : 1 : "Whether this entity should cast shadows or not"
+
+	input SetColor(string) : "Sets the color of this entity. Format is '255 255 255 255'."
+
+	output OnBroken(void) : ""
 ]
 
 // 

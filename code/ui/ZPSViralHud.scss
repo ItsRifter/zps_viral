@@ -33,7 +33,23 @@ vitals {
 		top: 5%;
 		right: 6.5%;
 	}
+	
+	.armor {
+		position: absolute;
+		top: 15%;
+		right: 6.5%;
+	}
 
+	.armoricon
+	{
+		background-image: url("materials/ui/armor.png");
+		background-size: cover;
+		top: 15%;
+		left: 90.1%;
+		width: 78px;
+		height: 82px;
+	}
+	
 	&.survivor {
 		.team {
 			background-image: url("materials/ui/health.png");
