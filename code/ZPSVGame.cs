@@ -101,7 +101,7 @@ namespace ZPS_Viral
 				MapEntitiesWeapons.Add( mapEnt );
 				MapEntitiesWeaponsPos.Add( mapEnt.Position );
 				MapEntitiesWeaponsRot.Add( mapEnt.Rotation );
-				Log.Info("Grabbed: " + mapEnt);
+				
 			}
 			
 			foreach ( var mapEnt in All.OfType<ItemBase>() )
@@ -109,7 +109,7 @@ namespace ZPS_Viral
 				MapEntitiesItems.Add( mapEnt  );
 				MapEntitiesItemsPos.Add( mapEnt.Position );
 				MapEntitiesItemsRot.Add( mapEnt.Rotation );
-				Log.Info("Grabbed: " + mapEnt);
+				
 			}
 			
 			foreach ( var mapEnt in All.OfType<BreakableWall>() )
@@ -117,7 +117,7 @@ namespace ZPS_Viral
 				MapEntitiesMisc.Add(mapEnt);
 				MapEntitiesMiscPos.Add(mapEnt.Position);
 				MapEntitiesMiscRot.Add( mapEnt.Rotation );
-				Log.Info("Grabbed: " + mapEnt);
+				
 			}
 			
 			foreach ( var mapEnt in All.OfType<Prop>() )
@@ -125,35 +125,32 @@ namespace ZPS_Viral
 				MapEntitiesProps.Add( mapEnt );
 				MapEntitiesPropsPos.Add( mapEnt.Position );
 				MapEntitiesPropsRot.Add( mapEnt.Rotation );
-				Log.Info("Grabbed: " + mapEnt);
+				
 			}
 			
 		}
 
+		[Event("ClearEnts")]
 		public void ClearMapEntities()
 		{
 			foreach ( var mapEnt in All.OfType<WeaponBase>() )
 			{
 				mapEnt.Delete();
-				Log.Info("Cleared: " + mapEnt);
 			}
 			
 			foreach ( var mapEnt in All.OfType<ItemBase>() )
 			{
 				mapEnt.Delete();
-				Log.Info("Cleared: " + mapEnt);
 			}
 			
 			foreach ( var mapEnt in All.OfType<BreakableWall>() )
 			{
 				mapEnt.Delete();
-				Log.Info("Cleared: " + mapEnt);
 			}
 			
 			foreach ( var mapEnt in Entity.All.OfType<ItemCrate>() )
 			{
 				mapEnt.Delete();
-				Log.Info("Cleared: " + mapEnt);
 			}
 		}
 		
@@ -233,9 +230,13 @@ namespace ZPS_Viral
 				if ( MapEntitiesProps[index].ToString() == "ItemCrate" )
 				{
 					var ent = new ItemCrate();
-					ent.Position = MapEntitiesItemsPos[index];
-					ent.Rotation = MapEntitiesItemsRot[index];
-                    
+					ent.Position = MapEntitiesPropsPos[index];
+					ent.Rotation = MapEntitiesPropsRot[index];
+				} else if ( MapEntitiesProps[index].ToString() == "Kevlar" )
+				{
+					var ent = new Kevlar();
+					ent.Position = MapEntitiesPropsPos[index];
+					ent.Rotation = MapEntitiesPropsRot[index];
 				}
 				
 				index++;
@@ -269,10 +270,20 @@ namespace ZPS_Viral
 			Event.Run( "RestartEnts" );
 		}
 		
+		[ServerCmd( "zpsviral_clearents" )]
+		public static void CMDClearEnts()
+		{
+			Event.Run( "ClearEnts" );
+		}
+		
 		[Event("StartGame")]
 		public void BeginGame()
 		{
 			Sound.FromScreen( "round_begin" );
+			
+			if(!MusicPlayer.IsPlaying)
+				MusicPlayer.PlayRandomMusic();
+                 				
 			
 			if(MapEntitiesWeapons.Count == 0)
 				GrabMapEntities();
@@ -303,9 +314,6 @@ namespace ZPS_Viral
 				p.Camera = null;
 				p.Camera = new FirstPersonCamera();
 			}
-
-			if(!MusicPlayer.IsPlaying)
-				MusicPlayer.PlayRandomMusic();
 		}
 
 		public void StopGame()
@@ -320,7 +328,7 @@ namespace ZPS_Viral
 			CurState = RoundState.Idle;
 		}
 
-		[Event.Tick]
+		[Event("server.tick")]
 		public void UpdateTime()
 		{
 			if ( Host.IsClient )
@@ -481,7 +489,7 @@ namespace ZPS_Viral
 			String filePath;
 
 			if ( isHumanWin )
-				filePath = "round_end_human";
+				filePath = "round_end_survivors_" + Rand.Int( 1, 4 );
 			else
 				filePath = "round_end_zombie";
 
@@ -495,14 +503,12 @@ namespace ZPS_Viral
 		{
 			String filePath;
 			if ( isHumanWin )
-				filePath = "round_end_human";
+				filePath = "round_end_survivors_" + Rand.Int( 1, 4 );
 			else
 				filePath = "round_end_zombie";
-
-			foreach(var p in Entity.All.OfType<ZPSVPlayer>())
-			{
-				Sound.FromScreen( filePath );
-			}
+			
+			Sound.FromScreen( filePath );
+			
 		}
 
 		[ServerCmd( "zpsviral_debug" )]
@@ -527,7 +533,16 @@ namespace ZPS_Viral
 			CheckRoundStatus();
 		}
 
-		[Event("noclip")]
+		public override void Simulate(Client cl)
+		{
+			base.Simulate( cl );
+			
+			if(IsClient)
+				return;
+
+			MusicPlayer.UpdateTime();
+		}
+		
 		public override void DoPlayerNoclip( Client user )
 		{
 			base.DoPlayerNoclip( user );

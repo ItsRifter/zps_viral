@@ -107,9 +107,32 @@ namespace ZPS_Viral
 			IsPlaying = true;
 
 			Log.Info( "Now playing: " + MusicPath );
-
-			Sound.FromScreen( MusicPath );
-
+			
+			using(Prediction.Off())
+			{
+				Sound.FromScreen( MusicPath );
+			}
+		}
+		
+		public void UpdateTime()
+		{
+			if ( !IsPlaying )
+				return;
+			
+			if ( NextThink < 0f )
+			{
+				MusicDuration -= 1;
+				NextThink = 180;
+				
+			}
+			else
+				NextThink--;
+			
+			if ( MusicDuration <= 0f )
+			{
+				IsPlaying = false;
+				PlayRandomMusic();
+			}
 		}
 	}
 }

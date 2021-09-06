@@ -99,9 +99,9 @@ namespace ZPS_Viral
 		{
 			Inventory.DeleteContents();
 			if ( CurTeam == TeamType.Undead )
-				Inventory.Add( new Claws(), true );
-			else
 			{
+				Inventory.Add( new Claws(), true );
+			} else {
 				int RandMelee = Rand.Int( 1, 2 );
 				if ( RandMelee == 1 )
 				{
@@ -134,6 +134,8 @@ namespace ZPS_Viral
 				
 				GiveAmmo(AmmoType.Pistol, 12);
 				//CurWeightSlots += 1.25f;
+				
+				flashlight.LightEnabled = true;
 			}
 		}
 
@@ -147,13 +149,7 @@ namespace ZPS_Viral
 			SetModel( "models/citizen/citizen.vmdl" );
 
 			Camera = new FirstPersonCamera();
-			
-			if(CurTeam == TeamType.Survivor)
-				Controller = new SurvivorWalkController();
-
-			else if ( CurTeam == TeamType.Undead )
-				Controller = new ZombieWalkController();
-			
+			Controller = new ZombieWalkController();
 			Animator = new StandardPlayerAnimator();
 
 			ClearAmmo();
@@ -180,6 +176,9 @@ namespace ZPS_Viral
 
 			if ( CurTeam == TeamType.Undead )
 			{
+				//vision = new ZombieVision();
+				//EnableVision( true );
+				
 				Health = 200;
 				
 				if( CurZombieType == ZombieType.Carrier )
@@ -193,7 +192,6 @@ namespace ZPS_Viral
                 {
                 	vectorSpawns.Add( ZombiePoints.Position );
                 }
-    
                 Position = vectorSpawns[Rand.Int(0, vectorSpawns.Count - 1)];
                 GiveWeapons();
 			}
@@ -217,8 +215,7 @@ namespace ZPS_Viral
 			//base.Simulate( cl );
 			SimulateActiveChild( cl, ActiveChild );
 
-			if ( (ZPSVGame.CurState == ZPSVGame.RoundState.Idle || ZPSVGame.CurState == ZPSVGame.RoundState.Start) &&
-			     (CurTeam == TeamType.Survivor || CurTeam == TeamType.Undead || CurTeam == TeamType.Infected && phaseInfection1 ) )
+			if (ZPSVGame.CurState != ZPSVGame.RoundState.Active && CurTeam != TeamType.Unassigned)
 					return;
 			
 			TickPlayerUse();
@@ -238,6 +235,7 @@ namespace ZPS_Viral
 			{
 				if ( CurTeam != TeamType.Survivor )
 					return;
+				
 				if ( flashlight.timeSinceLightToggled > 0.1f && toggle )
 				{
 					
@@ -248,7 +246,23 @@ namespace ZPS_Viral
 					flashlight.timeSinceLightToggled = 0;
 					
 				}
+			} else if ( vision.IsValid() )
+			{
+				if ( CurTeam != TeamType.Undead )
+					return;
+				
+				if ( vision.timeSinceLightToggled > 0.1f && toggle )
+				{
+					
+					vision.LightEnabled = !vision.LightEnabled;
+
+					EnableVision( vision.LightEnabled );
+
+					vision.timeSinceLightToggled = 0;
+					
+				}
 			}
+			
 
 			if ( Input.Pressed( InputButton.Drop ) && IsServer )
 			{
@@ -322,7 +336,7 @@ namespace ZPS_Viral
 				{
 					
 					item.OnCarryStart( this );
-					Log.Info(ArmorPoints);
+					
 					//CurWeight += item.Weight;
 				}
 			}
@@ -388,6 +402,8 @@ namespace ZPS_Viral
 
 			if ( LifeState == LifeState.Dead )
 				return;
+
+			bool isFullHP = false;
 			
 			if ( timeSinceLastHit >= 15)
 			{
@@ -399,21 +415,23 @@ namespace ZPS_Viral
 					if ( Health > 250 )
 					{
 						Health = 250;
-						return;
+						isFullHP = true;
 					}
 				}
 				else
 				{
 					if ( Health > 200 )
-                    {
+					{
                     	Health = 200;
-                    	return;
+                        isFullHP = true;
                     }
 				}
-				
-				Health += RegenAmount;
-				
-				timeTillNextRegen = 0;
+
+				if ( !isFullHP )
+				{
+					Health += RegenAmount;
+					timeTillNextRegen = 0;
+				}
 			}
 		}
 		
@@ -548,9 +566,42 @@ namespace ZPS_Viral
 			CurTeam = targetTeam;
 		}
 
+		public float ScaleDamageHitBox(DamageInfo info)
+		{
+			float scale = 1;
+
+			Log.Info(info.HitboxIndex);
+			
+			//Head
+			if ( info.HitboxIndex == 5 )
+				scale = 2f;
+			
+			//Chest
+			if ( info.HitboxIndex == 3 )
+				scale = 1.25f;
+
+			//Arms
+			if ( info.HitboxIndex == 7 || info.HitboxIndex == 11 )
+				scale = 0.95f;
+			
+			//Legs
+			if ( info.HitboxIndex == 14 || info.HitboxIndex == 17 )
+				scale = 0.75f;
+			
+			//Feet
+			if ( info.HitboxIndex == 15 || info.HitboxIndex == 18 || info.HitboxIndex == 19 )
+				scale = 0.5f;
+			
+			return info.Damage * scale;
+		}
+		
+
 		public override void TakeDamage( DamageInfo info )
 		{
 			var attacker = info.Attacker as ZPSVPlayer;
+			
+			if(CurTeam == TeamType.Undead)
+				info.Damage = ScaleDamageHitBox(info);
 
 			if ( ZPSVGame.CurState != ZPSVGame.RoundState.Active )
 				return;
@@ -599,6 +650,62 @@ namespace ZPS_Viral
 			SwapTeam( TeamType.Infected );
 		}
 
+		public void DropEverything()
+		{
+			foreach ( var drop in curWeapons )
+			{
+
+				if ( drop.IsDroppable == false )
+					return;
+
+				//Melee
+				if ( drop.ToString() == "Machete" )
+				{
+					var dropEnt = new Machete();
+					dropEnt.Position = Position;
+				}
+				
+				if ( drop.ToString() == "Axe" )
+				{
+					var dropEnt = new Axe();
+					dropEnt.Position = Position;
+				}
+				
+				//Pistols
+				if ( drop.ToString() == "USP" )
+				{
+					var dropEnt = new USP();
+					dropEnt.Position = Position;
+				}
+
+				if ( drop.ToString() == "Glock17" )
+				{
+					var dropEnt = new Glock17();
+					dropEnt.Position = Position;
+				}
+				
+				if ( drop.ToString() == "Revolver" )
+				{
+					var dropEnt = new Revolver();
+					dropEnt.Position = Position;
+				}
+
+				//Shotguns
+				if ( drop.ToString() == "Remington" )
+				{
+					var dropEnt = new Remington();
+					dropEnt.Position = Position;
+				}
+
+				//Assault Rifles
+				if ( drop.ToString() == "AK47" )
+				{
+					var dropEnt = new AK47();
+					dropEnt.Position = Position;
+				}
+			}
+		}
+
 		public override void OnKilled()
 		{
 			//base.OnKilled();
@@ -634,6 +741,8 @@ namespace ZPS_Viral
 
 			}
 
+			DropEverything();
+			
 			Inventory.DeleteContents();
 			ZPSVGame.CheckRoundStatus();
 			Camera = new SpectateRagdollCamera();

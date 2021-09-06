@@ -2,8 +2,7 @@
 
 namespace ZPS_Viral
 {
-	[Library( "zpsviral_flashlight", Title = "Flashlight" )]
-	partial class Flashlight : ItemBase
+	partial class Flashlight : WeaponBase
 	{
 		protected virtual Vector3 LightOffset => Vector3.Forward * 15;
 

@@ -39,11 +39,6 @@ namespace ZPS_Viral
 			{
 				var weapon = player.ActiveChild as WeaponBase;
 				SetClass( "active", true  );
-
-				if ( player.CurTeam == ZPSVPlayer.TeamType.Undead )
-				{
-					return;
-				}
 				
 				if ( weapon == null )
 				{
@@ -61,6 +56,15 @@ namespace ZPS_Viral
                 RifleAmmo.Text = "Rifle: " + player.AmmoCount(AmmoType.Rifle);
 				MagnumAmmo.Text = "Magnum: " + player.AmmoCount( AmmoType.Magnum );
 
+				if ( player.CurTeam == ZPSVPlayer.TeamType.Undead )
+				{
+					PistolAmmo.Text = "";
+					BuckshotAmmo.Text = "";
+					RifleAmmo.Text = "";
+					MagnumAmmo.Text = "";
+					return;
+				}
+				
 				if ( player.AmmoTypeToDrop == "pistol" )
 				{
 					PistolAmmo.SetClass( "isSelected", true );

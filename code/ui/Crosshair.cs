@@ -13,7 +13,7 @@ namespace ZPS_Viral
 		public Crosshair()
 		{
 			StyleSheet.Load( "/ui/Crosshair.scss" );
-
+			
 			for ( int i = 0; i < 5; i++ )
 			{
 				var p = Add.Panel( "element" );
@@ -24,11 +24,18 @@ namespace ZPS_Viral
 		public override void Tick()
 		{
 			base.Tick();
+			this.PositionAtCrosshair();
 
 			SetClass( "fire", fireCounter > 0 );
 
 			if ( fireCounter > 0 )
 				fireCounter--;
+		}
+
+		[PanelEvent]
+		public void FireEvent()
+		{
+			fireCounter += 2;
 		}
 	}
 }

@@ -20,6 +20,8 @@ namespace ZPS_Viral
 
 			RootPanel.AddChild<Ammo>().StyleSheet.Load( "/ui/ZPSViralHud.scss" );;
 
+			RootPanel.AddChild<Crosshair>();
+			
 			RootPanel.AddChild<NameTags>();
 			RootPanel.AddChild<DamageIndicator>();
 			RootPanel.AddChild<HitIndicator>();

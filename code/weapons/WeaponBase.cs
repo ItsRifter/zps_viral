@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace ZPS_Viral
 {
-	partial class WeaponBase : BaseWeapon
+	public partial class WeaponBase : BaseWeapon
 	{
 		public virtual AmmoType AmmoType => AmmoType.Pistol;
 

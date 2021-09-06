@@ -20,7 +20,7 @@
 		height: 6px;
 	}
 
-	&.dm_shotgun
+	&.zpsviral_remington
 	{
 		opacity: 0.3;
 		transition: opacity 0.5s linear;
@@ -78,7 +78,7 @@
 		}
 	}
 
-	&.dm_pistol
+	&.zpsviral_glock17, &.zpsviral_usp
 	{
 		opacity: 0.2;
 		transition: opacity 0.3s ease-out;
@@ -164,7 +164,7 @@
 		}
 	}
 
-	&.dm_smg
+	&.zpsviral_ak47
 	{
 		opacity: 0.5;
 		transition: opacity 0.5s ease-in;
