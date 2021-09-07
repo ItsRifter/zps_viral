@@ -339,7 +339,7 @@ namespace ZPS_Viral
 				}
 			} 
 			
-			if ( Input.Pressed( InputButton.Use ) && IsServer )
+			if ( Input.Pressed( InputButton.Use ) && IsServer && CurTeam == TeamType.Survivor )
 			{
 				var tr = Trace.Ray( EyePos, EyePos + EyeRot.Forward * 92 )
 					.UseHitboxes( )
