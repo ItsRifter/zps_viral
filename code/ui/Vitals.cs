@@ -53,7 +53,7 @@ namespace ZPS_Viral
 					}
 				}
 				
-				if(k.Equals("Infected") && player.InfectionTime <= 13f) 
+				if(k.Equals("Infected") && player.phaseInfection1) 
 				{
 					if(!HasClass("infected"))
 					{

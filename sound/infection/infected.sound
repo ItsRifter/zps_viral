@@ -9,7 +9,7 @@
 			"sound/infection/jolt-03.vsnd",
 			"sound/infection/jolt-04.vsnd",
 		]
-		UI = false
+		UI = true
 		Volume = 1.0
 		VolumeRandom = 0.0
 		Pitch = 1.0

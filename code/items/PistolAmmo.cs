@@ -10,7 +10,11 @@ namespace ZPS_Viral
 		public override string WorldModelPath => "models/ammo/pistol_ammo.vmdl";
 		
 		public override AmmoType ammoType => AmmoType.Pistol;
-		public override int RemainingAmmo { get; set; } = 12;
+		public override int RemainingAmmo { get; set; } = 15;
+		public override float Weight => 3f;
+
+		public bool shouldBePickedUpFirst = false;
+		
 		public override void Spawn()
 		{
 			base.Spawn();

@@ -11,6 +11,7 @@ namespace ZPS_Viral
 		
 		public override AmmoType ammoType => AmmoType.Magnum; 
 		public override int RemainingAmmo { get; set; } = 6;
+		public override float Weight => 4f;
 		public override void Spawn()
 		{
 			base.Spawn();

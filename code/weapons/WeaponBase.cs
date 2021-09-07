@@ -136,7 +136,9 @@ namespace ZPS_Viral
 				var ammo = player.TakeAmmo( AmmoType, ClipSize - AmmoClip );
 				if ( ammo == 0 )
 					return;
-
+				
+				player.RecheckAmmoWeight(ClipSize - AmmoClip, AmmoType);
+				
 				AmmoClip += ammo;
 			}
 		}

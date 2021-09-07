@@ -6,8 +6,6 @@ namespace ZPS_Viral
 {
 	partial class ZPSVPlayer
 	{
-		public static bool AllowFlashlight { get; set; } = false;
-
 		private Flashlight flashlight;
 
 		private void EnableFlashlight( bool shouldEnable )
@@ -15,9 +13,6 @@ namespace ZPS_Viral
 			if ( !IsServer )
 				return;
 			
-			if ( !AllowFlashlight )
-				return;
-
 			using ( Prediction.Off() )
 			{ 
 				PlaySound("flashlight_toggle");

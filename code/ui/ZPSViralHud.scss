@@ -153,6 +153,18 @@ ammo
 		
 	}
 	
+	.weight
+	{
+		position: absolute;
+		bottom: 62px;
+		right: -205px;
+		font-size: 24px;
+		color: #ffffff;
+		mix-blend-mode: lighten;
+		font-family: Roboto;
+	}
+	
+	
 	.isSelected
 	{
 		color: green;

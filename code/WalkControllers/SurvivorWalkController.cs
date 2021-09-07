@@ -15,7 +15,7 @@ namespace ZPS_Viral
 	public class SurvivorWalkController : BasePlayerController
 	{
 		public float SprintSpeed { get; set; } = 85.0f;
-		public float WalkSpeed { get; set; } = 150.0f;
+		public float WalkSpeed { get; set; } = 190.0f;
 		public float DefaultSpeed { get; set; } = 190.0f;
 		public float Acceleration { get; set; } = 10.0f;
 		public float AirAcceleration { get; set; } = 50.0f;
@@ -46,7 +46,7 @@ namespace ZPS_Viral
 			Duck = new Duck( this );
 			Unstuck = new Unstuck( this );
 		}
-
+		
 		/// <summary>
 		/// This is temporary, get the hull size for the player's collision
 		/// </summary>
@@ -266,7 +266,7 @@ namespace ZPS_Viral
 
 			if ( Sandbox.Input.Down( InputButton.Run ) ) return SprintSpeed;
 			if ( Sandbox.Input.Down( InputButton.Walk ) ) return WalkSpeed;
-
+			
 			return DefaultSpeed;
 		}
 

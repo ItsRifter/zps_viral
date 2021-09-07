@@ -12,9 +12,6 @@ namespace ZPS_Viral
 			if ( !IsServer )
 				return;
 			
-			if ( !AllowFlashlight )
-				return;
-
 			using ( Prediction.Off() )
 			{ 
 				PlaySound("flashlight_toggle");

@@ -119,10 +119,12 @@ namespace ZPS_Viral
 				
 				if ( AmmoClip < ClipSize )
 				{
+					player.RecheckAmmoWeight( 1, AmmoType );
 					Reload();
 				}
 				else
 				{
+					player.RecheckAmmoWeight( 1, AmmoType );
 					FinishReload();
 				}
 			}

@@ -15,7 +15,7 @@ namespace ZPS_Viral
 		
 		public virtual int RemainingAmmo { get; set; } = 1;
 
-		public float Weight = 1.25f;
+		public virtual float Weight => 0f;
 
 		public PickupTrigger PickupTrigger { get; protected set; }
 

@@ -1,5 +1,5 @@
 {
-    "name": "zombie-panic-source-2",
+    "name": "zombie-panic-viral",
     "sharedassets": "*.*",
     
     "depends": 
@@ -10,8 +10,8 @@
     "gamemodes":
     [
         {
-         "name": "zombie-panic-source-2",
-         "title": "Zombie Panic Source 2",
+         "name": "zombie-panic-viral",
+         "title": "Zombie Panic Viral",
          "description": "An undead recreation of the original mod into sbox"
         }
     ]

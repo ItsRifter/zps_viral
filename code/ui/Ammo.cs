@@ -12,7 +12,8 @@ namespace ZPS_Viral
 		public Label BuckshotAmmo;
 		public Label RifleAmmo;
 		public Label MagnumAmmo;
-
+		public Label WeightTotal;
+		
 		public string ammoType;
 		
 		public Ammo()
@@ -22,6 +23,7 @@ namespace ZPS_Viral
 			BuckshotAmmo = Add.Label( "", "buckshot" );
 			RifleAmmo = Add.Label( "", "rifle" );
 			MagnumAmmo = Add.Label( "", "magnum" );
+			WeightTotal = Add.Label( "", "weight" );
 			
 			var pawn = Local.Pawn;
 			if ( pawn == null ) return;
@@ -55,13 +57,15 @@ namespace ZPS_Viral
                 BuckshotAmmo.Text = "Shells: " + player.AmmoCount(AmmoType.Buckshot);
                 RifleAmmo.Text = "Rifle: " + player.AmmoCount(AmmoType.Rifle);
 				MagnumAmmo.Text = "Magnum: " + player.AmmoCount( AmmoType.Magnum );
-
-				if ( player.CurTeam == ZPSVPlayer.TeamType.Undead )
+				WeightTotal.Text = "Weight: " + player.CurAmmoWeight + " KG";
+				
+				if ( player.CurTeam == ZPSVPlayer.TeamType.Undead || player.CurTeam == ZPSVPlayer.TeamType.Unassigned )
 				{
 					PistolAmmo.Text = "";
 					BuckshotAmmo.Text = "";
 					RifleAmmo.Text = "";
 					MagnumAmmo.Text = "";
+					WeightTotal.Text = "";
 					return;
 				}
 				
