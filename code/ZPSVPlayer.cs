@@ -253,13 +253,15 @@ namespace ZPS_Viral
 		
 		public override void Simulate( Client cl )
 		{
-			var controller = GetActiveController();
-			controller?.Simulate( cl, this, GetActiveAnimator() );
-			
 			SimulateActiveChild( cl, ActiveChild );
 			
 			if (ZPSVGame.CurState != ZPSVGame.RoundState.Active && CurTeam != TeamType.Unassigned)
-					return;
+				return;
+			
+			var controller = GetActiveController();
+			controller?.Simulate( cl, this, GetActiveAnimator() );
+			
+			
 			
 			if ( timeForPanic >= 7 && IsPanicked )
 			{
