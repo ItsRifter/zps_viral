@@ -116,17 +116,6 @@ namespace ZPS_Viral
 					_shouldPump = true;
 				
 				AmmoClip += ammo;
-				
-				if ( AmmoClip < ClipSize )
-				{
-					player.RecheckAmmoWeight( 1, AmmoType );
-					Reload();
-				}
-				else
-				{
-					player.RecheckAmmoWeight( 1, AmmoType );
-					FinishReload();
-				}
 			}
 		}
 

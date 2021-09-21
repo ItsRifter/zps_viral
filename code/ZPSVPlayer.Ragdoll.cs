@@ -24,7 +24,7 @@ namespace ZPS_Viral
 			ent.EnableHitboxes = true;
 			ent.EnableAllCollisions = true;
 			ent.SurroundingBoundsMode = SurroundingBoundsType.Physics;
-			ent.RenderColorAndAlpha = RenderColorAndAlpha;
+			ent.RenderColor = RenderColor;
 			ent.PhysicsGroup.Velocity = velocity;
 
 			if ( Local.Pawn == this )
@@ -47,7 +47,7 @@ namespace ZPS_Viral
 					var clothing = new ModelEntity();
 					clothing.SetModel( model );
 					clothing.SetParent( ent, true );
-					clothing.RenderColorAndAlpha = e.RenderColorAndAlpha;
+					clothing.RenderColor = e.RenderColor;
 
 					if ( Local.Pawn == this )
 					{

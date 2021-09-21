@@ -1,5 +1,5 @@
 // 
-// ZPS_Viral.Kevlar : ZPS_Viral.ItemBase 
+// ZPS_Viral.Kevlar
 // 
 @PointClass editormodel( "models/misc/kevlar.vmdl" ) 
 metadata
@@ -18,7 +18,7 @@ metadata
 ]
 
 // 
-// ZPS_Viral.MagnumAmmo : ZPS_Viral.ItemBase 
+// ZPS_Viral.MagnumAmmo
 // 
 @PointClass editormodel( "models/ammo/magnum_ammo.vmdl" ) 
 metadata
@@ -37,7 +37,7 @@ metadata
 ]
 
 // 
-// ZPS_Viral.PistolAmmo : ZPS_Viral.ItemBase 
+// ZPS_Viral.PistolAmmo
 // 
 @PointClass editormodel( "models/ammo/pistol_ammo.vmdl" ) 
 metadata
@@ -56,7 +56,7 @@ metadata
 ]
 
 // 
-// ZPS_Viral.RifleAmmo : ZPS_Viral.ItemBase 
+// ZPS_Viral.RifleAmmo
 // 
 @PointClass editormodel( "models/ammo/rifle_ammo.vmdl" ) 
 metadata
@@ -75,7 +75,7 @@ metadata
 ]
 
 // 
-// ZPS_Viral.ShotgunAmmo : ZPS_Viral.ItemBase 
+// ZPS_Viral.ShotgunAmmo
 // 
 @PointClass editormodel( "models/ammo/shotgun_ammo.vmdl" ) 
 metadata
@@ -94,7 +94,7 @@ metadata
 ]
 
 // 
-// ZPS_Viral.SmallMedkit : ZPS_Viral.ItemBase 
+// ZPS_Viral.SmallMedkit
 // 
 @PointClass editormodel( "models/medkit.vmdl" ) 
 metadata
@@ -113,7 +113,7 @@ metadata
 ]
 
 // 
-// ZPS_Viral.AK47 : ZPS_Viral.WeaponBase 
+// ZPS_Viral.AK47
 // 
 @PointClass editormodel( "models/weapons/ak47/w_ak47.vmdl" ) = zpsviral_ak47 : ""
 [
@@ -125,7 +125,7 @@ metadata
 ]
 
 // 
-// ZPS_Viral.Axe : ZPS_Viral.WeaponBase 
+// ZPS_Viral.Axe
 // 
 @PointClass editormodel( "models/weapons/axe/w_axe.vmdl" ) = zpsviral_axe : ""
 [
@@ -137,7 +137,7 @@ metadata
 ]
 
 // 
-// ZPS_Viral.Claws : ZPS_Viral.WeaponBase 
+// ZPS_Viral.Claws
 // 
 @PointClass = zpsviral_claws : ""
 [
@@ -149,7 +149,7 @@ metadata
 ]
 
 // 
-// ZPS_Viral.Glock17 : ZPS_Viral.WeaponBase 
+// ZPS_Viral.Glock17
 // 
 @PointClass editormodel( "models/weapons/glock17/w_glock17.vmdl" ) = zpsviral_glock17 : ""
 [
@@ -161,7 +161,7 @@ metadata
 ]
 
 // 
-// ZPS_Viral.Machete : ZPS_Viral.WeaponBase 
+// ZPS_Viral.Machete
 // 
 @PointClass editormodel( "models/weapons/machete/w_machete.vmdl" ) = zpsviral_machete : ""
 [
@@ -173,7 +173,7 @@ metadata
 ]
 
 // 
-// ZPS_Viral.MP5 : ZPS_Viral.WeaponBase 
+// ZPS_Viral.MP5
 // 
 @PointClass editormodel( "models/weapons/mp5/w_mp5.vmdl" ) = zpsviral_mp5 : ""
 [
@@ -185,7 +185,7 @@ metadata
 ]
 
 // 
-// ZPS_Viral.Remington : ZPS_Viral.WeaponBase 
+// ZPS_Viral.Remington
 // 
 @PointClass editormodel( "models/weapons/remington/w_remington.vmdl" ) = zpsviral_remington : ""
 [
@@ -197,7 +197,7 @@ metadata
 ]
 
 // 
-// ZPS_Viral.Revolver : ZPS_Viral.WeaponBase 
+// ZPS_Viral.Revolver
 // 
 @PointClass editormodel( "models/weapons/revolver/w_revolver.vmdl" ) = zpsviral_revolver : ""
 [
@@ -209,7 +209,7 @@ metadata
 ]
 
 // 
-// ZPS_Viral.USP : ZPS_Viral.WeaponBase 
+// ZPS_Viral.USP
 // 
 @PointClass editormodel( "models/weapons/usp/w_usp.vmdl" ) = zpsviral_usp : ""
 [
@@ -221,7 +221,7 @@ metadata
 ]
 
 // 
-// ZPS_Viral.Entities.AutoRun : Sandbox.Entity 
+// ZPS_Viral.Entities.AutoRun
 // 
 @SolidClass 
 metadata
@@ -232,7 +232,8 @@ metadata
 [
 	targetname(target_source) : "Name" : : "The name that other entities refer to this entity by."
 	parentname(target_destination) [ group="Hierarchy" ] : "Parent" : : "The name of this entity's parent in the movement hierarchy. Entities with parents move with their parent."
-	mapspawn(flags) : "Start map on this mode - DO NOT SET BOTH ON" :  : "" = [
+	mapspawn(flags) : "Start map on this mode - DO NOT SET BOTH ON" : : "" =
+	[
 		1 : "Is Survival" : 1
 		2 : "Is Objective" : 0
 	]
@@ -240,7 +241,7 @@ metadata
 ]
 
 // 
-// ZPS_Viral.Entities.BreakableWall : Sandbox.AnimEntity 
+// ZPS_Viral.Entities.BreakableWall
 // 
 @PointClass tags( SupportsSolids ) model() = zpsviral_breakable : "Acts the same as a func_breakable"
 [
@@ -260,7 +261,7 @@ metadata
 ]
 
 // 
-// ZPS_Viral.Entities.ItemCrate : Sandbox.Prop 
+// ZPS_Viral.Entities.ItemCrate
 // 
 @PointClass editormodel( "models/misc/itemcrate.vmdl" ) model() 
 metadata
@@ -281,7 +282,8 @@ metadata
 	itemtospawn_1(string) : "Item To Spawn 1" :  : "What item to spawn, MUST BE CASE SENSITIVE"
 	itemtospawn_2(string) : "Item To Spawn 2" :  : "What item to spawn, MUST BE CASE SENSITIVE"
 	itemtospawn_3(string) : "Item To Spawn 3" :  : "What item to spawn, MUST BE CASE SENSITIVE"
-	collisiongroupoverride(choices) : "Collision Group Override" : -1 : "" = [
+	collisiongroupoverride(choices) : "Collision Group Override" : -1 : "" =
+	[
 		-1 : "UNUSED"
 		0 : "COLLISION GROUP ALWAYS"
 		1 : "COLLISION GROUP NONPHYSICAL"
@@ -297,7 +299,7 @@ metadata
 ]
 
 // 
-// ZPS_Viral.Entities.SurvivorPoint : Sandbox.Entity 
+// ZPS_Viral.Entities.SurvivorPoint
 // 
 @PointClass editormodel( "models/editor/playerstart.vmdl" ) 
 metadata
@@ -314,7 +316,7 @@ metadata
 ]
 
 // 
-// ZPS_Viral.Entities.TriggerTeams : Sandbox.BaseTrigger 
+// ZPS_Viral.Entities.TriggerTeams
 // 
 @SolidClass 
 metadata
@@ -333,7 +335,8 @@ metadata
 	teleport_destination_06(string) : "Teleport Destination 06" :  : ""
 	teleport_destination_07(string) : "Teleport Destination 07" :  : ""
 	teleport_destination_08(string) : "Teleport Destination 08" :  : ""
-	selectedteam(choices) : "Team to join" : 4 : "" = [
+	selectedteam(choices) : "Team to join" : 4 : "" =
+	[
 		0 : "Unassigned"
 		1 : "Survivor"
 		2 : "Infected"
@@ -367,7 +370,7 @@ metadata
 ]
 
 // 
-// ZPS_Viral.Entities.ZombiePoint : Sandbox.Entity 
+// ZPS_Viral.Entities.ZombiePoint
 // 
 @PointClass editormodel( "models/editor/playerstart.vmdl" ) 
 metadata

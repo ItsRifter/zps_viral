@@ -224,7 +224,7 @@ namespace ZPS_Viral
 				
 				if( CurZombieType == ZombieType.Carrier )
                 {
-                	RenderColor = new Color32( 255, 140, 140 );
+                	RenderColor = new Color( 255, 140, 140 );
                     Health = 250;
                 }
     
@@ -478,129 +478,7 @@ namespace ZPS_Viral
 		{
 			IsPanicked = isPanic;
 		}
-		
-		
-		public void RecheckAmmoWeight(int removeAmmo, AmmoType ammoType)
-		{
-			if ( !IsServer )
-				return;
 
-			int remainToRemove = removeAmmo;
-			
-			int pistolCount = -1;
-			int shotgunCount = -1;
-			int rifleCount = -1;
-			int magnumCount = -1;
-			
-			
-			foreach ( var ammo in curAmmo )
-			{
-				if ( ammo.ToString() == "PistolAmmo" )
-					pistolCount++;
-				
-				if( ammo.ToString() == "ShotgunAmmo" )
-					shotgunCount++;
-				
-				if( ammo.ToString() == "RifleAmmo" )
-					rifleCount++;
-				
-				if( ammo.ToString() == "MagnumAmmo" )
-					magnumCount++;
-			}
-
-			if ( ammoType == AmmoType.Pistol )
-			{
-				remainToRemove -= curAmmo[pistolCount].RemainingAmmo;
-				curAmmo[pistolCount].RemainingAmmo -= removeAmmo;
-			}
-				
-			else if ( ammoType == AmmoType.Buckshot )
-			{
-				remainToRemove -= curAmmo[shotgunCount].RemainingAmmo;
-				curAmmo[shotgunCount].RemainingAmmo -= removeAmmo;
-			}
-			else if ( ammoType == AmmoType.Rifle )
-			{
-				remainToRemove -= curAmmo[rifleCount].RemainingAmmo;
-				curAmmo[rifleCount].RemainingAmmo -= removeAmmo;
-			}
-			else if ( ammoType == AmmoType.Magnum )
-			{
-				remainToRemove -= curAmmo[magnumCount].RemainingAmmo;
-				curAmmo[magnumCount].RemainingAmmo -= removeAmmo;
-			}
-			
-			if ( ammoType == AmmoType.Pistol && curAmmo[pistolCount].RemainingAmmo <= 0 )
-			{
-				
-				CurAmmoWeight -= curAmmo[pistolCount].Weight;
-                
-                using ( Prediction.Off() )
-                {
-                    RemoveAmmoClient( To.Single( this ), curAmmo[pistolCount].Weight );
-                }
-                
-                curAmmo.RemoveAt(pistolCount);
-                pistolCount--;
-
-                //Because of the way 9mm ammo works with mp5
-                //This will run if remaining ammo to remove is still greater than 0
-                while ( remainToRemove > 1 )
-                {
-	                remainToRemove -= curAmmo[pistolCount].RemainingAmmo;
-	                CurAmmoWeight -= curAmmo[pistolCount].Weight;
-                
-	                using ( Prediction.Off() )
-	                {
-		                RemoveAmmoClient( To.Single( this ), curAmmo[pistolCount].Weight );
-	                }
-                
-	                curAmmo.RemoveAt(pistolCount);
-	                pistolCount--;
-                }
-			}
-			
-			if ( ammoType == AmmoType.Buckshot && curAmmo[shotgunCount].RemainingAmmo <= 0 )
-			{
-				CurAmmoWeight -= curAmmo[shotgunCount].Weight;
-
-				using ( Prediction.Off() )
-				{
-					RemoveAmmoClient( To.Single( this ), curAmmo[shotgunCount].Weight );
-				}	
-				
-				curAmmo.RemoveAt(shotgunCount);
-			}
-			
-			if ( ammoType == AmmoType.Rifle && curAmmo[rifleCount].RemainingAmmo <= 0 )
-			{
-				
-				CurAmmoWeight -= curAmmo[rifleCount].Weight;
-                
-				using ( Prediction.Off() )
-				{
-					RemoveAmmoClient( To.Single( this ), curAmmo[rifleCount].Weight );
-				}
-                
-				curAmmo.RemoveAt(rifleCount);
-			}
-			
-			if ( ammoType == AmmoType.Magnum && curAmmo[magnumCount].RemainingAmmo <= 0 )
-			{
-				CurAmmoWeight -= curAmmo[magnumCount].Weight;
-				
-				
-				using ( Prediction.Off() )
-				{
-					RemoveAmmoClient( To.Single( this ), curAmmo[magnumCount].Weight );
-				}
-				
-				curAmmo.RemoveAt(magnumCount);
-			}
-			
-			
-		}
-		
 		[ClientRpc]
 		public void UpdateArmorClient(int amount)
 		{
@@ -814,11 +692,11 @@ namespace ZPS_Viral
 
 			if ( targetTeam == TeamType.Undead )
 			{
-				RenderColor = new Color32( 125, 75, 75 ); 
+				RenderColor = new Color( 125, 75, 75 ); 
 			}
 			else
 			{
-				RenderColor = new Color32( 255, 255, 255 );
+				RenderColor = new Color( 255, 255, 255 );
 			}
 
 			using ( Prediction.Off() )

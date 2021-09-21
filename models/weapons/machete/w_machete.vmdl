@@ -60,7 +60,7 @@
 						[
 							{
 								from = "machete.vmat"
-								to = "cc0_textures/machete.vmat"
+								to = "materials/weapons/machete.vmat"
 							},
 						]
 						use_global_default = false
