@@ -18,7 +18,7 @@ namespace ZPS_Viral.Entities
 			IsObjective = 2,
 		}
 		
-		[Property( "mapspawn", Title = "Start map on this mode - DO NOT SET BOTH ON", FGDType = "flags" )]
+		[Property( "mapspawn", Title = "Start map on this mode - DO NOT SET BOTH ON")]
 		public Flags SpawnSettings { get; set; } = Flags.IsSurvival;
 
 		public override void Spawn()

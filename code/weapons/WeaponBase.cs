@@ -133,10 +133,12 @@ namespace ZPS_Viral
 
 			if ( Owner is ZPSVPlayer player )
 			{
+				player.RecheckAmmoWeight(ClipSize, AmmoType);
+				
 				var ammo = player.TakeAmmo( AmmoType, ClipSize - AmmoClip );
 				if ( ammo == 0 )
 					return;
-				
+
 				AmmoClip += ammo;
 			}
 		}

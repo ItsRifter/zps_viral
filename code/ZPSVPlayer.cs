@@ -478,7 +478,146 @@ namespace ZPS_Viral
 		{
 			IsPanicked = isPanic;
 		}
+		
+		
+		public void RecheckAmmoWeight(int removeAmmo, AmmoType ammoType)
+		{
+			if ( !IsServer )
+				return;
 
+			int remainToRemove = removeAmmo;
+			
+			int pistolCount = 0;
+			int shotgunCount = 0;
+			int rifleCount = 0;
+			int magnumCount = 0;
+
+			List<PistolAmmo> pistol = new List<PistolAmmo>();
+			List<RifleAmmo> rifle = new List<RifleAmmo>();
+			
+			foreach ( var ammo in curAmmo )
+			{
+				Log.Info(ammo);
+				Log.Info(ammo.ToString().Contains("PistolAmmo"));
+				
+				if ( ammo.ToString().Contains("PistolAmmo") )
+				{
+					pistolCount++;
+					pistol.Add( new PistolAmmo() );
+				}
+				
+				if( ammo.ToString().Contains("ShotgunAmmo") )
+					shotgunCount++;
+				
+				if( ammo.ToString().Contains("RifleAmmo") )
+				{
+					rifleCount++;
+					rifle.Add( new RifleAmmo() );
+				}
+				if( ammo.ToString().Contains("MagnumAmmo") )
+					magnumCount++;
+			}
+
+			if ( ammoType == AmmoType.Pistol )
+			{
+				foreach ( var curPistols in pistol )
+				{
+					if ( remainToRemove < 1 )
+						break;
+					
+					remainToRemove -= curAmmo[pistolCount].RemainingAmmo; 
+					curAmmo[pistolCount].RemainingAmmo -= remainToRemove;
+				}
+				
+				
+			}
+				
+			else if ( ammoType == AmmoType.Buckshot )
+			{
+				remainToRemove -= curAmmo[shotgunCount].RemainingAmmo;
+				curAmmo[shotgunCount].RemainingAmmo -= remainToRemove;
+			}
+			else if ( ammoType == AmmoType.Rifle )
+			{
+				remainToRemove -= rifle[rifleCount].RemainingAmmo;
+				rifle[rifleCount].RemainingAmmo -= remainToRemove;
+			}
+			else if ( ammoType == AmmoType.Magnum )
+			{
+				remainToRemove -= curAmmo[magnumCount].RemainingAmmo;
+				curAmmo[magnumCount].RemainingAmmo -= remainToRemove;
+			}
+			
+			if ( ammoType == AmmoType.Pistol && curAmmo[pistolCount].RemainingAmmo <= 0 )
+			{
+				CurAmmoWeight -= curAmmo[pistolCount].Weight;
+                
+                using ( Prediction.Off() )
+                {
+                    RemoveAmmoClient( To.Single( this ), curAmmo[pistolCount].Weight );
+                }
+                
+                curAmmo.RemoveAt(pistolCount);
+                pistolCount--;
+
+                //Because of the way 9mm ammo works with mp5
+                //This will run if remaining ammo to remove is still greater than 0
+                while ( remainToRemove > 1 )
+                {
+	                remainToRemove -= curAmmo[pistolCount].RemainingAmmo;
+	                CurAmmoWeight -= curAmmo[pistolCount].Weight;
+                
+	                using ( Prediction.Off() )
+	                {
+		                RemoveAmmoClient( To.Single( this ), curAmmo[pistolCount].Weight );
+	                }
+                
+	                curAmmo.RemoveAt(pistolCount);
+	                pistolCount--;
+                }
+			}
+			
+			if ( ammoType == AmmoType.Buckshot && curAmmo[shotgunCount].RemainingAmmo <= 0 )
+			{
+				CurAmmoWeight -= curAmmo[shotgunCount].Weight;
+
+				using ( Prediction.Off() )
+				{
+					RemoveAmmoClient( To.Single( this ), curAmmo[shotgunCount].Weight );
+				}	
+				
+				curAmmo.RemoveAt(shotgunCount);
+			}
+			
+			if ( ammoType == AmmoType.Rifle && curAmmo[rifleCount].RemainingAmmo <= 0 )
+			{
+				
+				CurAmmoWeight -= curAmmo[rifleCount].Weight;
+                
+				using ( Prediction.Off() )
+				{
+					RemoveAmmoClient( To.Single( this ), curAmmo[rifleCount].Weight );
+				}
+                
+				curAmmo.RemoveAt(rifleCount);
+			}
+			
+			if ( ammoType == AmmoType.Magnum && curAmmo[magnumCount].RemainingAmmo <= 0 )
+			{
+				CurAmmoWeight -= curAmmo[magnumCount].Weight;
+				
+				
+				using ( Prediction.Off() )
+				{
+					RemoveAmmoClient( To.Single( this ), curAmmo[magnumCount].Weight );
+				}
+				
+				curAmmo.RemoveAt(magnumCount);
+			}
+			
+			
+		}
+		
 		[ClientRpc]
 		public void UpdateArmorClient(int amount)
 		{

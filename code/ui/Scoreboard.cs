@@ -32,6 +32,7 @@ namespace ZPS_Viral
 			Ping = Add.Label( "", "ping" );
 		}
 
+		/*
 		public override void UpdateFrom( PlayerScore.Entry entry )
 		{
 			base.UpdateFrom( entry );
@@ -39,5 +40,6 @@ namespace ZPS_Viral
 			Fps.Text = entry.Get<int>( "fps", 0 ).ToString();
 			Ping.Text = entry.Get<int>( "ping", 5 ).ToString();
 		}
+		*/
 	}
 }
