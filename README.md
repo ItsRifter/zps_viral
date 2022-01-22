@@ -7,4 +7,4 @@ A community port of the original Zombie Panic! Source mod into S&Box/Source 2
 No, the original developers of the Source mod are aware and are okay with this port
 
 ## Can I contribute to development?
-Yes! just ask SuperSponer (make sure you provide a portfolio of work)
+Yes! just ask ItsRifter (make sure you provide a portfolio of work)
