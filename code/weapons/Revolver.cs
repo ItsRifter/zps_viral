@@ -36,7 +36,7 @@ namespace ZPS_Viral
 		[ClientRpc]
 		public override void StartReloadEffects()
 		{
-			ViewModelEntity?.SetAnimBool( "reload", true );
+			ViewModelEntity?.SetAnimParameter( "reload", true );
 			PlaySound( "revolver_reload" );
 		}
 		

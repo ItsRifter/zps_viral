@@ -19,7 +19,7 @@ namespace ZPS_Viral
 
 		private void AddCameraEffects( ref CameraSetup camSetup )
 		{
-			Rotation = Local.Pawn.EyeRot;
+			Rotation = Local.Pawn.EyeRotation;
 
 			//
 			// Bob up and down based on our walk movement

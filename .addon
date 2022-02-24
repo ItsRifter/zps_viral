@@ -1,18 +1,13 @@
 {
-    "name": "zombie-panic-viral",
-    "sharedassets": "*.*",
-    
-    "depends": 
-    [
-		"base"
-    ],
-    
-    "gamemodes":
-    [
-        {
-         "name": "zombie-panic-viral",
-         "title": "Zombie Panic Viral",
-         "description": "An undead recreation of the original mod into sbox"
-        }
-    ]
+  "Title": "Zps Viral",
+  "Type": "game",
+  "Org": "local",
+  "Ident": "zps_viral",
+  "Schema": 1,
+  "HasAssets": true,
+  "AssetsPath": "",
+  "ResourcePaths": null,
+  "HasCode": true,
+  "CodePath": "code",
+  "RootNamespace": "Sandbox"
 }

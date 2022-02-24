@@ -40,7 +40,6 @@ namespace ZPS_Viral
 			if ( Active == ent ) return false;
 			if ( !Contains( ent ) ) return false;
 
-			Owner.ActiveChild = ent;
 			return true;
 		}
 		public bool IsCarryingType( Type t )

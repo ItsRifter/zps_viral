@@ -47,7 +47,7 @@ namespace ZPS_Viral
 				return;
 			}
 
-			(Owner as AnimEntity).SetAnimBool( "b_attack", true );
+			(Owner as AnimEntity).SetAnimParameter( "b_attack", true );
 
 			//
 			// Tell the clients to play the shoot effects
@@ -77,7 +77,7 @@ namespace ZPS_Viral
 			Particles.Create( "particles/pistol_muzzleflash.vpcf", EffectEntity, "muzzle" );
 			Particles.Create( "particles/pistol_ejectbrass.vpcf", EffectEntity, "ejection_point" );
 
-			ViewModelEntity?.SetAnimBool( "fire", true );
+			ViewModelEntity?.SetAnimParameter( "fire", true );
 
 			if ( IsLocalPawn )
 			{
@@ -136,15 +136,15 @@ namespace ZPS_Viral
 			if ( _shouldPump )
 			{
 				PlaySound( "870_pump" );
-				ViewModelEntity?.SetAnimBool( "pump", true );
+				ViewModelEntity?.SetAnimParameter( "pump", true );
 				_shouldPump = false;
 			}
 		}
 		
 		public override void SimulateAnimator( PawnAnimator anim )
 		{
-			anim.SetParam( "holdtype", 2 );
-			anim.SetParam( "aimat_weight", 1.0f );
+			anim.SetAnimParameter( "holdtype", 2 );
+			anim.SetAnimParameter( "aimat_weight", 1.0f );
 		}
 		
 	}

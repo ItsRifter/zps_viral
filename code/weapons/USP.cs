@@ -33,12 +33,12 @@ namespace ZPS_Viral
 		{
 			if ( AmmoClip <= 0 )
 			{
-				ViewModelEntity?.SetAnimBool( "reload_empty", true );
+				ViewModelEntity?.SetAnimParameter( "reload_empty", true );
 				PlaySound( "usp_reloadempty" );
 			}
 			else
 			{
-				ViewModelEntity?.SetAnimBool( "reload", true );
+				ViewModelEntity?.SetAnimParameter( "reload", true );
 				PlaySound( "usp_reload" );
 			}
 		}

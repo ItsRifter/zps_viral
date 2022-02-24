@@ -311,8 +311,8 @@ namespace ZPS_Viral
 		{
 			foreach ( var p in Entity.All.OfType<ZPSVPlayer>() )
 			{
-				p.Camera = null;
-				p.Camera = new FirstPersonCamera();
+				p.CameraMode = null;
+				p.CameraMode = new FirstPersonCamera();
 			}
 		}
 

@@ -106,7 +106,7 @@ namespace ZPS_Viral
 
 			IsReloading = true;
 
-			(Owner as AnimEntity).SetAnimBool( "b_reload", true );
+			(Owner as AnimEntity).SetAnimParameter( "b_reload", true );
 
 			StartReloadEffects();
 		}
@@ -146,7 +146,7 @@ namespace ZPS_Viral
 		[ClientRpc]
 		public virtual void StartReloadEffects()
 		{
-			ViewModelEntity?.SetAnimBool( "reload", true );
+			ViewModelEntity?.SetAnimParameter( "reload", true );
 
 			// TODO - player third person model reload
 		}
@@ -165,7 +165,7 @@ namespace ZPS_Viral
 			// ShootBullet is coded in a way where we can have bullets pass through shit
 			// or bounce off shit, in which case it'll return multiple results
 			//
-			foreach ( var tr in TraceBullet( Owner.EyePos, Owner.EyePos + Owner.EyeRot.Forward * 5000 ) )
+			foreach ( var tr in TraceBullet( Owner.EyePosition, Owner.EyePosition + Owner.EyeRotation.Forward * 5000 ) )
 			{
 				tr.Surface.DoBulletImpact( tr );
 
@@ -177,7 +177,7 @@ namespace ZPS_Viral
 				//
 				using ( Prediction.Off() )
 				{
-					var damage = DamageInfo.FromBullet( tr.EndPos, Owner.EyeRot.Forward * 100, 15 )
+					var damage = DamageInfo.FromBullet( tr.EndPosition, Owner.EyeRotation.Forward * 100, 15 )
 						.UsingTraceResult( tr )
 						.WithAttacker( Owner )
 						.WithWeapon( this );
@@ -199,7 +199,7 @@ namespace ZPS_Viral
 				new Sandbox.ScreenShake.Perlin();
 			}
 
-			ViewModelEntity?.SetAnimBool( "fire", true );
+			ViewModelEntity?.SetAnimParameter( "fire", true );
 		}
 
 		/// <summary>
@@ -207,7 +207,7 @@ namespace ZPS_Viral
 		/// </summary>
 		public virtual void ShootBullet( float spread, float force, float damage, float bulletSize )
 		{
-			var forward = Owner.EyeRot.Forward;
+			var forward = Owner.EyeRotation.Forward;
 			forward += (Vector3.Random + Vector3.Random + Vector3.Random + Vector3.Random) * spread * 0.25f;
 			forward = forward.Normal;
 
@@ -215,7 +215,7 @@ namespace ZPS_Viral
 			// ShootBullet is coded in a way where we can have bullets pass through shit
 			// or bounce off shit, in which case it'll return multiple results
 			//
-			foreach ( var tr in TraceBullet( Owner.EyePos, Owner.EyePos + forward * 5000, bulletSize ) )
+			foreach ( var tr in TraceBullet( Owner.EyePosition, Owner.EyePosition + forward * 5000, bulletSize ) )
 			{
 				tr.Surface.DoBulletImpact( tr );
 
@@ -227,7 +227,7 @@ namespace ZPS_Viral
 				//
 				using ( Prediction.Off() )
 				{
-					var damageInfo = DamageInfo.FromBullet( tr.EndPos, forward * 100 * force, damage )
+					var damageInfo = DamageInfo.FromBullet( tr.EndPosition, forward * 100 * force, damage )
 						.UsingTraceResult( tr )
 						.WithAttacker( Owner )
 						.WithWeapon( this );

@@ -79,14 +79,14 @@ namespace ZPS_Viral
 
 			Controller = new SurvivorWalkController();
 			Animator = new StandardPlayerAnimator();
-			Camera = new FirstPersonCamera();
+			CameraMode = new FirstPersonCamera();
 
 			//Dress();
 			ClearAmmo();
 			
 			CurWeightSlots = 0;
 			CurAmmoWeight = 0;
-			RenderAlpha = 255;
+			RenderColor = new Color(255, 255, 255, 1);
 			
 			timeForPanic = 0;
 			
@@ -183,7 +183,7 @@ namespace ZPS_Viral
 		{
 			SetModel( "models/citizen/citizen.vmdl" );
 
-			Camera = new FirstPersonCamera();
+			CameraMode = new FirstPersonCamera();
 			Controller = new ZombieWalkController();
 			Animator = new StandardPlayerAnimator();
 
@@ -207,12 +207,12 @@ namespace ZPS_Viral
 			if(CurTeam == TeamType.Spectator)
 			{
 				EnableAllCollisions = false;
-				RenderAlpha = 0;
+				RenderColor = new Color( 255, 255, 255, 0 );
 
 			} else
 			{
 				EnableAllCollisions = true;
-				RenderAlpha = 255;
+				RenderColor = new Color( 255, 255, 255, 1 );
 			}
 
 			if ( CurTeam == TeamType.Undead )
@@ -331,7 +331,7 @@ namespace ZPS_Viral
 
 				if ( dropped != null )
 				{
-					dropped.PhysicsGroup.ApplyImpulse( Velocity + EyeRot.Forward * 250.0f + Vector3.Up * 100.0f, true );
+					dropped.PhysicsGroup.ApplyImpulse( Velocity + EyeRotation.Forward * 250.0f + Vector3.Up * 100.0f, true );
 					dropped.PhysicsGroup.ApplyAngularImpulse( Vector3.Random * 100.0f, true );
 
 					timeSinceDropped = 0;
@@ -341,7 +341,7 @@ namespace ZPS_Viral
 			
 			if ( Input.Pressed( InputButton.Use ) && IsServer && CurTeam == TeamType.Survivor )
 			{
-				var tr = Trace.Ray( EyePos, EyePos + EyeRot.Forward * 92 )
+				var tr = Trace.Ray( EyePosition, EyePosition + EyeRotation.Forward * 92 )
 					.UseHitboxes( )
 					.Ignore( this )
 					.Size( 7)
@@ -700,7 +700,7 @@ namespace ZPS_Viral
 
 				pistolAmmo.Position = Position + new Vector3( 0, 0, 85 );
 				
-				pistolAmmo.PhysicsGroup.ApplyImpulse( EyeRot.Forward * 250.0f + Vector3.Up * 100.0f, true );
+				pistolAmmo.PhysicsGroup.ApplyImpulse( EyeRotation.Forward * 250.0f + Vector3.Up * 100.0f, true );
 				pistolAmmo.PhysicsGroup.ApplyAngularImpulse( Vector3.Random * 100.0f, true );
 
 				
@@ -721,7 +721,7 @@ namespace ZPS_Viral
 
 				shotgunAmmo.Position = Position + new Vector3( 0, 0, 85 );
 
-				shotgunAmmo.PhysicsGroup.ApplyImpulse( EyeRot.Forward * 250.0f + Vector3.Up * 100.0f, true );
+				shotgunAmmo.PhysicsGroup.ApplyImpulse( EyeRotation.Forward * 250.0f + Vector3.Up * 100.0f, true );
 				shotgunAmmo.PhysicsGroup.ApplyAngularImpulse( Vector3.Random * 100.0f, true );
 
 				CurAmmoWeight -= shotgunAmmo.Weight;
@@ -740,7 +740,7 @@ namespace ZPS_Viral
 
 				rifleAmmo.Position = Position + new Vector3( 0, 0, 85 );
 
-				rifleAmmo.PhysicsGroup.ApplyImpulse( EyeRot.Forward * 250.0f + Vector3.Up * 100.0f, true );
+				rifleAmmo.PhysicsGroup.ApplyImpulse( EyeRotation.Forward * 250.0f + Vector3.Up * 100.0f, true );
 				rifleAmmo.PhysicsGroup.ApplyAngularImpulse( Vector3.Random * 100.0f, true );
 
 				CurAmmoWeight -= rifleAmmo.Weight;
@@ -760,7 +760,7 @@ namespace ZPS_Viral
 
 				magnumAmmo.Position = Position + new Vector3( 0, 0, 85 );
 
-				magnumAmmo.PhysicsGroup.ApplyImpulse( EyeRot.Forward * 250.0f + Vector3.Up * 100.0f, true );
+				magnumAmmo.PhysicsGroup.ApplyImpulse( EyeRotation.Forward * 250.0f + Vector3.Up * 100.0f, true );
 				magnumAmmo.PhysicsGroup.ApplyAngularImpulse( Vector3.Random * 100.0f, true );
 
 				CurAmmoWeight -= magnumAmmo.Weight;
@@ -1027,7 +1027,7 @@ namespace ZPS_Viral
 			
 			Inventory.DeleteContents();
 			ZPSVGame.CheckRoundStatus();
-			Camera = new SpectateRagdollCamera();
+			CameraMode = new SpectateRagdollCamera();
 			EnableDrawing = false;
 		}
 	}

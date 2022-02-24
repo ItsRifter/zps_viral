@@ -32,12 +32,12 @@ namespace ZPS_Viral
 		
 		private bool MeleeAttack()
 		{
-			var forward = Owner.EyeRot.Forward;
+			var forward = Owner.EyeRotation.Forward;
 			forward = forward.Normal;
 
 			bool hit = false;
 
-			foreach ( var tr in TraceBullet( Owner.EyePos, Owner.EyePos + forward * MeleeDistance, 20.0f ) )
+			foreach ( var tr in TraceBullet( Owner.EyePosition, Owner.EyePosition + forward * MeleeDistance, 20.0f ) )
 			{
 				if ( !tr.Entity.IsValid() ) continue;
 
@@ -49,7 +49,7 @@ namespace ZPS_Viral
 
 				using ( Prediction.Off() )
 				{
-					var damageInfo = DamageInfo.FromBullet( tr.EndPos, forward * MeleeDistance, BaseDamage )
+					var damageInfo = DamageInfo.FromBullet( tr.EndPosition, forward * MeleeDistance, BaseDamage )
 						.UsingTraceResult( tr )
 						.WithAttacker( Owner )
 						.WithWeapon( this );
@@ -71,7 +71,7 @@ namespace ZPS_Viral
 				_ = new Sandbox.ScreenShake.Perlin();
 			}
 
-			ViewModelEntity?.SetAnimBool( "miss" + Rand.Int( 1, 2 ), true );
+			ViewModelEntity?.SetAnimParameter( "miss" + Rand.Int( 1, 2 ), true );
 		}
 
 		[ClientRpc]
@@ -84,7 +84,7 @@ namespace ZPS_Viral
 				_ = new Sandbox.ScreenShake.Perlin( 1.0f, 1.0f, 3.0f );
 			}
 
-			ViewModelEntity?.SetAnimBool( "fire" + Rand.Int( 1, 2 ), true );
+			ViewModelEntity?.SetAnimParameter( "fire" + Rand.Int( 1, 2 ), true );
 		}
 
 		public override void AttackPrimary()
@@ -109,14 +109,14 @@ namespace ZPS_Viral
 		{
 			Host.AssertClient();
 
-			ViewModelEntity?.SetAnimBool( "fire" + Rand.Int( 1, 2 ), true );
+			ViewModelEntity?.SetAnimParameter( "fire" + Rand.Int( 1, 2 ), true );
 		}
 
 		
 		public override void SimulateAnimator( PawnAnimator anim )
 		{
-			anim.SetParam( "holdtype", 4 ); // TODO this is shit
-			anim.SetParam( "aimat_weight", 1.0f );
+			anim.SetAnimParameter( "holdtype", 4 ); // TODO this is shit
+			anim.SetAnimParameter( "aimat_weight", 1.0f );
 		}
 	}
 }

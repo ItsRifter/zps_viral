@@ -1,0 +1,357 @@
+
+@BaseClass = BaseProperties_local_zps_viral
+[
+	parentname(target_destination) [ group="Hierarchy" ] : "Parent" : : "The name of this entity's parent in the movement hierarchy. Entities with parents move with their parent."
+	parentAttachmentName(parentAttachment) [ group="Hierarchy" ] : "Parent Model Bone/Attachment Name" : : "The name of the bone or attachment to attach to on the entity's parent in the movement hierarchy. Use !bonemerge to use bone-merge style attachment."
+
+	useLocalOffset(boolean) [ group="Hierarchy" ] : "Use Model Attachment offsets" : 0 : "Whether to respect the specified local offset when doing the initial hierarchical attachment to its parent."
+	local.origin(vector) [ group="Hierarchy" ] : "Model Attachment position offset" : : "Offset in the local space of the parent model's attachment/bone to use in hierarchy. Not used if you are not using parent attachment."
+	local.angles(angle) [ group="Hierarchy" ] : "Model Attachment angular offset" : : "Angular offset in the local space of the parent model's attachment/bone to use in hierarchy. Not used if you are not using parent attachment."
+	local.scales(vector) [ group="Hierarchy" ] : "Model Attachment scale" : : "Scale in the local space of the parent model's attachment/bone to use in hierarchy. Not used if you are not using parent attachment."
+
+	targetname(target_source) : "Name" : : "The name that other entities refer to this entity by."
+	tags(tags) : "Tags" : "" : "A list of general purpose tags for this entity, for interactions with other entities such as triggers."
+]
+
+//
+// ZPS_Viral.Kevlar
+//
+@PointClass base(BaseProperties_local_zps_viral) editormodel( "models/misc/kevlar.vmdl" ) 
+metadata
+{
+	entity_tool_name = "Kevlar Vest"
+	entity_tool_group = "Health"
+	entity_tool_tip = "Kevlar Vest"
+}
+= zpsviral_misc_kevlar : ""
+[
+	enable_shadows(boolean) { group = "Rendering" } : "Shadow Casting" : 1 : "Whether this entity should cast shadows or not"
+
+	input SetColor(string) : "Sets the color of this entity. Format is '255 255 255 255'."
+]
+
+//
+// ZPS_Viral.MagnumAmmo
+//
+@PointClass base(BaseProperties_local_zps_viral) editormodel( "models/ammo/magnum_ammo.vmdl" ) 
+metadata
+{
+	entity_tool_name = "Magnum Ammo Box"
+	entity_tool_group = "Ammo"
+	entity_tool_tip = "Magnum ammo box"
+}
+= zpsviral_ammo_magnum : ""
+[
+	enable_shadows(boolean) { group = "Rendering" } : "Shadow Casting" : 1 : "Whether this entity should cast shadows or not"
+
+	input SetColor(string) : "Sets the color of this entity. Format is '255 255 255 255'."
+]
+
+//
+// ZPS_Viral.PistolAmmo
+//
+@PointClass base(BaseProperties_local_zps_viral) editormodel( "models/ammo/pistol_ammo.vmdl" ) 
+metadata
+{
+	entity_tool_name = "9mm Ammo Box"
+	entity_tool_group = "Ammo"
+	entity_tool_tip = "Small 9mm ammo box"
+}
+= zpsviral_ammo_9mm : ""
+[
+	enable_shadows(boolean) { group = "Rendering" } : "Shadow Casting" : 1 : "Whether this entity should cast shadows or not"
+
+	input SetColor(string) : "Sets the color of this entity. Format is '255 255 255 255'."
+]
+
+//
+// ZPS_Viral.RifleAmmo
+//
+@PointClass base(BaseProperties_local_zps_viral) editormodel( "models/ammo/rifle_ammo.vmdl" ) 
+metadata
+{
+	entity_tool_name = "Rifle Ammo Box"
+	entity_tool_group = "Ammo"
+	entity_tool_tip = "Rifle ammo box"
+}
+= zpsviral_ammo_rifle : ""
+[
+	enable_shadows(boolean) { group = "Rendering" } : "Shadow Casting" : 1 : "Whether this entity should cast shadows or not"
+
+	input SetColor(string) : "Sets the color of this entity. Format is '255 255 255 255'."
+]
+
+//
+// ZPS_Viral.ShotgunAmmo
+//
+@PointClass base(BaseProperties_local_zps_viral) editormodel( "models/ammo/shotgun_ammo.vmdl" ) 
+metadata
+{
+	entity_tool_name = "Buckshot Ammo Box"
+	entity_tool_group = "Ammo"
+	entity_tool_tip = "Buckshot ammo box"
+}
+= zpsviral_ammo_buckshot : ""
+[
+	enable_shadows(boolean) { group = "Rendering" } : "Shadow Casting" : 1 : "Whether this entity should cast shadows or not"
+
+	input SetColor(string) : "Sets the color of this entity. Format is '255 255 255 255'."
+]
+
+//
+// ZPS_Viral.SmallMedkit
+//
+@PointClass base(BaseProperties_local_zps_viral) editormodel( "models/medkit.vmdl" ) 
+metadata
+{
+	entity_tool_name = "Painkillers"
+	entity_tool_group = "Health"
+	entity_tool_tip = "Pills to recover small amounts of health"
+}
+= zpsviral_painkillers : ""
+[
+	enable_shadows(boolean) { group = "Rendering" } : "Shadow Casting" : 1 : "Whether this entity should cast shadows or not"
+
+	input SetColor(string) : "Sets the color of this entity. Format is '255 255 255 255'."
+]
+
+//
+// ZPS_Viral.AK47
+//
+@PointClass base(BaseProperties_local_zps_viral) editormodel( "models/weapons/ak47/w_ak47.vmdl" ) = zpsviral_ak47 : ""
+[
+	enable_shadows(boolean) { group = "Rendering" } : "Shadow Casting" : 1 : "Whether this entity should cast shadows or not"
+
+	input SetColor(string) : "Sets the color of this entity. Format is '255 255 255 255'."
+]
+
+//
+// ZPS_Viral.Axe
+//
+@PointClass base(BaseProperties_local_zps_viral) editormodel( "models/weapons/axe/w_axe.vmdl" ) = zpsviral_axe : ""
+[
+	enable_shadows(boolean) { group = "Rendering" } : "Shadow Casting" : 1 : "Whether this entity should cast shadows or not"
+
+	input SetColor(string) : "Sets the color of this entity. Format is '255 255 255 255'."
+]
+
+//
+// ZPS_Viral.Claws
+//
+@PointClass base(BaseProperties_local_zps_viral) = zpsviral_claws : ""
+[
+	enable_shadows(boolean) { group = "Rendering" } : "Shadow Casting" : 1 : "Whether this entity should cast shadows or not"
+
+	input SetColor(string) : "Sets the color of this entity. Format is '255 255 255 255'."
+]
+
+//
+// ZPS_Viral.Glock17
+//
+@PointClass base(BaseProperties_local_zps_viral) editormodel( "models/weapons/glock17/w_glock17.vmdl" ) = zpsviral_glock17 : ""
+[
+	enable_shadows(boolean) { group = "Rendering" } : "Shadow Casting" : 1 : "Whether this entity should cast shadows or not"
+
+	input SetColor(string) : "Sets the color of this entity. Format is '255 255 255 255'."
+]
+
+//
+// ZPS_Viral.Machete
+//
+@PointClass base(BaseProperties_local_zps_viral) editormodel( "models/weapons/machete/w_machete.vmdl" ) = zpsviral_machete : ""
+[
+	enable_shadows(boolean) { group = "Rendering" } : "Shadow Casting" : 1 : "Whether this entity should cast shadows or not"
+
+	input SetColor(string) : "Sets the color of this entity. Format is '255 255 255 255'."
+]
+
+//
+// ZPS_Viral.MP5
+//
+@PointClass base(BaseProperties_local_zps_viral) editormodel( "models/weapons/mp5/w_mp5.vmdl" ) = zpsviral_mp5 : ""
+[
+	enable_shadows(boolean) { group = "Rendering" } : "Shadow Casting" : 1 : "Whether this entity should cast shadows or not"
+
+	input SetColor(string) : "Sets the color of this entity. Format is '255 255 255 255'."
+]
+
+//
+// ZPS_Viral.Remington
+//
+@PointClass base(BaseProperties_local_zps_viral) editormodel( "models/weapons/remington/w_remington.vmdl" ) = zpsviral_remington : ""
+[
+	enable_shadows(boolean) { group = "Rendering" } : "Shadow Casting" : 1 : "Whether this entity should cast shadows or not"
+
+	input SetColor(string) : "Sets the color of this entity. Format is '255 255 255 255'."
+]
+
+//
+// ZPS_Viral.Revolver
+//
+@PointClass base(BaseProperties_local_zps_viral) editormodel( "models/weapons/revolver/w_revolver.vmdl" ) = zpsviral_revolver : ""
+[
+	enable_shadows(boolean) { group = "Rendering" } : "Shadow Casting" : 1 : "Whether this entity should cast shadows or not"
+
+	input SetColor(string) : "Sets the color of this entity. Format is '255 255 255 255'."
+]
+
+//
+// ZPS_Viral.USP
+//
+@PointClass base(BaseProperties_local_zps_viral) editormodel( "models/weapons/usp/w_usp.vmdl" ) = zpsviral_usp : ""
+[
+	enable_shadows(boolean) { group = "Rendering" } : "Shadow Casting" : 1 : "Whether this entity should cast shadows or not"
+
+	input SetColor(string) : "Sets the color of this entity. Format is '255 255 255 255'."
+]
+
+//
+// ZPS_Viral.Entities.AutoRun
+//
+@SolidClass base(BaseProperties_local_zps_viral) 
+metadata
+{
+	auto_apply_material = "materials/tools/toolstrigger.vmat"
+}
+= zpsviral_setmode : "Sets the mode [Survival/Objective]"
+[
+	mapspawn(choices) : "Start map on this mode - DO NOT SET BOTH ON" : 1 : "" =
+	[
+		1 : "Is Survival"
+		2 : "Is Objective"
+	]
+]
+
+//
+// ZPS_Viral.Entities.BreakableWall
+//
+@PointClass base(BaseProperties_local_zps_viral) tags( SupportsSolids ) model() = zpsviral_breakable : "Acts the same as a func_breakable"
+[
+	model(resource:vmdl) { report = true hide_when_solid = true }: "World Model" : "" : "The model this entity should use."
+	skin(materialgroup) { group = "Rendering" hide_when_solid = true } : "Skin" : "default" : "Some models have multiple versions of their textures, called skins." 
+	bodygroups(bodygroupchoices) { group = "Rendering" hide_when_solid = true } : "Body Groups" : "" : "Some models have multiple variations of certain items, such as characters having different hair styles, etc."
+	rendercolor(color255) { alpha = true } : "Color (R G B A)" : "255 255 255 255" : "The color tint of this entity."
+	health_until_break(float) : "Health Until Break" : 0 : ""
+	enable_shadows(boolean) { group = "Rendering" } : "Shadow Casting" : 1 : "Whether this entity should cast shadows or not"
+
+	input SetColor(string) : "Sets the color of this entity. Format is '255 255 255 255'."
+
+	output OnBroken(void) : ""
+]
+
+//
+// ZPS_Viral.Entities.ItemCrate
+//
+@PointClass base(BaseProperties_local_zps_viral) tags( Physics ) editormodel( "models/misc/itemcrate.vmdl" ) model() 
+metadata
+{
+	entity_tool_name = "Item Crate"
+	entity_tool_group = "Ammo"
+	entity_tool_tip = "An item crate which gives specific items"
+}
+= item_crate : ""
+[
+	model(resource:vmdl) { report = true hide_when_solid = true }: "World Model" : "" : "The model this entity should use."
+	skin(materialgroup) { group = "Rendering" hide_when_solid = true } : "Skin" : "default" : "Some models have multiple versions of their textures, called skins." 
+	bodygroups(bodygroupchoices) { group = "Rendering" hide_when_solid = true } : "Body Groups" : "" : "Some models have multiple variations of certain items, such as characters having different hair styles, etc."
+	rendercolor(color255) { alpha = true } : "Color (R G B A)" : "255 255 255 255" : "The color tint of this entity."
+	collisiongroupoverride(choices) : "Collision Group Override" : -1 : "" =
+	[
+		-1 : "UNUSED"
+		0 : "COLLISION GROUP ALWAYS"
+		1 : "COLLISION GROUP NONPHYSICAL"
+		4 : "COLLISION GROUP DEFAULT"
+		5 : "COLLISION GROUP DEBRIS"
+		14 : "COLLISION GROUP WEAPON"
+	]
+	static(boolean) : "Static" : 0 : "If set, the prop will spawn with motion disabled and will act as a nav blocker until broken."
+	enable_shadows(boolean) { group = "Rendering" } : "Shadow Casting" : 1 : "Whether this entity should cast shadows or not"
+
+	input Break(void) : "Causes this prop to break, regardless if it is actually breakable or not. (i.e. ignores health and whether the model has gibs)"
+	input SetColor(string) : "Sets the color of this entity. Format is '255 255 255 255'."
+
+	output OnDamaged(void) : "Fired when the entity gets damaged."
+	output OnBreak(void) : "Fired when the entity gets destroyed."
+]
+
+//
+// ZPS_Viral.Entities.SurvivorPoint
+//
+@PointClass base(BaseProperties_local_zps_viral) editormodel( "models/editor/playerstart.vmdl" ) 
+metadata
+{
+	entity_tool_name = "Survivor Spawnpoint"
+	entity_tool_group = "Player"
+	entity_tool_tip = "Defines a point where a survivor can spawn"
+}
+= info_survivor_start : "This entity defines the sppawn point of the player in first person shooter gamemodes."
+[
+]
+
+//
+// ZPS_Viral.Entities.TriggerTeams
+//
+@SolidClass base(BaseProperties_local_zps_viral) tags( Trigger ) 
+metadata
+{
+	auto_apply_material = "materials/tools/toolstrigger.vmat"
+}
+= trigger_teamselection : "Sets the player to the team of their choosing upon contact."
+[
+	teleport_destination_01(string) : "Target Entity 1" :  : ""
+	teleport_destination_02(string) : "Target Entity 2" :  : ""
+	teleport_destination_03(string) : "Target Entity 3" :  : ""
+	teleport_destination_04(string) : "Target Entity 4" :  : ""
+	teleport_destination_05(string) : "Target Entity 5" :  : ""
+	teleport_destination_06(string) : "Target Entity 6" :  : ""
+	teleport_destination_07(string) : "Target Entity 7" :  : ""
+	teleport_destination_08(string) : "Target Entity 8" :  : ""
+	selectedteam(choices) : "Team to join" : 4 : "" =
+	[
+		0 : "Unassigned"
+		1 : "Survivor"
+		2 : "Infected"
+		3 : "Undead"
+		4 : "Spectator"
+	]
+	startdisabled(boolean) : "Start Disabled" : 0 : "Should this entity start disabled?"
+	actvationtags(tags) : "Actvation Tags" :  : "Entities with these tags can activate this trigger."
+	enable_shadows(boolean) { group = "Rendering" } : "Shadow Casting" : 1 : "Whether this entity should cast shadows or not"
+	spawnflags(flags) = [
+		1 : "Clients" : 1
+		2 : "Npcs" : 0
+		4 : "Pushables" : 0
+		8 : "Physics Objects" : 0
+		16 : "Allied Npcs" : 0
+		32 : "Client In Vehicle" : 0
+		64 : "Everything" : 0
+		512 : "Client Not In Vehicle" : 0
+		1024 : "Physics Debris" : 0
+	]
+
+	input Enable(void) : "Enables this trigger"
+	input Disable(void) : "Disables this trigger"
+	input Toggle(void) : "Toggles this trigger between enabled and disabled states"
+	input SetColor(string) : "Sets the color of this entity. Format is '255 255 255 255'."
+
+	output OnTriggered(void) : ""
+	output OnStartTouch(void) : "Fired when an entity starts touching this trigger. The touching entity must pass this trigger's filters to cause this output to fire."
+	output OnEndTouch(void) : "Fired when an entity stops touching this trigger. Only entities that passed this trigger's filters will cause this output to fire."
+	output OnStartTouchAll(void) : "Fired when an entity starts touching this trigger while no other passing entities are touching it."
+	output OnEndTouchAll(void) : "Fired when all entities touching this trigger have stopped touching it."
+]
+
+//
+// ZPS_Viral.Entities.ZombiePoint
+//
+@PointClass base(BaseProperties_local_zps_viral) editormodel( "models/editor/playerstart.vmdl" ) 
+metadata
+{
+	entity_tool_name = "Zombie Spawnpoint"
+	entity_tool_group = "Player"
+	entity_tool_tip = "Defines a point where a zombie can spawn"
+}
+= info_zombie_start : "This entity defines the sppawn point of the player in first person shooter gamemodes."
+[
+]
+

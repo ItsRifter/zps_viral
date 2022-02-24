@@ -40,7 +40,7 @@ namespace ZPS_Viral
 				return;
 			}
 
-			(Owner as AnimEntity).SetAnimBool( "b_attack", true );
+			(Owner as AnimEntity).SetAnimParameter( "b_attack", true );
 
 			//
 			// Tell the clients to play the shoot effects
@@ -60,12 +60,12 @@ namespace ZPS_Viral
 		{
 			if ( AmmoClip <= 0 )
 			{
-				ViewModelEntity?.SetAnimBool( "reload_empty", true );
+				ViewModelEntity?.SetAnimParameter( "reload_empty", true );
 				PlaySound( "mp5_reloadempty" );
 			}
 			else
 			{
-				ViewModelEntity?.SetAnimBool( "reload", true );
+				ViewModelEntity?.SetAnimParameter( "reload", true );
 				PlaySound( "mp5_reload" );
 			}
 		}
@@ -83,18 +83,18 @@ namespace ZPS_Viral
 				new Sandbox.ScreenShake.Perlin( 0.5f, 3.0f, 0.5f, 0.5f );
 			}
 
-			ViewModelEntity?.SetAnimBool( "fire", true );
+			ViewModelEntity?.SetAnimParameter( "fire", true );
 		}
 
 		public override void SimulateAnimator( PawnAnimator anim )
 		{
-			anim.SetParam( "holdtype", 2 );
-			anim.SetParam( "aimat_weight", 1.0f );
+			anim.SetAnimParameter( "holdtype", 2 );
+			anim.SetAnimParameter( "aimat_weight", 1.0f );
 		}
 		
 		public override void DryFire()
 		{
-			ViewModelEntity?.SetAnimBool( "dryfire", true );
+			ViewModelEntity?.SetAnimParameter( "dryfire", true );
 			PlaySound( "mp5_dryfire" );
 		}
 	}
